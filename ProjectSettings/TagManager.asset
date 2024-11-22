@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Terrain
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - CollisionLayer
+  - CollidingObejcts
+  - bush
+  - stone
+  - damage
+  - water
+  - enemy
+  - humanBuildings
+  - SceneObjects
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: SceneObjects
+    uniqueID: 2742286455
+    locked: 0
+  - name: ActiveObjects
+    uniqueID: 322991189
+    locked: 0
+  - name: SceneUI
+    uniqueID: 357043639
+    locked: 0
