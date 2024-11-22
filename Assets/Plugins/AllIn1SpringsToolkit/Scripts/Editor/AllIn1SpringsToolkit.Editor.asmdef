@@ -1,0 +1,18 @@
+{
+    "name": "AllIn1SpringsToolkitCustomEditorsAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:8cab375326ead6b42841e51d1c2b181f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
