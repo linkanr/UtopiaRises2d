@@ -29,10 +29,33 @@ public class EnemyManager : MonoBehaviour
         
         
         spawner.enemyWaves = CreateInstancesOfTheEnemies(); 
+        spawner.soEnemyBase = soEnemyLevelList.SoEnemyBase;
+        
+        
     }
 
- 
 
+    private void OnEnable()
+    {
+        BattleSceneActions.OnInitializeScene += SpawEnemyBase;
+        BattleSceneActions.OnAllEnemiesSpawned += RestartSpawning;
+    }
+
+    private void OnDisable()
+    {
+        BattleSceneActions.OnAllEnemiesSpawned -= RestartSpawning;
+        BattleSceneActions.OnInitializeScene -= SpawEnemyBase;
+    }
+
+    private void SpawEnemyBase()
+    {
+        EnemyBase.Create(soEnemyLevelList.basePosition, soEnemyLevelList.SoEnemyBase);
+    }
+
+    private void RestartSpawning()
+    {
+        spawner.enemyWaves = CreateInstancesOfTheEnemies();
+    }
 
     public void SetSpawning(bool onOff)
     {

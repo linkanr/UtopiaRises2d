@@ -10,24 +10,24 @@ public class EnemyLooker
     }
     public EnemyManager enemyManager;
 
-    internal IDamageable LookForTarget(LookForEnemyType lookForEnemyType, Vector3 postion, float maxDistance)
+    internal IDamageable LookForTarget(TargetPriorityEnum lookForEnemyType, Vector3 postion, float maxDistance)
     {
         switch (lookForEnemyType)
         {
-            case LookForEnemyType.closest:
+            case TargetPriorityEnum.closest:
                 {
                     return GetClosestEnemy(postion, maxDistance);
                 }
-            case LookForEnemyType.mostHelth:
+            case TargetPriorityEnum.mostHelth:
                 {
                     return GetEnemyMostHealth(postion, maxDistance);
                 }
-            case LookForEnemyType.furthest:
+            case TargetPriorityEnum.furthest:
                 {
                     return GetFurthestEnemy(postion, maxDistance);
 
                 }
-            case LookForEnemyType.leastHealth:
+            case TargetPriorityEnum.leastHealth:
                 {
                     return GetEnemyLeastHealth(postion, maxDistance);
                 }

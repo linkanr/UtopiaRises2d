@@ -1,15 +1,9 @@
-using DG.Tweening;
 using Pathfinding;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
-public class Enemy : MovingSceneObject,IDamageable
+public class Enemy : MovingSceneObject, IDamageable
 {
 
     [HideInInspector]
@@ -24,22 +18,24 @@ public class Enemy : MovingSceneObject,IDamageable
     [HideInInspector]
     public float attackTimer;
     [HideInInspector]
-
-    public SoEnemySeekSystem enemySeekSystem;
-    public SoEnemyAttackSystem enemyAttackSystem;
+    public SceneObject sceneObject { get { return this; } }
+    public NonStaticSeekSystem enemySeekSystem;
+    public SoAttackSystem enemyAttackSystem;
     public Transform currentTarget;
     [HideInInspector]
     private AIPath aIPath;
     [HideInInspector]
     private Sprite displaySprite;
-    public HealthSystem healthSystem { get { return protectedHealthsystem; } set {  } }
+    [HideInInspector]
+    public List<iDamageableTypeEnum> possibleTargetTypes;
+    public HealthSystem healthSystem { get { return protectedHealthsystem; } set { } }
 
- 
+    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.enemy; } }
 
-    public event EventHandler<OnDeathArgs> OnDeath;
+    public event EventHandler<IdamageAbleArgs> OnDeath;
 
 
-    public static Enemy Create(SoEnemyObject soEnemyInformationPackage, Vector3 pos, Quaternion rotation  )
+    public static Enemy Create(SoEnemyObject soEnemyInformationPackage, Vector3 pos, Quaternion rotation)
     {
         SceneObject newEnemyInstance = soEnemyInformationPackage.Init(pos);
         newEnemyInstance.SetStats(soEnemyInformationPackage.GetStats());
@@ -50,7 +46,7 @@ public class Enemy : MovingSceneObject,IDamageable
 
         SetAiPathSeek(soEnemyInformationPackage, newEnemyInstance.gameObject, newEnemy);
         SetSpriteRenders(soEnemyInformationPackage, newEnemyInstance.gameObject);
-        
+
         return newEnemy;
 
     }
@@ -58,21 +54,20 @@ public class Enemy : MovingSceneObject,IDamageable
     {
         base.OnDisable();
         enemySeekSystem.OnNewTarget -= SetNewTarget;
-        BattleSceneActions.OnTargetableDestroyed -= CheckIfTargetIsDead;
+        BattleSceneActions.OnDamagableDestroyed -= CheckIfTargetIsDead;
     }
-    protected override void  OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
-        BattleSceneActions.OnTargetableDestroyed += CheckIfTargetIsDead;
+        BattleSceneActions.OnDamagableDestroyed += CheckIfTargetIsDead;
     }
     protected override void Start()
     {
         base.Start();
         EnemyManager.Instance.spawnedEnemiesList.Add(this);
         lookForNewMTargetMaxTime = enemySeekSystem.lookForNewTargetTime;
-        enemySeekSystem.Seek(transform.position, enemyAttackSystem.enemyAttackType);
+        enemySeekSystem.Seek(transform.position, possibleTargetTypes);
 
-        
     }
 
     #region Enemy Setter funcitons
@@ -84,13 +79,12 @@ public class Enemy : MovingSceneObject,IDamageable
             spriteRenderer.sprite = soEnemyObj.sprite;
         }
     }
-
     private static void SetAiPathSeek(SoEnemyObject soEnemyInformationPackage, GameObject newEnemyTransform, Enemy newEnemy)
     {
         newEnemy.destinationSetter = newEnemyTransform.GetComponent<AIDestinationSetter>();
         newEnemy.aIPath = newEnemyTransform.GetComponent<AIPath>();
         newEnemy.enemyAttackSystem = Instantiate(soEnemyInformationPackage.attackSystem);
-
+        newEnemy.possibleTargetTypes = soEnemyInformationPackage.possibleTargetTypes;
         newEnemy.aIPath.endReachedDistance = newEnemy.enemyAttackSystem.maxRange * .9f;
         newEnemy.aIPath.maxSpeed = soEnemyInformationPackage.seekSystem.speed;
         newEnemy.enemySeekSystem = Instantiate(soEnemyInformationPackage.seekSystem);
@@ -111,9 +105,9 @@ public class Enemy : MovingSceneObject,IDamageable
     }
     #endregion
 
-    private void CheckIfTargetIsDead(ITargetableByEnemy target)
+    private void CheckIfTargetIsDead(IDamageable target)
     {
-        if (target==null || target.GetTransform() == null)
+        if (target == null || target.GetTransform() == null)
         {
             currentTarget = null;
         }
@@ -128,19 +122,28 @@ public class Enemy : MovingSceneObject,IDamageable
             return;
         }
 
-        
+
         DestroySceneObject();
 
-        
+
     }
     private void SetNewTarget(Transform iDamageableTransform)
     {
+        IDamageable damageable = iDamageableTransform.GetComponent<IDamageable>();
+        damageable.OnDeath += RemomveTarget;
         currentTarget = iDamageableTransform;
         destinationSetter.target = iDamageableTransform;
     }
+
+    private void RemomveTarget(object sender, IdamageAbleArgs e)
+    {
+        currentTarget=null;
+        e.damageable.OnDeath -= RemomveTarget;
+    }
+
     public Transform GetTransform()
     {
-        if (!IsDead()) 
+        if (!IsDead())
         {
             return transform;
         }
@@ -148,7 +151,7 @@ public class Enemy : MovingSceneObject,IDamageable
         {
             return null;
         }
-        
+
     }
 
     public bool IsDead()
@@ -164,7 +167,7 @@ public class Enemy : MovingSceneObject,IDamageable
         }
 
         bool hasDied = healthSystem.TakeDamage(amount);
-        if (hasDied) 
+        if (hasDied)
         {
             Die();
         }
@@ -172,9 +175,9 @@ public class Enemy : MovingSceneObject,IDamageable
     protected override void OnObjectDestroyed()
     {
         isDead = true;
-        OnDeath?.Invoke(this, new OnDeathArgs { damageable = this });
+        OnDeath?.Invoke(this, new IdamageAbleArgs { damageable = this });
         EnemyManager.Instance.spawnedEnemiesList.Remove(this);
-        
+
         Destroy(gameObject);
     }
 
@@ -195,9 +198,8 @@ public class Enemy : MovingSceneObject,IDamageable
         return false;
     }
 
-
-
-
-
-
+    public void OnCreated()
+    {
+        BattleSceneActions.OnDamagableCreated(this);
+    }
 }

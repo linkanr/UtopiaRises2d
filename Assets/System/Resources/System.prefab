@@ -107,7 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   states:
   - {fileID: 11400000, guid: 13255001ded96034889072ce833279a8, type: 2}
-  - {fileID: 11400000, guid: e8cce8bafd9bb0142b749b2af135cbfa, type: 2}
+  - {fileID: 11400000, guid: 6272955359edd7e459384d6233194a41, type: 2}
+  - {fileID: 11400000, guid: bed655284d0044b4a9aa9d06cdb5d35b, type: 2}
+  - {fileID: 11400000, guid: 931baf673c06f6149a75f5f06c3016a5, type: 2}
   instanciatedStates: []
   activeState: {fileID: 0}
 --- !u!1 &3383810039785074784

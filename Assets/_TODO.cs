@@ -11,4 +11,5 @@ using UnityEngine;
 // ADD GLOBAL STATE MACHINE - added basics
 // ADD A MANAGER FOR GLOBAL RESOURCES - Kind of started
 // DIALOG BOXES
+- Add enemy base and make offensive moves possible
 */

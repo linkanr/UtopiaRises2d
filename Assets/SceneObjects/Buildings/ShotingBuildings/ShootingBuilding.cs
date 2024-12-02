@@ -69,7 +69,7 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
         
     }
 
-    private void RemoveTarget(object sender, OnDeathArgs e)
+    private void RemoveTarget(object sender, IdamageAbleArgs e)
     {
         
         if (target == e.damageable)
@@ -85,7 +85,9 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
 
 
     public TimeStruct getBirthLifeSpan()
+
     {
+        Debug.Log(stats.ToString());
         return TimeCalc.TimeToTimeStruct(stats.GetFloat(StatsInfoTypeEnum.lifeTime));
     }
 
@@ -103,7 +105,12 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
 
     public void OnLifeUp()
     {
-        DestroySceneObject();
+        if (!isDead)
+        {
+            isDead = true;
+            DestroySceneObject();
+        }
+        
     }
 
  
@@ -112,10 +119,12 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
 
 
 }
-public enum LookForEnemyType
+public enum TargetPriorityEnum
 {
     closest,
     mostHelth,
     furthest,
-    leastHealth
+    leastHealth,
+    enemyBase,
+    notRelevant
 }

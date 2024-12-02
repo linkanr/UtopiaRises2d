@@ -13,7 +13,7 @@ public class StartScreenHandler : MonoBehaviour
 
     private void StartGame()
     {
-        GlobalActions.StartGame();
+        GlobalActions.OnClickStartGame();
     }
 
     // Update is called once per frame

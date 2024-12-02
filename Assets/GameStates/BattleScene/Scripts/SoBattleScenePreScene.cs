@@ -7,20 +7,21 @@ public class SoBattleScenePreScene : BaseState<BattleSceneStateMachine>
 {
     public override void OnStateEnter()
     {
-        BattleSceneActions.OnPreSceneDone += MoveOn;
-        BattleSceneActions.OnPreSceneInit();
-
-
-    }
-
-    private void MoveOn()
-    {
+      
+        CardManager.Instance.GetStartingCards();
+        BattleSceneActions.setInfluence(3);
         stateMachine.SetState(typeof(SoBattleSceneStateSceneStarting));
+
+
+
     }
 
+
+
+ 
     public override void OnStateExit()
     {
-        BattleSceneActions.OnPreSceneDone -= MoveOn;
+     
 
     }
 

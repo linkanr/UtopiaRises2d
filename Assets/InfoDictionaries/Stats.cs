@@ -47,9 +47,9 @@ public class Stats
     {
         return statsInfoDic.GetValue<Transform>(statsInfoTypeEnum);
     }
-    public LookForEnemyType GetLookForEnemyType()
+    public TargetPriorityEnum GetLookForEnemyType()
     {
-        return statsInfoDic.GetValue<LookForEnemyType>(StatsInfoTypeEnum.lookForEnemyType);
+        return statsInfoDic.GetValue<TargetPriorityEnum>(StatsInfoTypeEnum.targetableType);
     }
 }
 
@@ -64,12 +64,14 @@ public enum StatsInfoTypeEnum
     damageAmount,
     fireEffect,
     maxShotingDistance,
-    lookForEnemyType,
+    targetableType,
     health,
     objectToFollow,
     SoEnemyAttackSystem,
     SoEnemySeekSystem,
-    SoDamageEffect
+    SoDamageEffect,
+    IdamageableTypeTarget
+
 
 }
 public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>

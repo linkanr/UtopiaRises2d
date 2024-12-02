@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAssetsManager : MonoBehaviour
+public class SceneObjectManager : MonoBehaviour
 
 {
-    public static PlayerAssetsManager Instance;
+    public static SceneObjectManager Instance;
     public List<Transform> followerList;
     public int influence  {get; private set;}
-    public List<ITargetableByEnemy> iTargetableByEnememiesList; // All idamageable should add themself to this list
+    public List<IDamageable> iDamagablesInScene; // All idamageable should add themself to this list
     private void Awake()
     {
         if (Instance == null)
@@ -21,14 +21,13 @@ public class PlayerAssetsManager : MonoBehaviour
             Debug.LogError("dubble manager");
         }
         followerList = new List<Transform>();
-        iTargetableByEnememiesList = new List<ITargetableByEnemy> ();
+        iDamagablesInScene = new List<IDamageable> ();
     }
     private void OnEnable()
     {//Refactor into a OnSceneObjectCreated
-        BattleSceneActions.OnTargetableDestroyed += RemoveTargable; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnTargetableCreated += AddTargetableToList; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnFollowerCreated += AddFollowerToList; //Triggered by follower adds to list
-        BattleSceneActions.OnFollowerDestroyed += RemoveFollowerFromList; // remove follower from list
+        BattleSceneActions.OnDamagableDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
+        BattleSceneActions.OnDamagableCreated += HandleDamagableCreated; // triggers every time someone with ITargatableByEnemy is created
+ 
         BattleSceneActions.setInfluence += SetInfluence; // SET influence each turn Triggered by statemachine 
 
     }
@@ -36,10 +35,9 @@ public class PlayerAssetsManager : MonoBehaviour
 
     private void OnDisable()
     {
-        BattleSceneActions.OnTargetableDestroyed -= RemoveTargable;
-        BattleSceneActions.OnTargetableCreated -= AddTargetableToList;
-        BattleSceneActions.OnFollowerCreated -= AddFollowerToList;
-         BattleSceneActions.OnFollowerDestroyed += RemoveFollowerFromList;
+        BattleSceneActions.OnDamagableDestroyed -= HandleDamagableDestroyed;
+        BattleSceneActions.OnDamagableCreated -= HandleDamagableCreated;
+
         BattleSceneActions.setInfluence -= SetInfluence;
     }
     private void SetInfluence(int obj)
@@ -64,14 +62,22 @@ public class PlayerAssetsManager : MonoBehaviour
         BattleSceneActions.OnFollowerCountChanged(followerList.Count);
     }
 
-    private void AddTargetableToList(ITargetableByEnemy target)
+    private void HandleDamagableCreated(IDamageable target)
     {
+        if(target.damageableType == iDamageableTypeEnum.follower)
+        {
+            AddFollowerToList(target.GetTransform());
+        }
         Debug.Log("target added" + target.ToString());
-        iTargetableByEnememiesList.Add( target );
+        iDamagablesInScene.Add( target );
         
     }
-    private void RemoveTargable(ITargetableByEnemy target)
+    private void HandleDamagableDestroyed(IDamageable target)
     {
-        iTargetableByEnememiesList.Remove(target);
+        if (target.damageableType == iDamageableTypeEnum.follower)
+        {
+            RemoveFollowerFromList(target.GetTransform());
+        }
+        iDamagablesInScene.Remove(target);
     }
 }

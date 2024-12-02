@@ -139,8 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80be8468cfa544a4a9c77a73ac6bd93c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneObjectName: Follower
-  sceneObjectDescription: They follow you blindly
   c2D: {fileID: 0}
 --- !u!61 &3697971156322016380
 BoxCollider2D:

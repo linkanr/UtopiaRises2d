@@ -18,7 +18,7 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
     {
         if (stateMachine.enemy.currentTarget != null)
         {
-  
+            
             stateMachine.enemy.attackTimer += Time.deltaTime;
             if (stateMachine.enemy.attackTimer > stateMachine.enemy.enemyAttackSystem.attackTimerMax)
             {

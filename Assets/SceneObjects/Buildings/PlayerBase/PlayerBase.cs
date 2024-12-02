@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBase : MonoBehaviour, IDamageable, ITargetableByEnemy
+public class PlayerBase : StaticSceneObject, IDamageable
 
 {
 
@@ -11,12 +11,18 @@ public class PlayerBase : MonoBehaviour, IDamageable, ITargetableByEnemy
 
     public HealthSystem healthSystem { get { return protectedHealthsystem; } }
 
-    public event EventHandler<OnDeathArgs> OnDeath;
+    public event EventHandler<IdamageAbleArgs> OnDeath;
 
-    private void Start()
+
+    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerBase; } }
+    public SceneObject sceneObject { get { return this; } }
+    protected override void Start()
     {
-       OnTargetableByEnemyCreated();
+       base.Start();
+       OnCreated();
     }
+
+
     public void SetHealthSystem(HealthSystem healthSystem)
     {
         protectedHealthsystem = healthSystem as BasicHealthSystem;
@@ -37,7 +43,8 @@ public class PlayerBase : MonoBehaviour, IDamageable, ITargetableByEnemy
 
     public void Die()
     {
-        OnTargetableByEnemyDestroyed();
+        OnObjectDestroyed();
+        BattleSceneActions.OnDamagableDestroyed(this);
     }
 
     public bool IsDead()
@@ -48,19 +55,14 @@ public class PlayerBase : MonoBehaviour, IDamageable, ITargetableByEnemy
         }
        return false;    
     }
-
-    public void OnTargetableByEnemyDestroyed()
+    protected override void OnObjectDestroyed()
     {
-        BattleSceneActions.OnTargetableDestroyed(this);
+        
     }
 
-    public void OnTargetableByEnemyCreated()
+    public void OnCreated()
     {
-        BattleSceneActions.OnTargetableCreated(this);
-    }
-
-    public TargetableAttacksEnums TargatebleEnum()
-    {
-        return TargetableAttacksEnums.Base;
+  
+        BattleSceneActions.OnDamagableCreated(this);
     }
 }

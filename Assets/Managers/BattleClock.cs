@@ -53,7 +53,7 @@ public class BattleClock: MonoBehaviour
             if (timerPing >= timerPingMax)
             {
                 //Debug.Log("time ping");
-                BattleSceneActions.GlobalTimeChanged(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
+                BattleSceneActions.GlobalTimeChanged?.Invoke(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
                 timerPing = 0f;
 
             }

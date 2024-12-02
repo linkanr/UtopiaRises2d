@@ -8,18 +8,21 @@ using UnityEngine.Diagnostics;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform prefab;
+
     public List<EnemyWave> enemyWaves;
+    public SoEnemyBase soEnemyBase;
     public Transform SpawnPos;
     private float timer;
     private float timerMax = .45f;
 
     private float actualTimer;
     public bool spawn = false;
-
+    EnemyEnumToGO enemyEnumToGameObjectList;
     private void Start()
     {
+        enemyEnumToGameObjectList = Resources.Load("EnemyGo") as EnemyEnumToGO;
         actualTimer = timerMax;
+        
     }
 
     // Update is called once per frame
@@ -29,8 +32,8 @@ public class EnemySpawner : MonoBehaviour
             timer += Time.deltaTime;
             if (timer > actualTimer)
             {
-                EnemyEnumToGO gi = Resources.Load("EnemyGo") as EnemyEnumToGO ;
-                SoEnemyObject soEnemyObject = Instantiate( gi.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
+                
+                SoEnemyObject soEnemyObject = Instantiate( enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
                 Enemy.Create(soEnemyObject, SpawnPos.position + WorldSpaceUtils.GetRandomDirection() * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f), Quaternion.identity);
 
                 timer = 0;

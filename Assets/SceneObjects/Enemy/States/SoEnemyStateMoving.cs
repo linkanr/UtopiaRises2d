@@ -37,7 +37,7 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
         stateMachine.enemy.lookForNewTargetTime += Time.deltaTime;
         if (stateMachine.enemy.lookForNewTargetTime > stateMachine.enemy.lookForNewMTargetMaxTime)
         {
-            stateMachine.enemy.enemySeekSystem.Seek(stateMachine.enemy.transform.position, stateMachine.enemy.enemyAttackSystem.enemyAttackType);
+            stateMachine.enemy.enemySeekSystem.Seek(stateMachine.enemy.transform.position, stateMachine.enemy.possibleTargetTypes);
             stateMachine.enemy.lookForNewTargetTime = 0;
         }
     }

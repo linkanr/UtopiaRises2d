@@ -36,14 +36,14 @@ public class SpriteChangeByDamage : MonoBehaviour
 
     }
 
-    private void OnDeathTrigger(object sender, OnDeathArgs e)
+    private void OnDeathTrigger(object sender, IdamageAbleArgs e)
     {
         transform.SetParent(null);
         GetComponent<SpriteRenderer>().enabled = true;
         shaderFader.isFaded = true;
     }
 
-    private void RemoveGameObject(object sender, OnDeathArgs e) // This triggers for normal effects when dying
+    private void RemoveGameObject(object sender, IdamageAbleArgs e) // This triggers for normal effects when dying
     {
         GetComponent<SpriteRenderer>().enabled = false;
     }

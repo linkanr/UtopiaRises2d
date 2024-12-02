@@ -32,6 +32,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     }
     /// <summary>
     /// This is called after stats are added to the sceneobject. Use this to specific initialization
+    /// The scene object is the one that is beeing instaticated so attach info to ir
     /// </summary>
     /// <param name="sceneObject"></param>
     protected abstract void ObjectInitialization(SceneObject sceneObject);

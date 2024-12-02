@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +7,7 @@ public class SoBattleScene : BaseState<GameStateMachine>
 {
     public override void OnStateEnter()
     {
-        SceneManager.LoadScene("BattleScene");
+        GlobalActions.OnBattleSceneLoaded();
     }
 
     public override void OnStateExit()
@@ -18,4 +19,6 @@ public class SoBattleScene : BaseState<GameStateMachine>
     {
         // DO nothing
     }
+
+
 }

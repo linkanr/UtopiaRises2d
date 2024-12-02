@@ -29,3 +29,4 @@ MonoBehaviour:
   seekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
   sprite: {fileID: 21300000, guid: d35a8a3bea72a8641a6a702cceda5b42, type: 3}
   damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
+  possibleTargetTypes: 04000000

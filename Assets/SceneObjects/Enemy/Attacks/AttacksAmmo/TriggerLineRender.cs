@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using System;
 using UnityEngine.Diagnostics;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof(LineRenderer))]
 public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
@@ -20,14 +21,20 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
 
 
 
-    public void Trigger(Enemy enemy, IDamageable idamageableByEnememy)
+    public void Trigger(Enemy enemy, Transform idamageableByEnememy)
     {
+        if (idamageableByEnememy== null)
+        {
+            Debug.LogWarning("trying to attack non existisng building " + enemy.GetStats().GetString(StatsInfoTypeEnum.name));
+            SetInactive();
+            return;
+        }
         lineRenderer = GetComponent<LineRenderer>();
         triggerd = true;
         timer = 0f;
         
         start = enemy.transform.position;
-        end = idamageableByEnememy.GetTransform().position;
+        end = idamageableByEnememy.position;
         float dist = Vector3.Distance(start, end);
         float multi = GeneralUtils.fit(dist, .5f, 10f, .3f, 1f);
         timerMax *= multi;
@@ -40,7 +47,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         DOTween.To(() => currentEnd, x => currentEnd = x,end, timerMax/2f);
 
         lineRenderer.SetPosition(0, enemy.transform.position);
-        lineRenderer.SetPosition(1, idamageableByEnememy.GetTransform().position);
+        lineRenderer.SetPosition(1, idamageableByEnememy.position);
 
     }
     private void Update()

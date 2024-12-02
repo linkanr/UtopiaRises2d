@@ -31,3 +31,4 @@ MonoBehaviour:
   fireEffect: {fileID: 4678084455662318589, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}
   maxShotingDistance: 10
   lookForEnemyType: 0
+  possibleTargetTypes: 0300000002000000

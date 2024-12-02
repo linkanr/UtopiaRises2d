@@ -19,4 +19,4 @@ MonoBehaviour:
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   cardType: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 11400000, guid: 60afa40d0a23e5248b7ba79dcda1ac49, type: 2}

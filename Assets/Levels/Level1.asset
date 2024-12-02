@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6080daa584809304c85058507c24c591, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
+  SoEnemyBase: {fileID: 11400000, guid: 10eae2d0cfc9781479233a5e3d3baf1d, type: 2}
+  basePosition: {x: 25, y: 45, z: 0}
   enemyWaveList:
   - enemyList: 0000000000000000010000000000000002000000
     timer: 3

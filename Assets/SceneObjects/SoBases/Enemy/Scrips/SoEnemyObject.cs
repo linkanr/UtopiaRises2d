@@ -1,15 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/EnemyTypes/SoEnemyType")]
 [System.Serializable]
 public class SoEnemyObject:SoSceneObjectBase
 
 {
     public int health;
-    public SoEnemyAttackSystem attackSystem;
-    public SoEnemySeekSystem seekSystem;
+    public SoAttackSystem attackSystem;
+    public NonStaticSeekSystem seekSystem;
     public Sprite sprite;   
     public SoDamageEffect damageEffect;
-
+    public List<iDamageableTypeEnum> possibleTargetTypes;
     protected override Stats GetStatsInernal(Stats _statsInforDic)
     {
         _statsInforDic.Add(StatsInfoTypeEnum.health, health);
@@ -19,7 +20,7 @@ public class SoEnemyObject:SoSceneObjectBase
         _statsInforDic.Add(StatsInfoTypeEnum.SoDamageEffect, damageEffect);
         _statsInforDic.Add(StatsInfoTypeEnum.damageAmount, attackSystem.damage);
         _statsInforDic.Add(StatsInfoTypeEnum.maxShotingDistance,attackSystem.maxRange);
-
+        _statsInforDic.Add(StatsInfoTypeEnum.targetableType, possibleTargetTypes);
 
 
 

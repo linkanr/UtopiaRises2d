@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public static class GlobalActions
 {
@@ -9,8 +6,11 @@ public static class GlobalActions
     public static Action Dead;
     public static Action<int> OnLifeChange;
     public static Action<int> OnMoneyChange;
-    public static Action<ToolTipArgs>  Tooltip;
-    public static Action StartGame;
+    public static Action<ToolTipArgs> Tooltip;
+    public static Action OnClickStartGame;
+    public static Action OnPostBattle;
+    public static Action OnBattleSceneLoaded; 
+    public static Action BattleSceneCompleted; //triggers when All enemies are dead 
 }
 
 public class ToolTipArgs

@@ -18,7 +18,7 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
         if (stateMachine.enemy.currentTarget == null)
         {
             
-            stateMachine.enemy.enemySeekSystem.Seek(stateMachine.enemy.GetTransform().position,stateMachine.enemy.enemyAttackSystem.enemyAttackType);
+            stateMachine.enemy.enemySeekSystem.Seek(stateMachine.enemy.GetTransform().position,stateMachine.enemy.possibleTargetTypes);
 
         }
         else

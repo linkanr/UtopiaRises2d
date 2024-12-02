@@ -9,17 +9,13 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
         BattleSceneActions.OnPause(false);
         GameSceneRef.instance.panel.gameObject.SetActive(false);
         EnemyManager.Instance.SetSpawning(true);
-        BattleSceneActions.OnAllEnemiesSpawned += AllEnemiesSpawned;
+
     }
 
-    private void AllEnemiesSpawned()
-    {
-        stateMachine.SetState(typeof(SoBattleSceneStateSpawningDone));
-    }
 
     public override void OnStateExit()
     {
-        BattleSceneActions.OnAllEnemiesSpawned -= AllEnemiesSpawned;
+       
     }
 
     public override void OnStateUpdate()

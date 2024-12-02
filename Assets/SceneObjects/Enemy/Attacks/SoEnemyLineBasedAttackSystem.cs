@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Attacks/Enemy/BasicAttack")]
-public class SoEnemyLineBasedAttackSystem : SoEnemyAttackSystem
+public class SoEnemyLineBasedAttackSystem : SoAttackSystem
 
 {
      
@@ -10,7 +10,7 @@ public class SoEnemyLineBasedAttackSystem : SoEnemyAttackSystem
         
         idamageable.TakeDamage(damage);
         Transform ammo = Instantiate(prefabForAmmo, enemy.transform);
-        ammo.GetComponent<IIsAttackInstanciator>().Trigger(enemy,idamageable);
+        ammo.GetComponent<IIsAttackInstanciator>().Trigger(enemy,idamageable.GetTransform());
         
     }
 }

@@ -6,14 +6,34 @@ using UnityEngine;
 public abstract class Building:StaticSceneObject,IDamageable
 {
     private HealthSystem Healthsystem;
-    private bool isDead = false;
+    protected bool isDead = false;
 
     public HealthSystem healthSystem { get { return Healthsystem; } }
 
-    public event EventHandler<OnDeathArgs> OnDeath;
+    public event EventHandler<IdamageAbleArgs> OnDeath;
 
 
-    
+    public SceneObject sceneObject { get { return this; } }
+
+    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerbuilding; } }
+
+
+    protected virtual void Awake()
+    {
+        
+        Healthsystem = GetComponent<BasicHealthSystem>();
+    }
+    protected override void Start()
+    {
+        base.Start();
+        OnCreated();
+    }
+
+    public void OnCreated()
+    {
+        BattleSceneActions.OnDamagableCreated(this);
+    }
+
 
 
     public void Die()
@@ -29,6 +49,10 @@ public abstract class Building:StaticSceneObject,IDamageable
 
     public Transform GetTransform()
     {
+        if (isDead)
+        {
+            return null;
+        }
         return transform;
     }
 
@@ -58,15 +82,10 @@ public abstract class Building:StaticSceneObject,IDamageable
     protected override void OnObjectDestroyed()
     {
         isDead = true;
-        OnDeath?.Invoke(this, new OnDeathArgs { damageable = this });
+        OnDeath?.Invoke(this, new IdamageAbleArgs { damageable = this });
+        BattleSceneActions.OnDamagableDestroyed(this);
         Destroy(gameObject);
     }
 
-
-    protected virtual void Awake()
-    {
-        
-        Healthsystem = GetComponent<BasicHealthSystem>();
-    }
 
 }
