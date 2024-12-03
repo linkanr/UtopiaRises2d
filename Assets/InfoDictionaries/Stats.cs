@@ -51,6 +51,15 @@ public class Stats
     {
         return statsInfoDic.GetValue<TargetPriorityEnum>(StatsInfoTypeEnum.targetableType);
     }
+    public float GetReloadTime()
+    {
+        return statsInfoDic.GetValue<SoAttackSystem>(StatsInfoTypeEnum.SoEnemyAttackSystem).attackTimerMax;
+    }
+    public float GetMaxShotingDistance()
+    {
+        return statsInfoDic.GetValue<SoAttackSystem>(StatsInfoTypeEnum.SoEnemyAttackSystem).maxRange;
+    }
+
 }
 
 public enum StatsInfoTypeEnum

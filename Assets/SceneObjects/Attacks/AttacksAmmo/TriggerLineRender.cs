@@ -21,7 +21,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
 
 
 
-    public void Trigger(Enemy enemy, Transform idamageableByEnememy)
+    public void Trigger(SceneObject enemy, IDamageable idamageableByEnememy)
     {
         if (idamageableByEnememy== null)
         {
@@ -34,7 +34,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         timer = 0f;
         
         start = enemy.transform.position;
-        end = idamageableByEnememy.position;
+        end = idamageableByEnememy.GetTransform().position;
         float dist = Vector3.Distance(start, end);
         float multi = GeneralUtils.fit(dist, .5f, 10f, .3f, 1f);
         timerMax *= multi;
@@ -47,7 +47,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         DOTween.To(() => currentEnd, x => currentEnd = x,end, timerMax/2f);
 
         lineRenderer.SetPosition(0, enemy.transform.position);
-        lineRenderer.SetPosition(1, idamageableByEnememy.position);
+        lineRenderer.SetPosition(1, idamageableByEnememy.GetTransform().position);
 
     }
     private void Update()

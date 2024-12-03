@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IIsAttackInstanciator 
 {
-    public void Trigger(Enemy enemy, Transform idamageableByEnememy);
+    public void Trigger(SceneObject attacker, IDamageable idamageableByEnememy);
+
 }

@@ -18,8 +18,8 @@ public class SoEnemyObject:SoSceneObjectBase
         _statsInforDic.Add(StatsInfoTypeEnum.SoEnemySeekSystem, seekSystem);
         _statsInforDic.Add(StatsInfoTypeEnum.sprite, sprite);
         _statsInforDic.Add(StatsInfoTypeEnum.SoDamageEffect, damageEffect);
-        _statsInforDic.Add(StatsInfoTypeEnum.damageAmount, attackSystem.damage);
-        _statsInforDic.Add(StatsInfoTypeEnum.maxShotingDistance,attackSystem.maxRange);
+
+
         _statsInforDic.Add(StatsInfoTypeEnum.targetableType, possibleTargetTypes);
 
 

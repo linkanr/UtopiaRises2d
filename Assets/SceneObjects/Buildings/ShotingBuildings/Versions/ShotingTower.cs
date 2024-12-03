@@ -15,7 +15,7 @@ public class ShotingTower : ShootingBuilding
             
             if (targetTransform != null) 
             {
-
+                // IF IT HAS A TARGET THEN LOOK AT THAT
                 Vector3 relativePos = targetTransform.position - stats.GetTransform(StatsInfoTypeEnum.objectToFollow).position;
                 float angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.AngleAxis(angle, Vector3.forward),Time.deltaTime*10f);

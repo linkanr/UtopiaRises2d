@@ -26,20 +26,17 @@ public class OnClickObject : MonoBehaviour
         {
             switch (kvp.Key)
             {
-                case StatsInfoTypeEnum.maxShotingDistance:
-                    float size = (float)kvp.Value*2f;
-                    CircleReach.localScale = new Vector3(size, size, size);
+                case StatsInfoTypeEnum.SoEnemyAttackSystem:
+                    HandleAttackSystem(kvp);
 
                     break;
 
 
-
-                case StatsInfoTypeEnum.damageAmount:
                 case StatsInfoTypeEnum.description:
                 case StatsInfoTypeEnum.name:
                 case StatsInfoTypeEnum.faction:
                 case StatsInfoTypeEnum.health:
-                case StatsInfoTypeEnum.reloadTime:
+
 
                     GenerateStrings(kvp);
                     break;
@@ -49,6 +46,21 @@ public class OnClickObject : MonoBehaviour
 
 
         }
+    }
+
+    private void HandleAttackSystem(KeyValuePair<StatsInfoTypeEnum, object> kvp)
+    {
+        SoAttackSystem attackSystem = kvp.Value as SoAttackSystem;
+        float size = attackSystem.maxRange * 2f;
+        CircleReach.localScale = new Vector3(size, size, size);
+        TextMeshProUGUI damageText = Instantiate(simpleText, leftPanel);
+        TextMeshProUGUI damagenumber = Instantiate(simpleText, rightPanel);
+        TextMeshProUGUI timeAttacktext = Instantiate(simpleText, leftPanel);
+        TextMeshProUGUI timeAttacknumber = Instantiate(simpleText, rightPanel);
+        damageText.text = "damage";
+        timeAttacktext.text = "reload time";
+        damagenumber.text = attackSystem.damage.ToString();
+        timeAttacknumber.text = attackSystem.attackTimerMax.ToString();
     }
 
     private void GenerateStrings(KeyValuePair<StatsInfoTypeEnum, object> kvp)

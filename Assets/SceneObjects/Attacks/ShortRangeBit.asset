@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b4e59850119b3c42b36a3847a2cbe1b, type: 3}
-  m_Name: short range
+  m_Script: {fileID: 11500000, guid: f08ec4bd53251b844a41bc7a6cf058fd, type: 3}
+  m_Name: ShortRangeBit
   m_EditorClassIdentifier: 
-  prefabForAmmo: {fileID: 3993828737338479866, guid: cdfebe599a78a304d912f378fdc548e5, type: 3}
+  prefabForAmmo: {fileID: 0}
   maxRange: 2
-  damage: 2
-  attackTimerMax: 1
-  enemyAttackType: 0
+  damage: 5
+  attackTimerMax: 2
+  visualEffect: {fileID: 4678084455662318589, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}

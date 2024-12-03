@@ -7,7 +7,7 @@ using UnityEngine.VFX;
 /// <summary>
 /// Based on buidling but add functionality with the shoting building state machince and IcanShot interface
 /// </summary>
-public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
+public class ShootingBuilding : Building, IHasLifeSpan
 {
     
     public float timer;
@@ -22,7 +22,7 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
     public Transform targetsTransform;
     public ShotingBuildingStateMachine stateMachine;
     private TimeLimterSceneObject timeLimiter;
-
+    public SoAttackSystem soAttackSystem;
 
 
     protected override void Start()
@@ -44,11 +44,10 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
 
 
         }
-        if (target != null && timer > stats.GetValue<float>(StatsInfoTypeEnum.reloadTime))
+        if (target != null && timer > stats.GetReloadTime())
         {
             //Debug.Log("fire");
-            stats.GetValue<VisualEffect>(StatsInfoTypeEnum.fireEffect).Play();
-            target.TakeDamage(stats.GetValue<int>(StatsInfoTypeEnum.damageAmount));
+            soAttackSystem.Attack(this, target);
             
             timer = 0f;
         }
@@ -56,7 +55,7 @@ public class ShootingBuilding : Building, ICanShoot, IHasLifeSpan
 
     public bool LookForTarget()// calls the manager and check the looker class uses the type to get the corret info
     {
-       IDamageable newTarget = EnemyManager.Instance.looker.LookForTarget(stats.GetLookForEnemyType(), shotingPos.position, stats.GetFloat(StatsInfoTypeEnum.maxShotingDistance));
+       IDamageable newTarget = EnemyManager.Instance.looker.LookForTarget(stats.GetLookForEnemyType(), shotingPos.position, stats.GetMaxShotingDistance());
         if (newTarget != null) 
         {
             

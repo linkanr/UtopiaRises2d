@@ -26,9 +26,6 @@ MonoBehaviour:
   prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
   lifeTime: 50
   sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
-  reloadTimerMax: 10
-  damageAmount: 20
-  fireEffect: {fileID: 4678084455662318589, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}
-  maxShotingDistance: 30
+  attackSystem: {fileID: 11400000, guid: de283dee2ed1f864fbdca78e96391a3b, type: 2}
   lookForEnemyType: 1
   possibleTargetTypes: 0200000003000000

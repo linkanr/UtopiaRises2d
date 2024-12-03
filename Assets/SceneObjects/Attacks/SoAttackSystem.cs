@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.VFX;
 
 public class SoAttackSystem:ScriptableObject
 {
@@ -6,8 +7,9 @@ public class SoAttackSystem:ScriptableObject
     public float maxRange;
     public int damage;
     public int attackTimerMax;
+    public VisualEffect visualEffect;
 
-    public virtual void Attack(Enemy enemy, IDamageable idamageableByEnememy)
+    public virtual void Attack(SceneObject attacker, IDamageable defender)
     {
 
     }
