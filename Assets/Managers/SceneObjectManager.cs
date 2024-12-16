@@ -8,6 +8,7 @@ public class SceneObjectManager : MonoBehaviour
 {
     public static SceneObjectManager Instance;
     public List<Transform> followerList;
+    public IdamagableGetter sceneObjectGetter;
     public int influence  {get; private set;}
     public List<IDamageable> iDamagablesInScene; // All idamageable should add themself to this list
     private void Awake()
@@ -22,6 +23,7 @@ public class SceneObjectManager : MonoBehaviour
         }
         followerList = new List<Transform>();
         iDamagablesInScene = new List<IDamageable> ();
+        sceneObjectGetter = new IdamagableGetter(this);
     }
     private void OnEnable()
     {//Refactor into a OnSceneObjectCreated
@@ -40,6 +42,7 @@ public class SceneObjectManager : MonoBehaviour
 
         BattleSceneActions.setInfluence -= SetInfluence;
     }
+    //Influece should be moved to a player asset manager
     private void SetInfluence(int obj)
     {
         influence =obj;

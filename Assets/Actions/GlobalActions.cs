@@ -2,7 +2,7 @@ using System;
 
 public static class GlobalActions
 {
-    public static Action<int> TakeDamage;
+
     public static Action Dead;
     public static Action<int> OnLifeChange;
     public static Action<int> OnMoneyChange;

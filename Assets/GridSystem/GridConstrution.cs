@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 [System.Serializable]
@@ -56,6 +57,27 @@ public class GridConstrution
     public Vector3 GetWorldPostion(int x, int y)
     {
         return new Vector3(x,y, 0f) * cellSize + new Vector3(offset.x,offset.y,offset.z);
+    }
+
+    public Vector3 GetCellPositionByPosition(Vector3 _position)
+    {
+        if (GetCellByWorldPostion(_position) == null)
+        {
+            return Vector3.zero;
+        }
+        return GetWorldPostion(GetCellByWorldPostion(_position).x,GetCellByWorldPostion(_position).y);
+    }
+    public Vector3 GetCurrentCellPostionByMouse()
+    {
+        return GetCellPositionByPosition(WorldSpaceUtils.GetMouseWorldPosition());
+    }
+    public Cell GetCurrecntCellByMouse()
+    {
+        if (GetCellByWorldPostion(WorldSpaceUtils.GetMouseWorldPosition()) == null)
+        {
+            return null;
+        }
+        return GetCellByWorldPostion(WorldSpaceUtils.GetMouseWorldPosition());
     }
     public Cell GetCellByWorldPostion(Vector3 position)
     {

@@ -25,7 +25,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
         {
             if (DebuggerGlobal.instance.drawTargetLines)
             {
-                DebuggerGlobal.instance.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.target.GetTransform().position);
+                DebuggerGlobal.instance.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.target.transform.position);
             }
            
            // Debug.Log("not null" + stateMachine.shootingBuilding.target.ToString());

@@ -6,10 +6,10 @@ public class SoVisualEffectAttack : SoAttackSystem
 
 {
 
-	public override void Attack(SceneObject attacker, IDamageable idamageable)
+	public override void Attack(ICanAttack attacker, Target idamageable)
 	{
 
-		idamageable.TakeDamage(damage);
+		idamageable.damagable.TakeDamage(damage);
 		visualEffect.Play();
 
 	}

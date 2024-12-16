@@ -9,7 +9,7 @@ public abstract class NonStaticSeekSystem:ScriptableObject, Iseeker
     public float speed;
     
     public float lookForNewTargetTime;
-    public Action<Transform> OnNewTarget;
+    public Action<IDamageable> OnNewTarget;
     public Action OnReachedTarget;
 
  

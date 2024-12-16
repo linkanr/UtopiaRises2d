@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7534513178700637068}
   - component: {fileID: 3697971156322016380}
   - component: {fileID: -1284018133663689401}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: FollowerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c2D: {fileID: 0}
+  rB2D: {fileID: 0}
 --- !u!61 &3697971156322016380
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -212,7 +213,7 @@ GameObject:
   - component: {fileID: 6801960218655746167}
   - component: {fileID: 6187387581304950136}
   - component: {fileID: 7106167868309369330}
-  m_Layer: 12
+  m_Layer: 14
   m_Name: DeathSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +382,7 @@ GameObject:
   - component: {fileID: 3532184633554545536}
   - component: {fileID: 3908769779722658192}
   - component: {fileID: 7502979552322678894}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

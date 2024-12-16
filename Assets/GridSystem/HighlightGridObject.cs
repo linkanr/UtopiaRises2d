@@ -74,9 +74,8 @@ public class HighlightGridObject : MonoBehaviour
         if (IsSelected)
         {
             //Debug.Log("Triggered");
-            Vector3 pos = WorldSpaceUtils.GetMouseWorldPosition();
-            //Debug.Log(pos);
-            Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPostion(pos);
+
+            Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
             if (cell != null)
                 SetHightligt(cell);
         }

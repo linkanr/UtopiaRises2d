@@ -5,12 +5,13 @@ public class SoLineBasedAttackSystem : SoAttackSystem
 
 {
      
-    public override void Attack(SceneObject attacker, IDamageable defender)
+    public override void Attack(ICanAttack attacker, Target defender)
     {
-        
-        defender.TakeDamage(damage);
-        Transform ammo = Instantiate(prefabForAmmo, attacker.transform);
+
+        Debug.Log("attacking attacker is " + attacker.attacker.GetStats().GetString(StatsInfoTypeEnum.name) + "defender is " + defender.transform.gameObject.GetComponent<SceneObject>().GetStats().GetString(StatsInfoTypeEnum.name));
+        Transform ammo = Instantiate(prefabForAmmo, attacker.attacker.transform);
         ammo.GetComponent<IIsAttackInstanciator>().Trigger(attacker,defender);
-        
+        defender.damagable.TakeDamage(damage);
+
     }
 }

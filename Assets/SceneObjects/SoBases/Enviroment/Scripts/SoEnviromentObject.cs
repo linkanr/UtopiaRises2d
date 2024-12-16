@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[CreateAssetMenu(menuName = "ScriptableObjects/EnviromentTypes/SoEnviroment")]
 public class SoEnviromentObject : SoSceneObjectBase
 {
   

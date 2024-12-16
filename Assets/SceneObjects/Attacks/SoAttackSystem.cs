@@ -9,7 +9,7 @@ public class SoAttackSystem:ScriptableObject
     public int attackTimerMax;
     public VisualEffect visualEffect;
 
-    public virtual void Attack(SceneObject attacker, IDamageable defender)
+    public virtual void Attack(ICanAttack attacker, Target defender)
     {
 
     }

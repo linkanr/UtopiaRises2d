@@ -84,6 +84,13 @@ public class Card:MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPoi
 
         if (cardState != CardStateEnum.lockedForSelection && cardState != CardStateEnum.resetting)//if free card then lock
         {
+            if (cardBase is IHasClickEffect)
+            {
+                IHasClickEffect effect = cardBase as IHasClickEffect;
+                MouseDisplayManager.OnRemoveDisplay();
+                MouseDisplayManager.OnSetNewSprite(new OnSetSpriteArgs {sprite = effect.GetSprite(),size = effect.GetSpriteSize() } );
+            }
+
             Debug.Log("is availbe, locking");
             isSelected = true;
             cardState = CardStateEnum.lockedForSelection;
@@ -137,6 +144,7 @@ public class Card:MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPoi
                         cardState = CardStateEnum.availible;
                         isSelected = false;
                         BattleSceneActions.OnCardLocked(false);
+                        MouseDisplayManager.OnRemoveDisplay();
                         AddToDiscardPile();
                         cardAnimations.ScaleResetAndRelease(inAnimationTime, this);
                     }
@@ -151,6 +159,7 @@ public class Card:MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPoi
                 else //clicked on another GO
                 {
                     Debug.Log("clicked a GO, realeasing");
+                    MouseDisplayManager.OnRemoveDisplay();
                     cardState = CardStateEnum.availible;
                     isSelected = false;
                     BattleSceneActions.OnCardLocked(false);
@@ -164,12 +173,10 @@ public class Card:MonoBehaviour,IPointerClickHandler, IPointerEnterHandler, IPoi
             cardState = CardStateEnum.availible;
             isSelected = false;
             BattleSceneActions.OnCardLocked(false);
+            MouseDisplayManager.OnRemoveDisplay();
             cardAnimations.ScaleResetAndRelease(inAnimationTime, this);
         }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            Debug.Log("selection global is " );
-        }
+
     }
 
 

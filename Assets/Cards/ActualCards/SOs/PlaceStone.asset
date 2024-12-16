@@ -15,8 +15,8 @@ MonoBehaviour:
   description: 
   instant: 0
   title: 
-  image: {fileID: 0}
-  influenceCost: 0
-  faction: {fileID: 0}
+  image: {fileID: 21300000, guid: a0472853e3148244797e96b438940162, type: 3}
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   cardType: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 11400000, guid: d33599c68755ca84cb7c5ddbbfd0c457, type: 2}

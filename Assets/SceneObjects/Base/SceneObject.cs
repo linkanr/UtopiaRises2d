@@ -70,15 +70,18 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        Debug.Log("clicked");
-        OnClickObject.Create(stats);
-    }
-    private void OnDestroy()
-    {
-        DestroySceneObject();
+        Stats clickStats = new Stats();
+        clickStats.AddStats(stats);
+        AddStatsForClick(clickStats);
+        
+        OnClickObject.Create(clickStats);
     }
 
-
+    /// <summary>
+    /// This Add extra stats that just shows up in ut information when obejct is clicked
+    /// </summary>
+    /// <param name="_stats"></param>
+    protected abstract void AddStatsForClick(Stats _stats);
 
 
 

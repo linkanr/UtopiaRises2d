@@ -11,6 +11,7 @@ public abstract class SoCardBase:ScriptableObject
     public bool instant;
     public string title;
     public Sprite image;
+
     public int influenceCost;
     public Faction faction;
     public CardPlayType cardType;

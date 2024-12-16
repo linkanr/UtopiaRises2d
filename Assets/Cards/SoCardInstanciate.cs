@@ -1,10 +1,13 @@
 using UnityEngine;
 
+
+
 public abstract class SoCardInstanciate : SoCardBase
+
 {
     public SoSceneObjectBase prefab;
 
-    public Stats stats;
+
     public override void ActualEffect(Vector3 position)
     {
         

@@ -4,6 +4,19 @@ using UnityEngine;
 using UnityEngine.VFX;
 public class Stats
 {
+    public Stats()
+    {
+        statsInfoDic = new StatsInfoDic();
+    }
+    public StatsInfoDic statsInfoDic;
+    
+    public void AddStats(Stats _stats)
+    {
+        foreach(KeyValuePair<StatsInfoTypeEnum, object> statsObject in _stats.statsInfoDic)
+        {
+            statsInfoDic.Add(statsObject.Key, statsObject.Value);
+        }
+    }
     public void Add<T>(StatsInfoTypeEnum key, T value)
     {
         statsInfoDic.Add(key, value);
@@ -12,12 +25,6 @@ public class Stats
     {
         return statsInfoDic.GetValue<T>(key);
     }
-    public Stats()
-    {
-        statsInfoDic = new StatsInfoDic();
-    }
-    public StatsInfoDic statsInfoDic;
-    
     
     public string GetString(StatsInfoTypeEnum statsInfoTypeEnum)
     {
@@ -59,6 +66,14 @@ public class Stats
     {
         return statsInfoDic.GetValue<SoAttackSystem>(StatsInfoTypeEnum.SoEnemyAttackSystem).maxRange;
     }
+    public float GetDamage()
+    {
+        return statsInfoDic.GetValue<SoAttackSystem>(StatsInfoTypeEnum.SoEnemyAttackSystem).damage;
+    }
+    public SoAttackSystem GetSoAttackSystem()
+    {
+        return statsInfoDic.GetValue<SoAttackSystem>(StatsInfoTypeEnum.SoEnemyAttackSystem);
+    }
 
 }
 
@@ -89,7 +104,14 @@ public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>
 
     public void Add<T>(StatsInfoTypeEnum key, T value)
     {
-        _dict.Add(key, value);
+        if (!_dict.ContainsKey(key))
+        {
+            _dict.Add(key, value);
+        }
+        else
+        {
+            _dict[key] = value;
+        }
     }
 
     public T GetValue<T>(StatsInfoTypeEnum key)

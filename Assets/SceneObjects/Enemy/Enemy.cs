@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MovingSceneObject, IDamageable
+public class Enemy : MovingSceneObject, IDamageable,ICanAttack
 {
 
     [HideInInspector]
@@ -21,7 +21,7 @@ public class Enemy : MovingSceneObject, IDamageable
     public SceneObject sceneObject { get { return this; } }
     public NonStaticSeekSystem enemySeekSystem;
     public SoAttackSystem enemyAttackSystem;
-    public Transform currentTarget;
+    public Target target { get; set; }
     [HideInInspector]
     private AIPath aIPath;
     [HideInInspector]
@@ -31,6 +31,8 @@ public class Enemy : MovingSceneObject, IDamageable
     public HealthSystem healthSystem { get { return protectedHealthsystem; } set { } }
 
     public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.enemy; } }
+
+    public SceneObject attacker { get { return this; } set { value = this; } }
 
     public event EventHandler<IdamageAbleArgs> OnDeath;
 
@@ -46,7 +48,7 @@ public class Enemy : MovingSceneObject, IDamageable
 
         SetAiPathSeek(soEnemyInformationPackage, newEnemyInstance.gameObject, newEnemy);
         SetSpriteRenders(soEnemyInformationPackage, newEnemyInstance.gameObject);
-
+        newEnemy.OnCreated();
         return newEnemy;
 
     }
@@ -54,12 +56,12 @@ public class Enemy : MovingSceneObject, IDamageable
     {
         base.OnDisable();
         enemySeekSystem.OnNewTarget -= SetNewTarget;
-        BattleSceneActions.OnDamagableDestroyed -= CheckIfTargetIsDead;
+        
     }
     protected override void OnEnable()
     {
         base.OnEnable();
-        BattleSceneActions.OnDamagableDestroyed += CheckIfTargetIsDead;
+        
     }
     protected override void Start()
     {
@@ -105,13 +107,7 @@ public class Enemy : MovingSceneObject, IDamageable
     }
     #endregion
 
-    private void CheckIfTargetIsDead(IDamageable target)
-    {
-        if (target == null || target.GetTransform() == null)
-        {
-            currentTarget = null;
-        }
-    }
+
 
 
 
@@ -122,24 +118,20 @@ public class Enemy : MovingSceneObject, IDamageable
             return;
         }
 
-
+        isDead = true;
         DestroySceneObject();
 
 
     }
-    private void SetNewTarget(Transform iDamageableTransform)
+    private void SetNewTarget(IDamageable _iDamageable)
     {
-        IDamageable damageable = iDamageableTransform.GetComponent<IDamageable>();
-        damageable.OnDeath += RemomveTarget;
-        currentTarget = iDamageableTransform;
-        destinationSetter.target = iDamageableTransform;
+
+        
+        target = new Target(_iDamageable, this);
+        destinationSetter.target = target.transform;
     }
 
-    private void RemomveTarget(object sender, IdamageAbleArgs e)
-    {
-        currentTarget=null;
-        e.damageable.OnDeath -= RemomveTarget;
-    }
+
 
     public Transform GetTransform()
     {
@@ -177,29 +169,33 @@ public class Enemy : MovingSceneObject, IDamageable
         isDead = true;
         OnDeath?.Invoke(this, new IdamageAbleArgs { damageable = this });
         EnemyManager.Instance.spawnedEnemiesList.Remove(this);
+        BattleSceneActions.OnDamagableDestroyed(this);
 
         Destroy(gameObject);
     }
 
     internal bool CheckIfTargetIsInDistance()
     {
-        if (Vector2.Distance(currentTarget.position, transform.position) < enemyAttackSystem.maxRange)
-        {
-            return true;
-        }
-        return false;
-    }
-    internal bool CheckIfHasTarget()
-    {
-        if (currentTarget != null)
+        if (Vector2.Distance(target.transform.position, transform.position) < enemyAttackSystem.maxRange)
         {
             return true;
         }
         return false;
     }
 
+
     public void OnCreated()
     {
         BattleSceneActions.OnDamagableCreated(this);
+    }
+
+    protected override void AddStatsForClick(Stats stats)
+    {
+        stats.Add(StatsInfoTypeEnum.health,healthSystem.GetHealth());
+    }
+
+    public void RemoveTarget(object sender, IdamageAbleArgs e)
+    {
+        target = null;
     }
 }

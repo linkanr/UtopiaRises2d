@@ -12,5 +12,8 @@ public class EnviromentStone : EnviromentObject
         return enviromentObject;
     }
 
-
+    protected override void AddStatsForClick(Stats stats)
+    {
+        
+    }
 }

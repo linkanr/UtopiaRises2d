@@ -20,7 +20,12 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
 
     public override void OnStateUpdate()
     {
-        if (!stateMachine.enemy.CheckIfHasTarget())
+        if (stateMachine.enemy.target == null)
+        {
+            stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
+            return;
+        }
+        if (!stateMachine.enemy.target.IsValid())
         {
             stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
             return;

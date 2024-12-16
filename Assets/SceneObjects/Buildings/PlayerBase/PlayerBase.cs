@@ -3,66 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBase : StaticSceneObject, IDamageable
+public class PlayerBase : Building, IDamageable
 
 {
 
-    private BasicHealthSystem protectedHealthsystem;
-
-    public HealthSystem healthSystem { get { return protectedHealthsystem; } }
-
-    public event EventHandler<IdamageAbleArgs> OnDeath;
+    
+    public override iDamageableTypeEnum damageableType  {get { return iDamageableTypeEnum.playerBase; } }
 
 
-    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerBase; } }
-    public SceneObject sceneObject { get { return this; } }
+
     protected override void Start()
     {
        base.Start();
        OnCreated();
     }
 
-
-    public void SetHealthSystem(HealthSystem healthSystem)
-    {
-        protectedHealthsystem = healthSystem as BasicHealthSystem;
-    }
-    public Transform GetTransform()
-    {
-        return transform;
-    }
-
-
-
-    public void TakeDamage(int amount)
-    {
-        HealthManager.Instance.TakeDamage(amount);
-    }
-
-
-
-    public void Die()
-    {
-        OnObjectDestroyed();
-        BattleSceneActions.OnDamagableDestroyed(this);
-    }
-
-    public bool IsDead()
-    {
-       if (healthSystem.GetHealth() < 1)
-        {
-            return true;
-        }
-       return false;    
-    }
     protected override void OnObjectDestroyed()
     {
         
     }
 
-    public void OnCreated()
+    public override void OnCreated()
     {
-  
-        BattleSceneActions.OnDamagableCreated(this);
+        base.OnCreated();
+        SetStats(CreateBaseStats());
+ 
+    }
+
+    private Stats CreateBaseStats()
+    {
+        Stats newStats = new Stats();
+        newStats.Add(StatsInfoTypeEnum.name, "PlayerBase");
+        newStats.Add(StatsInfoTypeEnum.description, "Your base");
+        return newStats;
     }
 }

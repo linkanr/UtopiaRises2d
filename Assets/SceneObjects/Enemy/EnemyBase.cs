@@ -31,7 +31,8 @@ public class EnemyBase : StaticSceneObject, IDamageable
             isDead = true;
             OnDeath.Invoke(this,new IdamageAbleArgs { damageable=this});
         }
-        
+
+        DestroySceneObject();
     }
 
     public Transform GetTransform()
@@ -72,5 +73,10 @@ public class EnemyBase : StaticSceneObject, IDamageable
     public void OnCreated()
     {
         BattleSceneActions.OnDamagableCreated(this);
+    }
+
+    protected override void AddStatsForClick(Stats stats)
+    {
+        stats.Add(StatsInfoTypeEnum.health,healthSystem.health);
     }
 }

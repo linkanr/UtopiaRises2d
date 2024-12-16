@@ -32,8 +32,10 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
 
 
     }
-
-    protected abstract void Init();// SET UP DEPANDANCIES
+    /// <summary>
+    /// This is called on start and just adds additions to the start function
+    /// </summary>
+    protected abstract void Init();//
 
 
     public void SetState(Type newStateType)

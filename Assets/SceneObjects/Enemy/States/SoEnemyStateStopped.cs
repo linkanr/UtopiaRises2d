@@ -16,13 +16,13 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
 
     public override void OnStateUpdate()
     {
-        if (stateMachine.enemy.currentTarget != null)
+        if (stateMachine.enemy.target.IsValid())
         {
             
             stateMachine.enemy.attackTimer += Time.deltaTime;
             if (stateMachine.enemy.attackTimer > stateMachine.enemy.enemyAttackSystem.attackTimerMax)
             {
-                stateMachine.enemy.enemyAttackSystem.Attack(stateMachine.enemy, stateMachine.enemy.currentTarget.GetComponent<IDamageable>());
+                stateMachine.enemy.enemyAttackSystem.Attack(stateMachine.enemy, stateMachine.enemy.target);
                 stateMachine.enemy.attackTimer = 0f;
             }
         }

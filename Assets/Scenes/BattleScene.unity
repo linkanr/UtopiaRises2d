@@ -2908,7 +2908,8 @@ GameObject:
   - component: {fileID: 1343061010}
   - component: {fileID: 1343061009}
   - component: {fileID: 1343061011}
-  m_Layer: 0
+  - component: {fileID: 1343061012}
+  m_Layer: 13
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2943,6 +2944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c2D: {fileID: 0}
+  rB2D: {fileID: 0}
 --- !u!212 &1343061010
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3040,6 +3042,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.24, y: 10.24}
   m_EdgeRadius: 0
+--- !u!114 &1343061012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1343061007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddbefbb70b61dcf459dec1f8cec5a797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  maxHealth: 100
+  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
 --- !u!1 &1377039630
 GameObject:
   m_ObjectHideFlags: 0
@@ -3215,6 +3232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawTargetLines: 1
+  debugSceneObejcts: 1
 --- !u!4 &1499904484
 Transform:
   m_ObjectHideFlags: 0

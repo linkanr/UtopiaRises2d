@@ -11,7 +11,7 @@ public class ShotingTower : ShootingBuilding
         if (target !=null)
         {
             //Debug.Log("rotataing");
-            Transform targetTransform = target.GetTransform();
+            Transform targetTransform = target.transform;
             
             if (targetTransform != null) 
             {

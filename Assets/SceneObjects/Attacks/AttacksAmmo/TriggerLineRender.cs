@@ -21,11 +21,11 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
 
 
 
-    public void Trigger(SceneObject enemy, IDamageable idamageableByEnememy)
+    public void Trigger(ICanAttack canAttack, Target idamageable)
     {
-        if (idamageableByEnememy== null)
+        if (idamageable== null)
         {
-            Debug.LogWarning("trying to attack non existisng building " + enemy.GetStats().GetString(StatsInfoTypeEnum.name));
+            Debug.LogWarning("trying to attack non existisng building " + canAttack.attacker.GetStats().GetString(StatsInfoTypeEnum.name));
             SetInactive();
             return;
         }
@@ -33,8 +33,8 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         triggerd = true;
         timer = 0f;
         
-        start = enemy.transform.position;
-        end = idamageableByEnememy.GetTransform().position;
+        start = canAttack.attacker.transform.position;
+        end = idamageable.transform.position;
         float dist = Vector3.Distance(start, end);
         float multi = GeneralUtils.fit(dist, .5f, 10f, .3f, 1f);
         timerMax *= multi;
@@ -46,8 +46,8 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
 
         DOTween.To(() => currentEnd, x => currentEnd = x,end, timerMax/2f);
 
-        lineRenderer.SetPosition(0, enemy.transform.position);
-        lineRenderer.SetPosition(1, idamageableByEnememy.GetTransform().position);
+        lineRenderer.SetPosition(0, canAttack.attacker.transform.position);
+        lineRenderer.SetPosition(1, idamageable.transform.position);
 
     }
     private void Update()

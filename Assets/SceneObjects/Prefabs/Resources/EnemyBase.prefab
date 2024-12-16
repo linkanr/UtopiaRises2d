@@ -178,6 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   c2D: {fileID: 4149859833349796814}
+  rB2D: {fileID: 0}
   soEnemyBase: {fileID: 0}
 --- !u!114 &8723099500599229288
 MonoBehaviour:
@@ -193,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 0
-  damageEffect: {fileID: 0}
+  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
 --- !u!1001 &5567874835529115568
 PrefabInstance:
   m_ObjectHideFlags: 0

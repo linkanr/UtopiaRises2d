@@ -7,22 +7,17 @@ using UnityEngine.VFX;
 /// <summary>
 /// Based on buidling but add functionality with the shoting building state machince and IcanShot interface
 /// </summary>
-public class ShootingBuilding : Building, IHasLifeSpan
+public class ShootingBuilding : Building, IHasLifeSpan, ICanAttack
 {
     
     public float timer;
-    
-    
-    public Transform shotingPos;
-    
-    
-    public IDamageable target { get; private set; }
+    public Transform shotingPos; 
+    public Target target { get; set; }
+    public SceneObject attacker { get { return this; } set { value = this; } }
 
-
-    public Transform targetsTransform;
     public ShotingBuildingStateMachine stateMachine;
     private TimeLimterSceneObject timeLimiter;
-    public SoAttackSystem soAttackSystem;
+    
 
 
     protected override void Start()
@@ -37,47 +32,45 @@ public class ShootingBuilding : Building, IHasLifeSpan
     {
         
         timer += Time.deltaTime;
+
+
         if (target == null)
         {
             stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));
-            
+            return;
 
 
         }
-        if (target != null && timer > stats.GetReloadTime())
+        else if (!target.IsValid()) //If target is not null but not valid neither
         {
-            //Debug.Log("fire");
-            soAttackSystem.Attack(this, target);
+            stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));
+            return;
+        }
+        else if (timer > stats.GetReloadTime()) // This happens when target is existing and valid
+        {
+
+            stats.GetSoAttackSystem().Attack(this, target);
             
             timer = 0f;
         }
     }
 
-    public bool LookForTarget()// calls the manager and check the looker class uses the type to get the corret info
+    public void LookForTarget()// calls the manager and check the looker class uses the type to get the corret info
     {
-       IDamageable newTarget = EnemyManager.Instance.looker.LookForTarget(stats.GetLookForEnemyType(), shotingPos.position, stats.GetMaxShotingDistance());
-        if (newTarget != null) 
+        IDamageable newTarget = EnemyManager.Instance.looker.LookForTarget(stats.GetLookForEnemyType(), shotingPos.position, stats.GetMaxShotingDistance());
+        if (newTarget != null)
         {
-            
-            target = newTarget;
-            target.OnDeath += RemoveTarget;
-            targetsTransform = newTarget.GetTransform();
-            return true;
+            target = new Target(newTarget, this);
         }
-        return false;
         
+
+
+
+
+
     }
 
-    private void RemoveTarget(object sender, IdamageAbleArgs e)
-    {
-        
-        if (target == e.damageable)
-        {
-            target.OnDeath -= RemoveTarget;
-            target = null;
-        }
-        
-    }
+
 
 
 
@@ -106,22 +99,19 @@ public class ShootingBuilding : Building, IHasLifeSpan
     {
         if (!isDead)
         {
-            isDead = true;
-            DestroySceneObject();
+            Die();
         }
         
     }
 
- 
-
-
-
-
+    public void RemoveTarget(object sender, IdamageAbleArgs e)
+    {
+        throw new NotImplementedException();
+    }
 }
 public enum TargetPriorityEnum
 {
-    closest,
-    mostHelth,
+    closest,    mostHelth,
     furthest,
     leastHealth,
     enemyBase,

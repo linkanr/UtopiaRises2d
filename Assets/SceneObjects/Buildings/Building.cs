@@ -3,25 +3,26 @@ using Pathfinding;
 using UnityEngine;
 [RequireComponent(typeof(HealthSystem))]
 
-public abstract class Building:StaticSceneObject,IDamageable
+public abstract class Building : StaticSceneObject, IDamageable
 {
     private HealthSystem Healthsystem;
     protected bool isDead = false;
 
-    public HealthSystem healthSystem { get { return Healthsystem; } }
+    public virtual HealthSystem healthSystem { get { return Healthsystem; } }
 
     public event EventHandler<IdamageAbleArgs> OnDeath;
 
 
     public SceneObject sceneObject { get { return this; } }
 
-    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerbuilding; } }
+    public virtual iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerbuilding; } }
+
 
 
     protected virtual void Awake()
     {
-        
-        Healthsystem = GetComponent<BasicHealthSystem>();
+
+        SetHealthSystem(GetComponent<HealthSystem>());
     }
     protected override void Start()
     {
@@ -29,7 +30,7 @@ public abstract class Building:StaticSceneObject,IDamageable
         OnCreated();
     }
 
-    public void OnCreated()
+    public virtual void OnCreated()
     {
         BattleSceneActions.OnDamagableCreated(this);
     }
@@ -42,7 +43,7 @@ public abstract class Building:StaticSceneObject,IDamageable
         {
             return;
         }
-
+        isDead = true;
         DestroySceneObject();
 
     }
@@ -61,9 +62,9 @@ public abstract class Building:StaticSceneObject,IDamageable
         return isDead;
     }
 
-    public void SetHealthSystem(HealthSystem healthSystem)
+    public void SetHealthSystem(HealthSystem _healthSystem)
     {
-        healthSystem = Healthsystem;
+         Healthsystem =_healthSystem;
     }
 
     public void TakeDamage(int amount)
@@ -87,5 +88,9 @@ public abstract class Building:StaticSceneObject,IDamageable
         Destroy(gameObject);
     }
 
+    protected override void AddStatsForClick(Stats stats)
+    {
+        stats.Add(StatsInfoTypeEnum.health, healthSystem.health);
+    }
 
 }

@@ -57,6 +57,7 @@ public class Follower : SceneObject,  IDamageable
         {
            return;
         }
+        isDead = true;
         DestroySceneObject();
     }
 
@@ -79,5 +80,8 @@ public class Follower : SceneObject,  IDamageable
         BattleSceneActions.OnDamagableCreated(this);
     }
 
-
+    protected override void AddStatsForClick(Stats stats)
+    {
+        stats.Add(StatsInfoTypeEnum.health, healthSystem.health);
+    }
 }

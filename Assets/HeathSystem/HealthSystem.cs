@@ -24,20 +24,17 @@ public abstract class HealthSystem : MonoBehaviour
     }
 
 
-    public bool TakeDamage(int damageAmount)
+    public virtual bool TakeDamage(int damageAmount)
     {
+        
+        damageEffect.TakeDamage(damageAmount, GetTransformPosition());
         health -= damageAmount;
         OnDamaged?.Invoke(this, new EventArgs { });
-        damageEffect.TakeDamage(damageAmount, GetTransformPosition());
-        if (health <= 0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return HandleDamage(damageAmount);
     }
+
+    protected abstract bool HandleDamage(int damage);
+
 
     public Transform GetTransformPosition()
     {

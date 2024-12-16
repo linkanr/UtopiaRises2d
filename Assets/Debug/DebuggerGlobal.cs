@@ -7,7 +7,9 @@ using UnityEngine.Diagnostics;
 public class DebuggerGlobal : MonoBehaviour
 {
     public bool drawTargetLines;
+    public bool debugSceneObejcts;
     public static DebuggerGlobal instance;
+    public Sprite spriteMouse;
     private void Awake()
     {
         instance = this;
@@ -24,7 +26,24 @@ public class DebuggerGlobal : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            EnviromentObject.Create(ObjectTypeEnums.stone, WorldSpaceUtils.GetMouseWorldPosition());
+            //MouseDisplayManager.OnSetNewSprite(spriteMouse);
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            MouseDisplayManager.OnRemoveDisplay();
+        }
+
+
+        if (debugSceneObejcts)
+        {
+            foreach (IDamageable s in SceneObjectManager.Instance.iDamagablesInScene)
+            {
+                Debug.Log(s.sceneObject.GetStats().GetString(StatsInfoTypeEnum.name)+  "is in manager");
+                if (s.GetTransform() == null)
+                {
+                    Debug.Log( s.sceneObject.GetStats().GetString(StatsInfoTypeEnum.name)+ "is missing transform");
+                }
+            }
         }
     }
 }

@@ -9,7 +9,9 @@ public static class WorldSpaceUtils
     public static Vector3 GetMouseWorldPosition()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        return mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 r = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        r.z = 0;
+        return r;
 
 
     }

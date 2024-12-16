@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6a1640e7aba234f92d592d21787303, type: 3}
+  m_Name: Heavy Artillery
+  m_EditorClassIdentifier: 
+  description: HEavey artillery
+  instant: 0
+  title: Heave fire
+  image: {fileID: 21300000, guid: 677cca399782dea41aedc1d292ecb67d, type: 3}
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  cardType: 0
+  damage: 30
+  delay: 3
+  diameter: 10
+  visualEffect: {fileID: 5637707959465163233, guid: 43964e1aba874d84182487785f04c692, type: 3}
+  clickSprite: {fileID: 21300000, guid: d0f5d7a0d57e30641b29f6506069fdb7, type: 3}
