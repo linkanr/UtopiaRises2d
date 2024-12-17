@@ -19,6 +19,7 @@ public class AreaDamage:MonoBehaviour
         areaDamage.damage = damage;
         areaDamage.delay = delay;
         areaDamage.effect = Instantiate( visualEffect,areaDamage.transform);
+        areaDamage.effect.SetFloat("size",diameter);
         areaDamage.effect.Stop();
         areaDamage.diameter = diameter;
         BattleSceneActions.GlobalTimeChanged += areaDamage.UpdateDelay;

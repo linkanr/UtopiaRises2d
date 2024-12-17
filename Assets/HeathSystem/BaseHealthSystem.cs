@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(SceneObject))]
 public class BaseHealthSystem : HealthSystem
@@ -18,7 +19,7 @@ public class BaseHealthSystem : HealthSystem
         if (health <= 0)
 
         {
-
+            SceneManager.LoadScene("GameOver");
             return true;
         }
         else

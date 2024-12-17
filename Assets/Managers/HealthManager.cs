@@ -29,8 +29,9 @@ public class HealthManager : MonoBehaviour
     }
     public void TakeDamage(int damage)
     {
-        GlobalActions.OnLifeChange(health);
+        
         health -= damage;
+        GlobalActions.OnLifeChange(health);
         if (health < 0)
         {
             Debug.Log("dead");

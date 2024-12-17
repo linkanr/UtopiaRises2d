@@ -16,6 +16,12 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
 
     public override void OnStateUpdate()
     {
+        if (stateMachine.enemy.target == null)
+        {
+            stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
+            return;
+        }
+            
         if (stateMachine.enemy.target.IsValid())
         {
             

@@ -93,7 +93,7 @@ public class GridConstrution
         }
         else
         {
-            Debug.Log("found nothing");
+            //Debug.Log("found nothing");
             return null;
         }
     }
