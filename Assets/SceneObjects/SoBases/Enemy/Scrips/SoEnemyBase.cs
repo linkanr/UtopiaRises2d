@@ -3,7 +3,7 @@
 public class SoEnemyBase : SoSceneObjectBase
 {
     public int health;
-    public Sprite sprite;
+
     protected override Stats GetStatsInernal(Stats stats)
     {
         stats.Add(StatsInfoTypeEnum.health, health);

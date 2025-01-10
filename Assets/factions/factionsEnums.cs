@@ -1,9 +1,12 @@
 public enum FactionsEnums
 {
-    none,
-    thirdInternational,
-    centrist,
-    nazi,
-    socDem
+    Neutral,
+    SocialLiberalism,
+    ThirdWay,
+    NewAge,
+    Objectivism,
+    Scientology,
+    Posadism,
+    Nazism
 
 }

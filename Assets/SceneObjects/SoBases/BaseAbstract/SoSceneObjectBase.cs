@@ -7,14 +7,17 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
 {
     public string sceneObjectName;
     public string description;
+    public Sprite sprite;
     public SceneObject prefab;
+    public SceneObjectTypeEnum sceneObjectType;
 
     public Stats GetStats() // this sets the base
     {
         var stats = new Stats();
         stats.Add(StatsInfoTypeEnum.name, sceneObjectName);
         stats.Add(StatsInfoTypeEnum.description, description);
-
+        stats.Add(StatsInfoTypeEnum.Sprite, sprite);
+        stats.Add(StatsInfoTypeEnum.sceneObjectType, sceneObjectType);
         return GetStatsInernal(stats);
 
     }
@@ -24,11 +27,11 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     /// <param name="position"></param>
     public SceneObject Init(Vector3 position)
     {
-        SceneObject createdFromCard = Instantiate(prefab, position, Quaternion.identity);
+        SceneObject sceneobjectFromCard = Instantiate(prefab, position, Quaternion.identity);
 
-        createdFromCard.SetStats(GetStats());
-        ObjectInitialization(createdFromCard);
-        return createdFromCard;
+        sceneobjectFromCard.SetStats(GetStats());
+        ObjectInitialization(sceneobjectFromCard);
+        return sceneobjectFromCard;
     }
     /// <summary>
     /// This is called after stats are added to the sceneobject. Use this to specific initialization

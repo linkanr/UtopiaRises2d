@@ -12,7 +12,7 @@ public class ButtonWithDelegate : MonoBehaviour
     private Button button;
     public static void CreateThis(Action actionToPreform, RectTransform parent, string text)
     {
-        Debug.Log(actionToPreform.ToString());
+        //Debug.Log(actionToPreform.ToString());
         GameObject preFab = Resources.Load("ButtonDelegate") as GameObject;
         
         
@@ -25,6 +25,7 @@ public class ButtonWithDelegate : MonoBehaviour
         buttonWithDelegate.button.onClick.AddListener(new UnityEngine.Events.UnityAction(actionToPreform));
 
         buttonWithDelegate.button.onClick.AddListener(() => Destroy(instaciated));
+        buttonWithDelegate.button.onClick.AddListener(() => buttonWithDelegate.button.onClick.RemoveAllListeners());
     }
 
 }

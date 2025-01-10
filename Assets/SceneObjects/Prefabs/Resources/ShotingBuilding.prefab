@@ -64,18 +64,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0458ffd4f2eb8d84b914e8bbbef3b9b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneObjectName: GuardTower
-  sceneObjectDescription: A cool towen
   c2D: {fileID: 0}
-  reloadTimerMax: 2
+  rB2D: {fileID: 0}
+  sprite: {fileID: 0}
+  isDead: 0
+  spriteRenderer: {fileID: 1254883561299938048}
+  sceneObjectType: 0
   timer: 0
-  damageAmount: 3
-  fireEffect: {fileID: 1391887902776944320}
   shotingPos: {fileID: 8236128589012249382}
-  lifeTime: 20
-  maxShotingDistance: 10
-  targetsTransform: {fileID: 0}
-  lookForEnemyType: 0
   stateMachine: {fileID: 0}
 --- !u!114 &4836590446493347504
 MonoBehaviour:
@@ -235,7 +231,7 @@ GameObject:
   - component: {fileID: 4304097256696370984}
   - component: {fileID: 1254883561299938048}
   m_Layer: 0
-  m_Name: Circle
+  m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,11 +689,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}
---- !u!2083052967 &1391887902776944320 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 4678084455662318589, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}
-  m_PrefabInstance: {fileID: 6033450943702996285}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4250848643456842154 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7585491116504099991, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}

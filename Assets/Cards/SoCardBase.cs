@@ -8,14 +8,15 @@ public abstract class SoCardBase:ScriptableObject
 {
 
     public string description;
-    public bool instant;
+
     public string title;
     public Sprite image;
-    public int rarity;
+    public CardRareEnums rarity;
+    public CardCanBePlayedOnEnum cardCanBePlayedOnEnum;
 
     public int influenceCost;
     public Faction faction;
-    public CardPlayType cardType;
+
     
 
 
@@ -24,10 +25,19 @@ public abstract class SoCardBase:ScriptableObject
     {
         if (FisicalResources.TryToBuy(influenceCost))
         {
-            ActualEffect(position);
             
-            result = "success";
-            return true;
+            if (ActualEffect(position, out result))
+            {
+                result = "success";
+                FisicalResources.Buy(influenceCost);
+                return true;
+            }
+            else
+            {
+                return false;   
+            }
+            
+
 
         }
         else
@@ -37,12 +47,13 @@ public abstract class SoCardBase:ScriptableObject
         }
      
     }
-    public abstract void ActualEffect(Vector3 position);
+    public abstract bool ActualEffect(Vector3 position, out string failuerReason);
 }
-public enum CardPlayType
+
+public enum CardCanBePlayedOnEnum
 {
-    normal,
-    yearly,
-    once
-    
+    emptyGround,
+    damagable,
+    instantClick
+
 }

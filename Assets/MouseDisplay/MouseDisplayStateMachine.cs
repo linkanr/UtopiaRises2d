@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MouseDisplayStateMachine : BaseStateMachine<MouseDisplayStateMachine>
@@ -8,11 +9,17 @@ public class MouseDisplayStateMachine : BaseStateMachine<MouseDisplayStateMachin
 
     public Transform spriteGO;
     public SpriteRenderer spriteRenderer;
+
     protected override void Init()
     {
         spriteRenderer = spriteGO.GetComponent<SpriteRenderer>();
         MouseDisplayManager.OnRemoveDisplay += ChangeToNoDisplayState;
         MouseDisplayManager.OnSetNewSprite += ChangeToDisplaySpriteState;
+    }
+    private void OnDisable()
+    {
+        MouseDisplayManager.OnRemoveDisplay -= ChangeToNoDisplayState;
+        MouseDisplayManager.OnSetNewSprite -= ChangeToDisplaySpriteState;
     }
 
     private void ChangeToDisplaySpriteState(OnSetSpriteArgs onSetSpriteArgs)

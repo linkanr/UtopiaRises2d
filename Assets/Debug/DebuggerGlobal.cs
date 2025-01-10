@@ -7,6 +7,7 @@ using UnityEngine.Diagnostics;
 public class DebuggerGlobal : MonoBehaviour
 {
     public bool drawTargetLines;
+
     public bool debugSceneObejcts;
     public static DebuggerGlobal instance;
     public Sprite spriteMouse;
@@ -14,34 +15,50 @@ public class DebuggerGlobal : MonoBehaviour
     {
         instance = this;
     }
-    public void DrawLine(Vector3 start, Vector3 end)
+    public static void DrawLine(Vector3 start, Vector3 end)
     {
         Debug.DrawLine(start, end, Color.blue, .1f);
     }
+    public static void DrawLine(Vector3 start, Vector3 end, Color color)
+    {
+        Debug.DrawLine(start, end, color, .1f);
+    }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+           SceneObject s =SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(WorldSpaceUtils.GetMouseWorldPosition());
+
+           Debug.Log("adding rage " + s.GetStats().name);
+           EffectAdd.AddEffect(PickupTypes.Rage, s,5f);
+   
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            EffectAdd.AddEffect(PickupTypes.Slow, SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(WorldSpaceUtils.GetMouseWorldPosition()), 2f);
+
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Debug.Log(WorldSpaceUtils.CheckClickableType().ToString());
+        }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             AstarPath.active.Scan();
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            //MouseDisplayManager.OnSetNewSprite(spriteMouse);
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            MouseDisplayManager.OnRemoveDisplay();
-        }
 
 
-        if (debugSceneObejcts)
+
+
+        if (debugSceneObejcts && Input.GetKeyDown(KeyCode.Z))
         {
-            foreach (IDamageable s in SceneObjectManager.Instance.iDamagablesInScene)
+            foreach (SceneObject s in SceneObjectManager.Instance.sceneObjectsInScene)
             {
-                Debug.Log(s.sceneObject.GetStats().GetString(StatsInfoTypeEnum.name)+  "is in manager");
-                if (s.GetTransform() == null)
+                Debug.Log(s.GetStats().GetString(StatsInfoTypeEnum.name)+  "is in manager");
+                if (s.transform == null)
                 {
-                    Debug.Log( s.sceneObject.GetStats().GetString(StatsInfoTypeEnum.name)+ "is missing transform");
+                    Debug.Log( s.GetStats().GetString(StatsInfoTypeEnum.name)+ "is missing transform");
                 }
             }
         }

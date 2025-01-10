@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 8499135014645778247}
   - component: {fileID: 8283187678325239932}
   - component: {fileID: 6192576152426129439}
-  - component: {fileID: 1057012923954962925}
-  - component: {fileID: 5437189260944825428}
   - component: {fileID: -1199420605011063491}
   - component: {fileID: 7121942445719827244}
   - component: {fileID: -3627587118633553400}
+  - component: {fileID: 561056714114258754}
   m_Layer: 12
   m_Name: enemyPrefab
   m_TagString: Untagged
@@ -68,15 +67,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d95b448ebab642e479d564e9298c9586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneObjectName: 
-  sceneObjectDescription: 
   c2D: {fileID: 0}
-  lookForNewMTargetMaxTime: 0
-  lookForNewTargetTime: 0
-  attackTimer: 0
-  enemySeekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
-  enemyAttackSystem: {fileID: 11400000, guid: 3c99477026a30a44bae3455059d47b48, type: 2}
-  currentTarget: {fileID: 0}
+  rB2D: {fileID: 0}
+  sprite: {fileID: 0}
+  isDead: 0
+  spriteRenderer: {fileID: 5162190522902354124}
+  targeter: {fileID: 0}
+  mover: {fileID: 0}
 --- !u!114 &6192576152426129439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,72 +98,10 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4294967295
     useGraphRaycasting: 0
-  traversableTags: -1
-  tagPenalties: 010000000a00000010270000320000001e0000001e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  traversableTags: -257
+  tagPenalties: 0100000064000000e8030000d0070000b80b00001e0000002c010000f4010000dc0500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
---- !u!114 &1057012923954962925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240124075793635192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1073741824
-  target: {fileID: 0}
-  useRotation: 0
---- !u!114 &5437189260944825428
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 240124075793635192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 1073741824
-  radius: 0.5
-  height: 3
-  canMove: 1
-  maxSpeed: 3
-  gravity: {x: 0, y: 0, z: 0}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
-  endReachedDistance: 0.2
-  whenCloseToDestination: 0
-  rvoDensityBehavior:
-    enabled: 1
-    densityThreshold: 0.5
-    returnAfterBeingPushedAway: 0
-    progressAverage: 0
-    lastJobDensityResult: 0
-  repathRateCompatibility: NaN
-  canSearchCompability: 0
-  orientation: 1
-  enableRotation: 1
-  autoRepath:
-    mode: 2
-    period: 0.5
-    sensitivity: 10
-    maximumPeriod: 2
-    visualizeSensitivity: 0
-  maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 0.6
-  pickNextWaypointDist: 2
-  alwaysDrawGizmos: 0
-  slowWhenNotFacingTarget: 1
-  preventMovingBackwards: 0
-  constrainInsideGraph: 0
 --- !u!114 &-1199420605011063491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +178,53 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &561056714114258754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240124075793635192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1073741824
+  radius: 0.5
+  height: 2
+  canMove: 1
+  maxSpeed: 1
+  gravity: {x: NaN, y: NaN, z: NaN}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  endReachedDistance: 0.2
+  whenCloseToDestination: 0
+  rvoDensityBehavior:
+    enabled: 1
+    densityThreshold: 0.5
+    returnAfterBeingPushedAway: 0
+    progressAverage: 0
+    lastJobDensityResult: 0
+  repathRateCompatibility: NaN
+  canSearchCompability: 0
+  orientation: 1
+  enableRotation: 1
+  autoRepath:
+    mode: 2
+    period: 0.5
+    sensitivity: 10
+    maximumPeriod: 2
+    visualizeSensitivity: 0
+  maxAcceleration: -2.5
+  rotationSpeed: 360
+  slowdownDistance: 0.6
+  pickNextWaypointDist: 2
+  alwaysDrawGizmos: 0
+  slowWhenNotFacingTarget: 1
+  preventMovingBackwards: 0
+  constrainInsideGraph: 0
 --- !u!1 &3901218504554432643
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,59 +1,49 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class HighlightGridObject : MonoBehaviour
 {
     public Material gridMaterial;
-    bool IsSelected;
-    private void OnEnable()
+
+    private void SetHightligt(List<Cell> cells)
     {
-        BattleSceneActions.OnCardLocked += HandleCellchange;
-    }
+        float minx = float.MaxValue;
+        float miny = float.MaxValue;
+        float maxx = float.MinValue;
+        float maxy = float.MinValue;
+        foreach (var cell in cells) 
+        {
+            //Debug.Log("setting highlight");
+
+            if (cell.x == 0)
+            {
+                minx = 0;
+            }
+            else
+            {
+                minx = Mathf.Min(minx, (float)cell.x / (float)cell.gridRef.sizeX); 
+            }
+            if (cell.y == 0)
+            {
+                miny = 0;
+            }
+            else
+            {
+                miny = Mathf.Min(miny, (float)cell.y / (float)cell.gridRef.sizeY);
+            }
+            //Debug.Log("cell.x i s" + cell.x + "cell grid ref x is " + cell.gridRef.sizeX.ToString());
+            maxx = Mathf.Max(maxx, ((float)cell.x + 1f) / (float)cell.gridRef.sizeX);
+
+            maxy = Mathf.Max(maxy, ((float)cell.y + 1f) / (float)cell.gridRef.sizeY);
 
 
-    private void OnDisable()
-    {
-        BattleSceneActions.OnCardLocked -= HandleCellchange;
-    }
-    private void HandleCellchange(bool obj)
-    {
-        Debug.Log("handle cell change");
-        IsSelected = obj;
-        if (IsSelected == false)
-        {
-            ResetGridMaterail();
         }
-    }
 
 
-    private void SetHightligt(Cell cell)
-    {
-        //Debug.Log("setting highlight");
-        float minx;
-        float miny;
-        if (cell.x == 0)
-        {
-            minx = 0;
-        }
-        else
-        {
-            minx = (float)cell.x / (float)cell.gridRef.sizeX;
-        }
-        if (cell.y ==0)
-        {
-            miny = 0;
-        }
-        else
-        {
-            miny = (float)cell.y / (float)cell.gridRef.sizeY;
-        }
-        //Debug.Log("cell.x i s" + cell.x + "cell grid ref x is " + cell.gridRef.sizeX.ToString());
-        float maxx = ((float)cell.x+1f) / (float)cell.gridRef.sizeX;
-        
-        float maxy = ((float)cell.y + 1f) / (float)cell.gridRef.sizeY;
 
         gridMaterial.SetFloat("_xmin", minx);
         gridMaterial.SetFloat("_ymin", miny);
@@ -71,17 +61,26 @@ public class HighlightGridObject : MonoBehaviour
     private void OnMouseOver()
     {
         //Debug.Log("onmouse over");
-        if (IsSelected)
+        
+        if (MouseDisplayManager.instance.displayCellChange)
         {
             //Debug.Log("Triggered");
 
-            Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
-            if (cell != null)
-                SetHightligt(cell);
+            List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(),MouseDisplayManager.instance.displaySizeX,MouseDisplayManager.instance.displaySizeY);
+            if (cells.Count > 0)
+            {
+                SetHightligt(cells);
+       
+            }
+                
+        }
+        else if (!MouseDisplayManager.instance.displayCellChange)
+        {
+            ResetGridMaterail();
         }
 
     }
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
         ResetGridMaterail();
     }

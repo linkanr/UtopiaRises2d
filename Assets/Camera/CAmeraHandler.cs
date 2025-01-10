@@ -33,7 +33,7 @@ public class CAmeraHandler : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
         Vector3 moveDir = new Vector3(x, y, 0f).normalized;
         float moveSpeed = 60f;
-        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        transform.position += moveDir * moveSpeed * Time.unscaledDeltaTime;
     }
     private void HandleZoom()
     {
@@ -43,7 +43,7 @@ public class CAmeraHandler : MonoBehaviour
         
 
         targetFOV = Mathf.Clamp(targetFOV, minZoom, maxZoom);
-        currentFOV = Mathf.Lerp(currentFOV, targetFOV, Time.deltaTime * zoomSpeed);
+        currentFOV = Mathf.Lerp(currentFOV, targetFOV, Time.unscaledDeltaTime * zoomSpeed);
 
         cinemachineVirtualCamera.m_Lens.OrthographicSize = currentFOV * zoomAmount;
     }

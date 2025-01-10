@@ -6,7 +6,7 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
     public override void OnStateEnter()
     {
         Debug.Log("entered stopped state");
-        //stateMachine.enemy.aIPath.isStopped = true;
+        stateMachine.enemy.mover.Move(false);
     }
 
     public override void OnStateExit()
@@ -16,20 +16,20 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
 
     public override void OnStateUpdate()
     {
-        if (stateMachine.enemy.target == null)
+        if (stateMachine.enemy.targeter.target == null)
         {
             stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
             return;
         }
             
-        if (stateMachine.enemy.target.IsValid())
+        if (stateMachine.enemy.targeter.target.IsValid())
         {
             
-            stateMachine.enemy.attackTimer += Time.deltaTime;
-            if (stateMachine.enemy.attackTimer > stateMachine.enemy.enemyAttackSystem.attackTimerMax)
+            stateMachine.enemy.targeter.attackTimer += BattleClock.Instance.deltaValue;
+            if (stateMachine.enemy.targeter.attackTimer > stateMachine.enemy.GetStats().reloadTime)
             {
-                stateMachine.enemy.enemyAttackSystem.Attack(stateMachine.enemy, stateMachine.enemy.target);
-                stateMachine.enemy.attackTimer = 0f;
+                stateMachine.enemy.targeter.soAttackSystem.Attack(stateMachine.enemy.targeter, stateMachine.enemy.targeter.target, stateMachine.enemy.GetStats().damage);
+                stateMachine.enemy.targeter.attackTimer = 0f;
             }
         }
         else

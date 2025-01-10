@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 
 
@@ -6,22 +8,45 @@ public abstract class SoCardInstanciate : SoCardBase
 
 {
     public SoSceneObjectBase prefab;
+    public int sizeX;
+    public int sizeY;
 
 
-    public override void ActualEffect(Vector3 position)
+
+
+    public override bool ActualEffect(Vector3 position, out string failureReason)
     {
-        
-        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPostion(position);
-
-        if (cell == null)
+        failureReason = "";
+        List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(), sizeX,sizeY);
+        if (cells.Count < 1)
         {
-            return;
+            failureReason = "No ground to play on found";
+            return false;
         }
 
-        Vector3 cellPos = GridCellManager.Instance.gridConstrution.GetWorldPostion(cell.x, cell.y);
-        Vector3 cellSizeOffset = new Vector3(cell.size / 2, cell.size / 2, 0f);
-        cellPos += cellSizeOffset;
-        prefab.Init(cellPos);
+        foreach (Cell cell in cells) 
+        {
+            if (cell.hasSceneObejct)
+            {
+                failureReason = ("objects in the way");
+                return false;
+            }
+
+
+      
+         
+        }
+        foreach (Cell cell in cells)
+        {
+            prefab.Init(cell.worlPosition);
+        }
+        return true;
+
+
+
+
 
     }
+
+
 }

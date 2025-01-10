@@ -14,6 +14,8 @@ public class EnviromentStone : EnviromentObject
 
     protected override void AddStatsForClick(Stats stats)
     {
-        
+        base.AddStatsForClick(stats);
     }
+
+
 }

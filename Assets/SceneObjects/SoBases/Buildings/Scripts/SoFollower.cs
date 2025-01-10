@@ -1,14 +1,15 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/SoFollowers/Follower")]
 public class SoFollower : SoSceneObjectBase
 {
 
-
-    public Sprite sprite;
-
+    public int health;
+    
     protected override Stats GetStatsInernal(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.sprite, sprite);
+        stats.Add(StatsInfoTypeEnum.health, health);
+
         return stats;
     }
 

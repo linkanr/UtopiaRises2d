@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/States/building/Shotingtower/TargetFound")]
@@ -16,19 +17,36 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
 
     public override void OnStateUpdate()
     {
-        if (stateMachine.shootingBuilding.target == null || stateMachine.shootingBuilding.target.Equals(null))
+        stateMachine.shootingBuilding.targeter.attackTimer += BattleClock.Instance.deltaValue;
+
+
+        if (stateMachine.shootingBuilding.targeter.target == null)
         {
-            //Debug.Log("setting to looking for target");
             stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));
+            return;
+
+
+        }
+        else if (!stateMachine.shootingBuilding.targeter.target.IsValid()) //If target is not null but not valid neither
+        {
+            stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));
+            return;
+        }
+        else if (stateMachine.shootingBuilding.targeter.attackTimer > stateMachine.shootingBuilding.GetStats().reloadTime) // This happens when target is existing and valid
+        {
+
+            stateMachine.shootingBuilding.targeter.soAttackSystem.Attack(stateMachine.shootingBuilding.targeter, stateMachine.shootingBuilding.targeter.target, stateMachine.shootingBuilding.GetStats().damage);
+
+            stateMachine.shootingBuilding.targeter.attackTimer = 0f;
         }
         else
         {
             if (DebuggerGlobal.instance.drawTargetLines)
             {
-                DebuggerGlobal.instance.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.target.transform.position);
+                DebuggerGlobal.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.targeter.target.transform.position);
             }
            
-           // Debug.Log("not null" + stateMachine.shootingBuilding.target.ToString());
+           
         }
    
       

@@ -4,24 +4,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Follower : SceneObject,  IDamageable
+public class Follower : SceneObject,  IDamageAble
 {
-    public HealthSystem healthSystem { get { return protectedHelthSystem; } }
-    bool isDead;
-    public event EventHandler<IdamageAbleArgs> OnDeath;
 
 
-    private HealthSystem protectedHelthSystem;
-    public SceneObject sceneObject { get { return this; } }
 
-    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.follower; } }
-    
 
-  
 
-    private void Awake()
+
+
+    public SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.follower; } }
+
+    public IdamagableComponent idamageableComponent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    protected override void Awake()
     {
-        SetHealthSystem(GetComponent<HealthSystem>());
+        base.Awake();
+
 
     }
     protected override void Start()
@@ -29,7 +28,7 @@ public class Follower : SceneObject,  IDamageable
         base.Start();
         
  
-        OnCreated();
+
 
     }
 
@@ -46,42 +45,31 @@ public class Follower : SceneObject,  IDamageable
     }
 
 
-    public void SetHealthSystem(HealthSystem healthSystem)
-    {
-        protectedHelthSystem = healthSystem;
-    }
-
     public void Die()
     {
-        if (IsDead())
+        if (isDead)
         {
            return;
         }
+        
         isDead = true;
         DestroySceneObject();
     }
 
-    public bool IsDead()
-    {
-        return isDead;
-    }
+
 
     protected override void OnObjectDestroyed()
     {
         isDead = true;
-        OnDeath?.Invoke(this, new IdamageAbleArgs { damageable = this });
-        BattleSceneActions.OnDamagableDestroyed(this);
+
+        BattleSceneActions.OnSceneObjectDestroyed(this);
 
         Destroy(gameObject);
     }
 
-    public void OnCreated()
-    {
-        BattleSceneActions.OnDamagableCreated(this);
-    }
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.health);
     }
 }

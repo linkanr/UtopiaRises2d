@@ -21,7 +21,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
 
 
 
-    public void Trigger(ICanAttack canAttack, Target idamageable)
+    public void Trigger(TargeterBaseClass canAttack, Target idamageable)
     {
         if (idamageable== null)
         {
@@ -54,7 +54,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
     {
         if (triggerd) 
         {
-            timer += Time.deltaTime;
+            timer += BattleClock.Instance.deltaValue;
             if (timer > timerMax) 
             {
                 DOTween.To(() => currentStart, x => currentStart = x, end, timerMax / 2f).OnComplete(() => SetInactive());

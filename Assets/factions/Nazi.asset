@@ -21,9 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  factionEnum: 3
-  description: 
+  factionEnum: 7
+  description: Full fledged nazi
   color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   politicalAlignment:
-    leftRigt: 4
+    leftRigt: 3
     galTan: 5

@@ -7,15 +7,22 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
     public override void OnStateEnter()
     {
         BattleSceneActions.OnPause(false);
-        GameSceneRef.instance.panel.gameObject.SetActive(false);
+        BattleSceneActions.OnStartSpawning?.Invoke();
+        GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
         EnemyManager.Instance.SetSpawning(true);
-
+        BattleSceneActions.OnSpawnInterwallDone += OnSpawningDone;
     }
 
+    private void OnSpawningDone()
+    {
+        stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
+    }
 
     public override void OnStateExit()
     {
-       
+        EnemyManager.Instance.SetSpawning(false);
+        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningDone;
+        BattleSceneActions.OnPause(true);
     }
 
     public override void OnStateUpdate()

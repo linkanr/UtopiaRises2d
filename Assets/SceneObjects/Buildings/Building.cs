@@ -3,94 +3,65 @@ using Pathfinding;
 using UnityEngine;
 [RequireComponent(typeof(HealthSystem))]
 
-public abstract class Building : StaticSceneObject, IDamageable
+public abstract class Building : StaticSceneObject, IDamageAble, IHasLifeSpan
 {
     private HealthSystem Healthsystem;
-    protected bool isDead = false;
 
-    public virtual HealthSystem healthSystem { get { return Healthsystem; } }
-
-    public event EventHandler<IdamageAbleArgs> OnDeath;
-
-
+    private TimeLimterSceneObject timeLimiter;
     public SceneObject sceneObject { get { return this; } }
+    public virtual SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.playerbuilding; } }
 
-    public virtual iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.playerbuilding; } }
+    public IdamagableComponent idamageableComponent { get; set; }
 
-
-
-    protected virtual void Awake()
+    protected override void Awake()
     {
-
-        SetHealthSystem(GetComponent<HealthSystem>());
+        base.Awake();
+        
     }
     protected override void Start()
     {
         base.Start();
-        OnCreated();
+
+    }
+        #region HasLifeSpan
+    public TimeStruct getBirthLifeSpan()
+
+    {
+        Debug.Log(stats.ToString());
+        return TimeCalc.TimeToTimeStruct(stats.GetFloat(StatsInfoTypeEnum.lifeTime));
     }
 
-    public virtual void OnCreated()
+    public void SetTimeLimiter()
     {
-        BattleSceneActions.OnDamagableCreated(this);
+
+        timeLimiter = gameObject.AddComponent<TimeLimterSceneObject>();
+        timeLimiter.Init(this);
+    }
+    public TimeLimterSceneObject GetTimeLimiter()
+    {
+        return timeLimiter;
     }
 
 
 
-    public void Die()
+    public void OnLifeUp()
     {
-        if (IsDead())
+        if (!isDead)
         {
-            return;
+            DestroySceneObject();
         }
-        isDead = true;
-        DestroySceneObject();
 
     }
-
-    public Transform GetTransform()
-    {
-        if (isDead)
-        {
-            return null;
-        }
-        return transform;
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
-    }
-
-    public void SetHealthSystem(HealthSystem _healthSystem)
-    {
-         Healthsystem =_healthSystem;
-    }
-
-    public void TakeDamage(int amount)
-    {
-        if (IsDead())
-        {
-            return;
-        }
-        bool isDead = healthSystem.TakeDamage(amount);
-        if (isDead)
-        {
-            Die();
-        }
-    }
-
+    #endregion
     protected override void OnObjectDestroyed()
     {
-        isDead = true;
-        OnDeath?.Invoke(this, new IdamageAbleArgs { damageable = this });
-        BattleSceneActions.OnDamagableDestroyed(this);
+
         Destroy(gameObject);
     }
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health,idamageableComponent.healthSystem.health);
     }
 
 }

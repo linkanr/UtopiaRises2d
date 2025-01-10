@@ -7,8 +7,8 @@ public static class FisicalResources
 	{
 		if (cost <= SceneObjectManager.Instance.influence)
 		{
-			UnityEngine.Debug.Log("influence cost is " + cost + " influence value is " + SceneObjectManager.Instance.influence);
-            SceneObjectManager.Instance.AddInfluence(-cost);
+		//	UnityEngine.Debug.Log("influence cost is " + cost + " influence value is " + SceneObjectManager.Instance.influence);
+            
 			return true;
         }
 		else
@@ -16,4 +16,9 @@ public static class FisicalResources
 			return false;
 		}
 	}
+	public static void Buy(int cost)
+	{
+		
+        SceneObjectManager.Instance.AddInfluence(-cost);
+    }
 }

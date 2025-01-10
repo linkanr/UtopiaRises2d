@@ -6,7 +6,7 @@ public class BasicHealthSystem : HealthSystem
 {
     protected override bool HandleDamage(int damage)
     {
-        if (health <= 0)
+        if (health < 1)
         {
             return true;
         }

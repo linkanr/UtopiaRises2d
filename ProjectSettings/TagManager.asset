@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Terrain
+  - persistant
   layers:
   - Default
   - TransparentFX
@@ -21,9 +22,9 @@ TagManager:
   - enemy
   - humanBuildings
   - SceneObjects
-  - 
-  - 
-  - 
+  - sapling
+  - tree
+  - oldTree
   - 
   - 
   - 

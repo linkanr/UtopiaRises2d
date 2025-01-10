@@ -6,7 +6,7 @@ using DG.Tweening;
 using SpriteShadersUltimate;
 public class SpriteChangeByDamage : MonoBehaviour
 {
-    private IDamageable damageable;
+    private IDamageAble damageable;
         
 
     private ShaderFaderSSU shaderFader;
@@ -19,16 +19,16 @@ public class SpriteChangeByDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damageable = GetComponentInParent<IDamageable>();
+        damageable = GetComponentInParent<IDamageAble>();
         if (triggerOnDeath) // If its a death effect then it should be disabled from start
         {
             GetComponent<SpriteRenderer>().enabled = false;
-            damageable.OnDeath += OnDeathTrigger;
+            damageable.idamageableComponent.OnDeath += OnDeathTrigger;
         }
         else
         {
-            damageable.OnDeath += RemoveGameObject;
-            damageable.healthSystem.OnDamaged += OnTriggered;
+            damageable.idamageableComponent.OnDeath += RemoveGameObject;
+            damageable.idamageableComponent.healthSystem.OnDamaged += OnTriggered;
         }
         
         shaderFader = GetComponent<ShaderFaderSSU>();
@@ -58,7 +58,7 @@ public class SpriteChangeByDamage : MonoBehaviour
     {
         if (shaderFader.isFaded)
         {
-            timer += Time.deltaTime;
+            timer += BattleClock.Instance.deltaValue;
             if (timer > timerMax )//Dont go back to normal state if dead
             {
                 if (!triggerOnDeath)

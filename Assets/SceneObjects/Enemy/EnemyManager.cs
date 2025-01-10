@@ -24,6 +24,13 @@ public class EnemyManager : MonoBehaviour
         {
             Debug.LogError("double trouble");
         }
+    }
+    private void Start()
+    {
+        Debug.Log((GameManager.instance.levelString));
+        soEnemyLevelList = Resources.Load(GameManager.instance.levelString) as SoEnemyLevelList;
+        Debug.Log(soEnemyLevelList);
+
         spawner = GetComponent<EnemySpawner>();
         looker = new EnemyLooker(this);
         

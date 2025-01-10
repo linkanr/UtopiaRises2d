@@ -9,6 +9,7 @@ public abstract class StaticSceneObject : SceneObject
     {
         base.Start();
 
+
         rB2D.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 

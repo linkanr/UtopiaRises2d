@@ -5,21 +5,18 @@ using UnityEngine;
 public class CardOptionsHandler : MonoBehaviour
 {
 
-    float costRare = 120f;
-    float costUncommon = 15f;
-    public List<CardNames> cardNamesList = new List<CardNames>();
-    SoCardGlobalDic SoCardGlobalDic;
+    readonly float costRare = 120f;
+    readonly float costUncommon = 15f;
+
+    SoAllCardsGlobalDic SoCardGlobalDic;
     private void Awake()
     {
-        SoCardGlobalDic = Resources.Load("CardNames") as SoCardGlobalDic;
-        foreach(KeyValuePair<CardNames, SoCardBase> keyValuePair in SoCardGlobalDic.CardEnumsToCards)
-        {
-           cardNamesList.Add(keyValuePair.Key);
-        }
+        SoCardGlobalDic = Resources.Load("CardNames") as SoAllCardsGlobalDic;
+
     }
-    private List<RareEnums> GetRareEnums(int luck, int cardAmount)
+    private List<CardRareEnums> GetRareEnums(int luck, int cardAmount)
     {
-        List<RareEnums> returnList = new List<RareEnums>();
+        List<CardRareEnums> returnList = new List<CardRareEnums>();
         for (int i=0; i<cardAmount; i++)
         {
             float roll = Random.Range(0, 250) + luck;
@@ -30,51 +27,59 @@ public class CardOptionsHandler : MonoBehaviour
             Debug.Log("second roll is "+secondRoll.ToString());
             if (secondRoll < rareChance)
             {
-                returnList.Add(RareEnums.rare);
+                returnList.Add(CardRareEnums.rare);
                 continue;
 
             }
             if (secondRoll < uncommonChance) 
             {
-                returnList.Add(RareEnums.uncommon);
+                returnList.Add(CardRareEnums.uncommon);
                 continue;
             }
             else
             {
-                returnList.Add(RareEnums.common);
+                returnList.Add(CardRareEnums.common);
             }
         }
         return returnList;
 
     }
-    private void Update()
+
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.C)) 
         {
-            foreach (RareEnums rareEnums in GetRareEnums(0, 3))
+            foreach (CardRareEnums rareEnums in GetRareEnums(0, 3))
             {
                 Debug.Log(rareEnums.ToString());
+                SoCardBase soCardBase = CardManager.Instance.GetRandomCard(rareEnums);
+                Debug.Log(soCardBase.title);
+                
             }
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            foreach (RareEnums rareEnums in GetRareEnums(150, 3))
+            foreach (CardRareEnums rareEnums in GetRareEnums(150, 3))
             {
                 Debug.Log(rareEnums.ToString());
+                SoCardBase soCardBase = CardManager.Instance.GetRandomCard(rareEnums);
+                Debug.Log(soCardBase.title);
             }
         }
         if (Input.GetKeyDown(KeyCode.R))
         {
-            foreach (RareEnums rareEnums in GetRareEnums(500, 3))
+            foreach (CardRareEnums rareEnums in GetRareEnums(500, 3))
             {
                 Debug.Log(rareEnums.ToString());
+                SoCardBase soCardBase = CardManager.Instance.GetRandomCard(rareEnums);
+                Debug.Log(soCardBase.title);
             }
         }
 
 
 
     }
-
+    */
 
 
 }

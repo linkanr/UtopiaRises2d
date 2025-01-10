@@ -1,10 +1,12 @@
 using UnityEngine;
-[CreateAssetMenu(menuName = "ScriptableObjects/Cards/GetFollower")]
+[CreateAssetMenu(menuName = "Cards/GetFollower")]
 public class CardGetFollower : SoCardInstanciate
 {
-   
-    public override void ActualEffect(Vector3 position)
+
+    public override bool ActualEffect(Vector3 position, out string failureReason)
     {
-        prefab.Init(GameSceneRef.instance.goalPosition.position); 
+        failureReason = "";
+        prefab.Init(GameSceneRef.instance.followerBirthPlace.position); 
+        return true;
     }
 }

@@ -56,7 +56,7 @@ public class GridConstrution
 
     public Vector3 GetWorldPostion(int x, int y)
     {
-        return new Vector3(x,y, 0f) * cellSize + new Vector3(offset.x,offset.y,offset.z);
+        return new Vector3(x+cellSize*.5f,y+cellSize*.5f, 0f) * cellSize + new Vector3(offset.x,offset.y,offset.z);
     }
 
     public Vector3 GetCellPositionByPosition(Vector3 _position)
@@ -65,7 +65,10 @@ public class GridConstrution
         {
             return Vector3.zero;
         }
-        return GetWorldPostion(GetCellByWorldPostion(_position).x,GetCellByWorldPostion(_position).y);
+        Vector3 worldPos =  GetWorldPostion(GetCellByWorldPostion(_position).x,GetCellByWorldPostion(_position).y);
+        worldPos.x += cellSize / 2;
+        worldPos.y += cellSize / 2;
+        return worldPos;
     }
     public Vector3 GetCurrentCellPostionByMouse()
     {
@@ -118,6 +121,45 @@ public class GridConstrution
         return returnList;
 
     }
+
+    public List<Cell> GetCellListByWorldPosition(Vector3 position, int xSize, int ySize)
+    {
+        List<Cell> returnList = new List<Cell>();
+        Cell startCell = GetCellByWorldPostion(position);
+        int starty = startCell.y;
+        int startx = startCell.x;
+
+        // Loop for x dimension
+        for (int x = -xSize / 2; x <= xSize / 2; x++)
+        {
+            int offsetX = x;
+            int targetX = offsetX + startx;
+
+            // Check x bounds
+            if (targetX < 0 || targetX >= gridArray.GetLength(0))
+                continue;
+
+            // Loop for y dimension
+            for (int y = -ySize / 2; y <= ySize / 2; y++)
+            {
+                int offsetY = y;
+                int targetY = offsetY + starty;
+
+                // Check y bounds
+                if (targetY < 0 || targetY >= gridArray.GetLength(1))
+                    continue;
+
+                // Add the cell to the list
+                returnList.Add(gridArray[targetX, targetY]);
+            }
+        }
+
+        return returnList;
+    }
+
+
+
+
     public void SetTextToCellList(List<Cell> cells)
     {
         foreach(Cell cell in cells)

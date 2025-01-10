@@ -3,18 +3,26 @@ using UnityEngine;
 
 public abstract class EnviromentObject : StaticSceneObject
 {
-    public Sprite sprite;
+    public float moveFactor;
 
     public static EnviromentObject Create(ObjectTypeEnums objectTypeEnums, Vector3 position)
     {
         position.z = 0;
         string name = objectTypeEnums.ToString();
-        Debug.Log(name);
+
         GameObject enviromentObject = Resources.Load(name) as GameObject;
-        Debug.Log(enviromentObject);
-        enviromentObject.GetComponent<EnviromentObject>().DoCreate(position);
-        return enviromentObject.GetComponent<EnviromentObject>();
+
+        EnviromentObject envO = enviromentObject.GetComponent<EnviromentObject>().DoCreate(position);
+
+        envO.transform.SetParent(GameObject.Find("PersistantParent").transform);
+        return envO;
     }
+    protected override void AddStatsForClick(Stats _stats)
+    {
+
+        _stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.enviromentObject);
+    }
+
 
     public abstract EnviromentObject DoCreate(Vector3 position);
     protected override void OnObjectDestroyed()
@@ -26,5 +34,5 @@ public abstract class EnviromentObject : StaticSceneObject
 public enum ObjectTypeEnums
 {
     stone,
-    tree
+    forest
 }

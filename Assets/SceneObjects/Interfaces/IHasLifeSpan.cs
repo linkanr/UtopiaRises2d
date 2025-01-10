@@ -1,3 +1,6 @@
+/// <summary>
+/// This adds the ability to have a limited life spann, the corresponding SO needs to add float lifetime
+/// </summary>
 public interface IHasLifeSpan
 {
     public TimeStruct getBirthLifeSpan();//Return the span from the scene object

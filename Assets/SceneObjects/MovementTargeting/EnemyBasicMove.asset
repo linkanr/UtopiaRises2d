@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EnemyBasicMove
   m_EditorClassIdentifier: 
   speed: 2.5
-  lookForNewTargetTime: 3
+  maxDistance: 10
+  lookForNewTargetTime: 1

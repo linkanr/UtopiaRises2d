@@ -4,23 +4,27 @@ using UnityEngine;
 
 public class PlayerGlobalsManager : MonoBehaviour
 {
-    public static PlayerGlobalsManager Instance;
+    public SoPlayerBaseBuilding soPlayerBaseBuilding;
+    public static PlayerGlobalsManager instance;
+    public Vector3  basePositions; 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         else
         {
             Debug.LogError("two global managers");
         }
     }
+    
 
     public int influenceEachTurn { get; private set; }
     public int cardAmount { get; private set; }
     private void Start()
     {
+  
         influenceEachTurn = 3;
         cardAmount = 5;
     }

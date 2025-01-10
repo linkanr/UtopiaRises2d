@@ -21,21 +21,24 @@ public class OnClickObject : MonoBehaviour
 
     private void Init(Stats clickInfo)
     {
-        tracingObject = clickInfo.GetTransform(StatsInfoTypeEnum.objectToFollow);
+        tracingObject = clickInfo.sceneObjectTransform;
         foreach (KeyValuePair<StatsInfoTypeEnum, object> kvp in clickInfo.statsInfoDic)
         {
             switch (kvp.Key)
             {
-                case StatsInfoTypeEnum.SoEnemyAttackSystem:
-                    HandleAttackSystem(kvp);
 
+
+                case StatsInfoTypeEnum.onClickDisplaySprite:
+                    float size = clickInfo.maxShootingDistance * 2f;
+                    CircleReach.localScale = new Vector3(size, size, size);
                     break;
-
-
                 case StatsInfoTypeEnum.description:
                 case StatsInfoTypeEnum.name:
-                case StatsInfoTypeEnum.faction:
+                case StatsInfoTypeEnum.Faction:
                 case StatsInfoTypeEnum.health:
+                case StatsInfoTypeEnum.damageAmount:
+                case StatsInfoTypeEnum.reloadTime:
+                case StatsInfoTypeEnum.speed:
 
 
                     GenerateStrings(kvp);
@@ -48,20 +51,7 @@ public class OnClickObject : MonoBehaviour
         }
     }
 
-    private void HandleAttackSystem(KeyValuePair<StatsInfoTypeEnum, object> kvp)
-    {
-        SoAttackSystem attackSystem = kvp.Value as SoAttackSystem;
-        float size = attackSystem.maxRange * 2f;
-        CircleReach.localScale = new Vector3(size, size, size);
-        TextMeshProUGUI damageText = Instantiate(simpleText, leftPanel);
-        TextMeshProUGUI damagenumber = Instantiate(simpleText, rightPanel);
-        TextMeshProUGUI timeAttacktext = Instantiate(simpleText, leftPanel);
-        TextMeshProUGUI timeAttacknumber = Instantiate(simpleText, rightPanel);
-        damageText.text = "damage";
-        timeAttacktext.text = "reload time";
-        damagenumber.text = attackSystem.damage.ToString();
-        timeAttacknumber.text = attackSystem.attackTimerMax.ToString();
-    }
+
 
     private void GenerateStrings(KeyValuePair<StatsInfoTypeEnum, object> kvp)
     {
@@ -69,15 +59,16 @@ public class OnClickObject : MonoBehaviour
         TextMeshProUGUI rightText = Instantiate(simpleText, rightPanel);
         
         leftText.text = kvp.Key.ToString();
-        if (kvp.Key == StatsInfoTypeEnum.reloadTime)
-        {
-            leftText.text = "Shots/S";
-            float shots = 1f/((float) kvp.Value);
-            rightText.text = shots.ToString();
-        }
+
         if (kvp.Value.GetType() == typeof(int))
         {
             rightText.text = kvp.Value.ToString();
+        }
+        if (kvp.Value.GetType() == typeof(float))
+        {
+            float value = (float) kvp.Value;
+            int ivalue =   (int) value;
+            rightText.text = ivalue.ToString();
         }
         if (kvp.Value.GetType() == typeof(string))
         {
@@ -100,7 +91,7 @@ public class OnClickObject : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
         {
             Destroy(gameObject);
         }

@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
-[CreateAssetMenu(menuName = "ScriptableObjects/Cards/HumanShields")]
-public class CardHumanShields : SoCardBase
+[CreateAssetMenu(menuName = "Cards/HumanShields")]
+public class CardHumanShields : SoCardInstanciate
 {
-    public Transform prefab;
-    public override void ActualEffect(Vector3 position)
+
+    public override bool ActualEffect(Vector3 position, out string failureReason)
     {
+        throw  new NotImplementedException();
 
         //SET SHIELD DO DEFENCE
 

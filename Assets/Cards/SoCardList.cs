@@ -8,15 +8,17 @@ using UnityEngine;
 public class SoCardList : ScriptableObject, IEnumerable<SoCardBase>
 {
     public List<CardNames> list;
+    public int lengt=> list.Count;
+
 
     // Enumerator to yield SoCardBase objects instead of CardNames
     public  IEnumerator<SoCardBase> GetEnumerator()
     {
-        SoCardGlobalDic soCardGlobalDic = Resources.Load("cardNames") as SoCardGlobalDic;
+        SoAllCardsGlobalDic soCardGlobalDic = Resources.Load("cardNames") as SoAllCardsGlobalDic;
 
         foreach (var cardName in list)
         {
-            yield return getBase(cardName, soCardGlobalDic); // Convert CardNames to SoCardBase
+            yield return soCardGlobalDic.GetCard(cardName);
         }
     }
 
@@ -28,9 +30,5 @@ public class SoCardList : ScriptableObject, IEnumerable<SoCardBase>
     }
 
     // Static method for retrieving SoCardBase from a CardNames
-    public static SoCardBase getBase(CardNames cardName, SoCardGlobalDic soCardGlobalDic)
-    {
-        
-        return soCardGlobalDic.CardEnumsToCards[cardName];
-    }
+
 }

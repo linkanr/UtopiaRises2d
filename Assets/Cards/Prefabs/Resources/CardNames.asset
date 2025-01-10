@@ -16,18 +16,23 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 11400000, guid: eb03d20047f541447a12d56f00afca69, type: 2}
     - {fileID: 11400000, guid: 78df6252e94c2154ab6a1b19d8df066c, type: 2}
     - {fileID: 11400000, guid: ebbcb80d725a53246b74c5b114790b88, type: 2}
     - {fileID: 11400000, guid: 0e7304bc6fabc3c4bafd7ecdc60b3af5, type: 2}
     - {fileID: 11400000, guid: 7764c0ce2cddb8b4d9914ee915a67697, type: 2}
     - {fileID: 11400000, guid: 6b113f2d5b5f7c64cbf8a202fb500bc0, type: 2}
+    - {fileID: 11400000, guid: b7add0edcececc142afc548b09fc291f, type: 2}
+    - {fileID: 11400000, guid: 8528d939e22edae4e81e977507eeaf5f, type: 2}
+    - {fileID: 11400000, guid: b01f5604f492cb24aaa14d9cb9995eb9, type: 2}
+    - {fileID: 11400000, guid: 4a9377e3aa250c447afe35a88331faea, type: 2}
+    - {fileID: 11400000, guid: fcba09c279b9a1c42a4444e923cb377e, type: 2}
+    - {fileID: 11400000, guid: 3768cf205ff20b74ba39ad189bf246cf, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: CardEnumsToCards
+    - Name: cardEnumsToCards
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[CardNames, Assembly-CSharp],[SoCardBase,
         Assembly-CSharp]], mscorlib
@@ -46,65 +51,89 @@ MonoBehaviour:
       Data: 
     - Name: 
       Entry: 12
+      Data: 11
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 10
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 10
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 10
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 10
+      Data: 4
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 7
+    - Name: $v
+      Entry: 10
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 10
       Data: 6
     - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 0
-    - Name: $v
-      Entry: 10
-      Data: 0
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 1
-    - Name: $v
-      Entry: 10
-      Data: 1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 2
-    - Name: $v
-      Entry: 10
-      Data: 2
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 3
-    - Name: $v
-      Entry: 10
-      Data: 3
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 7
-      Data: 
-    - Name: $k
-      Entry: 3
-      Data: 4
-    - Name: $v
-      Entry: 10
-      Data: 4
-    - Name: 
       Entry: 8
       Data: 
     - Name: 
@@ -115,7 +144,43 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 10
-      Data: 5
+      Data: 7
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 10
+      Data: 8
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 9
+    - Name: $v
+      Entry: 10
+      Data: 9
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 10
+    - Name: $v
+      Entry: 10
+      Data: 10
     - Name: 
       Entry: 8
       Data: 

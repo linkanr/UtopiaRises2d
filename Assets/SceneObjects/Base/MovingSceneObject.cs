@@ -15,6 +15,12 @@ public abstract class MovingSceneObject : SceneObject
     private void UpdateBounds(BattleSceneTimeArgs args)
     {
         bounds = c2D.bounds;
+        bounds.Expand(.2f);
         AstarPath.active.UpdateGraphs(bounds);
     }
+    protected virtual void Update() 
+    {
+        spriteSorter.SortSprite();
+    }
+
 }

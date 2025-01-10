@@ -27,8 +27,9 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
             _stateByType.Add(state.GetType(), state);
             
         }
-        SetState(instanciatedStates[0].GetType());
         Init();
+        SetState(instanciatedStates[0].GetType());
+
 
 
     }

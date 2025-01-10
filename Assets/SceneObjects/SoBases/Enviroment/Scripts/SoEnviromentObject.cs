@@ -13,6 +13,6 @@ public class SoEnviromentObject : SoSceneObjectBase
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
-        
+        sceneObject.transform.SetParent(GameObject.Find("PersistantParent").transform);
     }
 }

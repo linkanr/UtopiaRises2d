@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using Pathfinding;
+using System;
+using System.Data;
 using UnityEngine;
 /// <summary>
 /// Target Has a damagable and a transform . Its constructior set the ICanAttack so that it looses its target when the damagagable dies
@@ -9,39 +11,49 @@ public class Target
     /// <summary>
     /// the constructor takes both target and attacker and sets up a event call that clears the target on death
     /// </summary>
-    /// <param name="_damageable"></param>
+    /// <param name="the target, a scene object with idamageable"></param>
     /// <param name="attacker"></param>
-    public Target (IDamageable _damageable, ICanAttack attacker) 
+    public Target (IDamageAble _damageable, TargeterBaseClass attacker) 
     {
-        Damagable = _damageable;
-        if (!Damagable.IsDead())
-        {
-            Damagable.OnDeath += (sender, e) => attacker.target = null;
-
-            transform = Damagable.GetTransform();
-        }
-        
-
-        
+        damagable = _damageable;
+        Debug.Log("creating new target attacker is " + attacker.attacker.GetStats().name + " defender is " + _damageable.idamageableComponent.sceneObject.GetStats().name);
+        damagable.idamageableComponent.OnDeath += (sender, e) => attacker.RemoveTarget();
+        transform = damagable.idamageableComponent.GetTransform();
     }
-    private IDamageable Damagable;
-    public IDamageable damagable { get  { return Damagable; } } 
-    public Transform transform { get { return Damagable.GetTransform(); } private set { } }
-    public bool isDead { get { return Damagable.IsDead();} }
+
+    public IDamageAble damagable { get; set; } 
+    public Transform transform { get { return damagable.idamageableComponent.GetTransform(); } private set { } }
+    public bool isDead { get { return damagable.idamageableComponent.sceneObject.isDead;} }
     /// <summary>
     /// IsValid checks if it both have a transform and life above zero
     /// </summary>
     /// <returns></returns>
     public bool IsValid()
     {
-        if (!isDead && transform != null)
+        if (transform == null)
+        {
+            Debug.Log("transform is null");
+            return false;
+        }
+        if (!isDead)
         {
             return true;
         }
+        Debug.Log("target dead");
         return false;
     }
-    
-
+    public void Set(IDamageAble _damageable, Transform _transform)
+    {
+        damagable = _damageable;
+        transform = _transform;
+        
+    }
+    public void RemoveTarget()
+    {
+        damagable = null;
+        transform=null;
+       
+    }
 
 
 }

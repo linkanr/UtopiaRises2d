@@ -19,7 +19,9 @@ namespace AllIn1SpringsToolkit
 		[SerializeField] private Material autoUpdatedMaterial;        
 
         private int shaderPropertyID;
+#pragma warning disable IDE0044 // Add readonly modifier
         private float initialShaderValue;
+#pragma warning restore IDE0044 // Add readonly modifier
 
         public override void Initialize()
         {

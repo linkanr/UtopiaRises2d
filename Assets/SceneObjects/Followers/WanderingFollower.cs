@@ -16,7 +16,7 @@ public class WanderingFollower : MonoBehaviour
 
     public void GetNewPath()
     {
-        Vector3 goalPos = GameSceneRef.instance.goalPosition.position;
+        Vector3 goalPos = GameSceneRef.instance.followerBirthPlace.position;
         float dist = Vector3.Distance(transform.position, goalPos);
         float mix = GeneralUtils.fit(dist, 0f, 30f, 0f, .9f); 
         Vector3 endPos = Vector3.Lerp(transform.position, goalPos, mix);

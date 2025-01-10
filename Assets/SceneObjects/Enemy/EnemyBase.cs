@@ -1,82 +1,31 @@
 using System;
 using UnityEngine;
 
-public class EnemyBase : StaticSceneObject, IDamageable
+public class EnemyBase : StaticSceneObject, IDamageAble
 {
-    private BasicHealthSystem protectedHealthsystem;
-    private bool isDead;
-    public SoEnemyBase soEnemyBase;
-    public HealthSystem healthSystem { get { return protectedHealthsystem; } set { } }
 
-    public event EventHandler<IdamageAbleArgs> OnDeath;
-    public iDamageableTypeEnum damageableType { get { return iDamageableTypeEnum.enemyBase; } }
-  
+    public SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.enemyBase; } }
 
-    public SceneObject sceneObject { get { return this; } }
+    public IdamagableComponent idamageableComponent { get; set; }
 
     public static EnemyBase Create(Vector3 position, SoEnemyBase _soEnemyBase )
     {
         EnemyBase enemyBase = _soEnemyBase.Init(position) as EnemyBase;
-        enemyBase.SetHealthSystem(enemyBase.GetComponent<HealthSystem>());
-        enemyBase.healthSystem.SetInitialHealth(_soEnemyBase.health);
+       
+        enemyBase.idamageableComponent.healthSystem.SetInitialHealth(_soEnemyBase.health);
         enemyBase.SetStats(_soEnemyBase.GetStats());
-        enemyBase.OnCreated();
         return enemyBase;
 
-    }
-    public void Die()
-    {
-        if (!isDead)
-        {
-            isDead = true;
-            OnDeath.Invoke(this,new IdamageAbleArgs { damageable=this});
-        }
-
-        DestroySceneObject();
-    }
-
-    public Transform GetTransform()
-    {
-        return transform;
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
-       
-    }
-
-    public void SetHealthSystem(HealthSystem healthSystem)
-    {
-        protectedHealthsystem = healthSystem as BasicHealthSystem;
-    }
-
-    public void TakeDamage(int amount)
-    {
-        if (IsDead())
-        {
-            return;
-        }
-
-        bool hasDied = healthSystem.TakeDamage(amount);
-        if (hasDied)
-        {
-            Die();
-        }
     }
 
     protected override void OnObjectDestroyed()
     {
-        BattleSceneActions.OnEnemyBaseDestroyed();
+        BattleSceneActions.OnEnemyBaseDestroyed?.Invoke();
     }
 
-    public void OnCreated()
-    {
-        BattleSceneActions.OnDamagableCreated(this);
-    }
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health,healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.health);
     }
 }

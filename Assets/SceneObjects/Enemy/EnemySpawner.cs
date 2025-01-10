@@ -29,12 +29,15 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {  if (spawn)
         {
-            timer += Time.deltaTime;
+            timer += BattleClock.Instance.deltaValue;
             if (timer > actualTimer)
             {
                 
                 SoEnemyObject soEnemyObject = Instantiate( enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
-                Enemy.Create(soEnemyObject, SpawnPos.position + WorldSpaceUtils.GetRandomDirection() * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f), Quaternion.identity);
+             
+                Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(5f,1f,1f) * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
+
+                EnemyCreator.CreateEnemy(soEnemyObject,position);
 
                 timer = 0;
                 actualTimer = timerMax;

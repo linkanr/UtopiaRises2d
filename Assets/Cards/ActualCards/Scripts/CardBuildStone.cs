@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/Cards/PlaceStone")]
+[CreateAssetMenu(menuName = "Cards/PlaceStone")]
 public class CardBuildStone : SoCardInstanciate
 
 {

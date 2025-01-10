@@ -15,17 +15,18 @@ public static class BattleSceneActions
     public static Action<Card> OnNewCardAdded;
     public static Action<int> OnDrawCard;
     public static Action OnCardsBeginDrawn;
-    public static Action<bool> OnCardLocked;
     public static Action OnCardsEndDrawn;
+    public static Action OnSpawnInterwallDone;
+    public static Action OnStartSpawning;
 
 
     public static Action <Cell> OnCellClicked;
 
 
 
-    public static Action<IDamageable> OnDamagableCreated;
+    public static Action<SceneObject> OnSceneObejctCreated;
     public static Action<int> OnBaseDamaged;
-    public static Action<IDamageable> OnDamagableDestroyed;
+    public static Action<SceneObject> OnSceneObjectDestroyed;
     public static Action<Bounds> OnUpdateBounds; 
 
     public static Action<BattleSceneTimeArgs> GlobalTimeChanged;

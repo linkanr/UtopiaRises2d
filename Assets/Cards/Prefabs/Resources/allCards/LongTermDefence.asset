@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
+  m_Name: LongTermDefence
+  m_EditorClassIdentifier: 
+  description: Plan ahead with long term defence
+  title: Long term defence
+  image: {fileID: 21300000, guid: 9dceef12e4c58ad409024eee9cc225c5, type: 3}
+  rarity: 0
+  cardCanBePlayedOnEnum: 0
+  influenceCost: 2
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  prefab: {fileID: 11400000, guid: d91c26e7337e89f47aa5b9925b7ba5cc, type: 2}
+  sizeX: 1
+  sizeY: 1

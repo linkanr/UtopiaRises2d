@@ -18,15 +18,17 @@ public class SoShotingBuildingStateLookingForTarget : BaseState<ShotingBuildingS
     public override void OnStateUpdate()
     {
         
-        if (stateMachine.shootingBuilding.target == null) 
+        if (stateMachine.shootingBuilding.targeter.target == null) 
         {
             //Debug.Log("looking for target");
-            stateMachine.shootingBuilding.LookForTarget();
+            stateMachine.shootingBuilding.targeter.Seek();
 
         }
-        else if (!stateMachine.shootingBuilding.target.IsValid()) // target is found but probobly dead set it to null
+        else if (!stateMachine.shootingBuilding.targeter.target.IsValid()) // target is found but probobly dead set it to null
         {
             Debug.LogWarning("target is not null but not valid");
+            stateMachine.shootingBuilding.targeter.RemoveTarget();
+            
             return;
         }
         else 

@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4766fb3a96030b499343b86dcf8bf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soPlayerBaseBuilding: {fileID: 11400000, guid: a060602bc0dded54b832c3974cf2e02c, type: 2}
+  basePositions: {x: 25, y: 5, z: 0}
 --- !u!1 &2909800979548665763
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06469acd81ac64248b452a0885f5fad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  level: 1
 --- !u!114 &6692824116543351607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,6 +204,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b323a091ce67b1a4eb22c5e43034b986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interwall: 20
+  interwallTimer: 0
+  deltaValue: 0
 --- !u!1 &9222560756437711634
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,4 +251,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658ba5538a88d014fa56d45992e0b428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardsList: []
+  ownedCards: []

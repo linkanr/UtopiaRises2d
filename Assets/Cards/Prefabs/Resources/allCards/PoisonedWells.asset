@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bc7e6405d6082941becd1f6b25962e0, type: 3}
+  m_Name: PoisonedWells
+  m_EditorClassIdentifier: 
+  description: Whats that smell? Damge:5 Delay:10 Lifetime:60
+  title: PoisonWells
+  image: {fileID: 21300000, guid: 76a189e93af634f4584cbf5b5d5d1b1e, type: 3}
+  rarity: 1
+  cardCanBePlayedOnEnum: 1
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
+  damagaAmount: 3
+  delay: 5
+  amountOfTimes: 5
+  damageMultiplier: {fileID: 11400000, guid: d2e5c9edae963f245a45c5636a013225, type: 2}

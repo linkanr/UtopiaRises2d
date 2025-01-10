@@ -13,15 +13,19 @@ public class CardsInPlayManager : MonoBehaviour
 
     private void Awake()
     {
-
+        
         if (instance == null)
         {
             instance = this;
         }
+        else
+        {
+            Debug.LogError("");
+        }
     }
     private void OnEnable()
     {
-       
+        Debug.Log("subbing");
         BattleSceneActions.OnInitializeScene += InitializeDrawPile;
         BattleSceneActions.OnDrawCard += DrawCard;
     }
@@ -49,9 +53,9 @@ public class CardsInPlayManager : MonoBehaviour
 
     private void InitializeDrawPile()
     {
-        foreach (SoCardBase card in CardManager.Instance.cardsList)
+        foreach (SoCardBase card in CardManager.Instance.ownedCards)
         {
-            Card newCard =  Card.Create(card, GameSceneRef.instance.drawPile);
+            Card newCard =  Card.Create(card);
             InDrawPileList.Add(newCard);
         }
         ShuffleDrawPile();
@@ -59,35 +63,52 @@ public class CardsInPlayManager : MonoBehaviour
 
     private void DrawCard(int amount)
     {
-        for (int i = 0; i < amount; i++) 
+        //Debug.Log("drawing " + amount + " cards");
+        for (int i = 0; i < amount; i++)
         {
             if (InDrawPileList.Count == 0)
             {
+                Debug.Log("reshuffle");
                 AddDiscardToDrawPile();
                 ShuffleDrawPile();
+                //Debug.Log("amount after reshuffle " + InDrawPileList.Count);
+                
 
             }
+
             Card currentCard = InDrawPileList[0];
-            currentCard.Dealt();
-            InDrawPileList.Remove(currentCard);
-            InHandList.Add(currentCard);
-            
+
+            AddToHandFromDraw(currentCard);
+
         }
     }
+
+    private void AddToHandFromDraw(Card currentCard)
+    {
+        InDrawPileList.Remove(currentCard);
+        InHandList.Add(currentCard);
+        currentCard.AddToHand();
+    }
+
     private void AddDiscardToDrawPile()
     {
         foreach (Card card in InDiscardPileList)
         {
             InDrawPileList.Add(card);
+            
             card.AddedToDrawPile();
+            //Debug.Log("adding card to draw pile");
         }
         InDiscardPileList.Clear();
-        ShuffleDrawPile();
+        //Debug.Log("discard added to drawpile");
+       
     }
-    private void DiscardCard(Card card)
+    public void DiscardCardInHand(Card card)
     {
-
-        card.AddToDiscardPile();
+        //Debug.Log("moving to discard");
+        InHandList.Remove(card);
+        InDiscardPileList.Add(card);
+        card.MoveLeftOversToDiscard();
     }
     private void ShuffleDrawPile()
     {

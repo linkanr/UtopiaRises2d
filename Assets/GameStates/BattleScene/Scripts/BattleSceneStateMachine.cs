@@ -13,6 +13,10 @@ public class BattleSceneStateMachine : BaseStateMachine<BattleSceneStateMachine>
     {
         GlobalActions.OnBattleSceneLoaded += StartStateMachine;
     }
+    private void OnDisable()
+    {
+        GlobalActions.OnBattleSceneLoaded -= StartStateMachine;
+    }
 
     private void StartStateMachine()
     {

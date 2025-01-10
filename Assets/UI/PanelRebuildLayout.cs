@@ -43,7 +43,7 @@ public class PanelRebuildLayout : MonoBehaviour
            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
            yield return new WaitForEndOfFrame();
         }
-        Debug.Log("no longer updatering");
+        //Debug.Log("no longer updatering");
         yield return null;
         
     }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
+  m_Name: Sniper
+  m_EditorClassIdentifier: 
+  description: Build i guard tower with a sniper
+  title: Sniper
+  image: {fileID: 21300000, guid: 9175defc0bbc85f4aace41e08fe2aa40, type: 3}
+  rarity: 0
+  cardCanBePlayedOnEnum: 0
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
+  prefab: {fileID: 11400000, guid: 7502794e51dd2c04f97693f75636eb09, type: 2}
+  sizeX: 1
+  sizeY: 1

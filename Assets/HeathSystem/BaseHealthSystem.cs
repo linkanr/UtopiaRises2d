@@ -12,14 +12,10 @@ public class BaseHealthSystem : HealthSystem
     protected override bool HandleDamage(int damage)
     {
         BattleSceneActions.OnBaseDamaged(damage);
-        if (health != HealthManager.Instance.health)
-        {
-            Debug.LogWarning("health is not matching");
-        }
-        if (health <= 0)
+
+        if (HealthManager.Instance.health <= 0)
 
         {
-            SceneManager.LoadScene("GameOver");
             return true;
         }
         else

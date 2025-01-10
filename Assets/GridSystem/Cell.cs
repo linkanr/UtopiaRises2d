@@ -19,7 +19,25 @@ public class Cell
     public GridConstrution gridRef;
     public string information;
     public float size;
+    public CellTerrain cellTerrain; 
+    public CellEffect cellEffect;
+    public SceneObject containingSceneObejct { get { return SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(worlPosition, maxDistance:.5f); } }
+    public Vector3 worlPosition { get { return gridRef.GetWorldPostion(x, y); } }
+    public bool hasSceneObejct
+    {
+        get
+        {
+            if (containingSceneObejct == null)
+            {
 
+                return false;
+            }
+            else
+            {
+                Debug.Log("scene objet" + containingSceneObejct.GetStats().GetString(StatsInfoTypeEnum.name));
+                return true;
+            }
+        }
 
-
+    }
 }

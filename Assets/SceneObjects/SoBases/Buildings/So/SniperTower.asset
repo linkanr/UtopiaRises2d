@@ -23,9 +23,14 @@ MonoBehaviour:
     SerializationNodes: []
   sceneObjectName: Sniper Tower
   description: A sniper tower
-  prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
-  lifeTime: 50
   sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
-  attackSystem: {fileID: 11400000, guid: de283dee2ed1f864fbdca78e96391a3b, type: 2}
-  lookForEnemyType: 1
-  possibleTargetTypes: 0200000003000000
+  prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
+  sceneObjectType: 0
+  lifeTime: 50
+  health: 100
+  attackSystem: {fileID: 11400000, guid: 227f0a7e9d5c7ed49a4011ec7854aed0, type: 2}
+  seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
+  possibleTargetTypes: 02000000
+  damage: 5
+  maxShootingDistance: 20
+  reloadtime: 1

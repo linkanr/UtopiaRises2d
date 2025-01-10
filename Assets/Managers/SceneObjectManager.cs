@@ -8,9 +8,9 @@ public class SceneObjectManager : MonoBehaviour
 {
     public static SceneObjectManager Instance;
     public List<Transform> followerList;
-    public IdamagableGetter sceneObjectGetter;
+    public SceneObjectGetter sceneObjectGetter;
     public int influence  {get; private set;}
-    public List<IDamageable> iDamagablesInScene; // All idamageable should add themself to this list
+    public List<SceneObject> sceneObjectsInScene; // All idamageable should add themself to this list
     private void Awake()
     {
         if (Instance == null)
@@ -22,13 +22,13 @@ public class SceneObjectManager : MonoBehaviour
             Debug.LogError("dubble manager");
         }
         followerList = new List<Transform>();
-        iDamagablesInScene = new List<IDamageable> ();
-        sceneObjectGetter = new IdamagableGetter(this);
+        sceneObjectsInScene = new List<SceneObject> ();
+        sceneObjectGetter = new SceneObjectGetter(this);
     }
     private void OnEnable()
     {//Refactor into a OnSceneObjectCreated
-        BattleSceneActions.OnDamagableDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnDamagableCreated += HandleDamagableCreated; // triggers every time someone with ITargatableByEnemy is created
+        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
+        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated; // triggers every time someone with ITargatableByEnemy is created
  
         BattleSceneActions.setInfluence += SetInfluence; // SET influence each turn Triggered by statemachine 
 
@@ -37,12 +37,13 @@ public class SceneObjectManager : MonoBehaviour
 
     private void OnDisable()
     {
-        BattleSceneActions.OnDamagableDestroyed -= HandleDamagableDestroyed;
-        BattleSceneActions.OnDamagableCreated -= HandleDamagableCreated;
+        BattleSceneActions.OnSceneObjectDestroyed -= HandleDamagableDestroyed;
+        BattleSceneActions.OnSceneObejctCreated -= HandleDamagableCreated;
 
         BattleSceneActions.setInfluence -= SetInfluence;
     }
     //Influece should be moved to a player asset manager
+
     private void SetInfluence(int obj)
     {
         influence =obj;
@@ -65,22 +66,22 @@ public class SceneObjectManager : MonoBehaviour
         BattleSceneActions.OnFollowerCountChanged(followerList.Count);
     }
 
-    private void HandleDamagableCreated(IDamageable target)
+    private void HandleDamagableCreated(SceneObject target)
     {
-        if(target.damageableType == iDamageableTypeEnum.follower)
+        if(target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
         {
-            AddFollowerToList(target.GetTransform());
+            AddFollowerToList(target.transform);
         }
-        Debug.Log("target added" + target.ToString());
-        iDamagablesInScene.Add( target );
+        //Debug.Log("target added" + target.ToString());
+        sceneObjectsInScene.Add( target );
         
     }
-    private void HandleDamagableDestroyed(IDamageable target)
+    private void HandleDamagableDestroyed(SceneObject target)
     {
-        if (target.damageableType == iDamageableTypeEnum.follower)
+        if (target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
         {
-            RemoveFollowerFromList(target.GetTransform());
+            RemoveFollowerFromList(target.transform);
         }
-        iDamagablesInScene.Remove(target);
+        sceneObjectsInScene.Remove(target);
     }
 }
