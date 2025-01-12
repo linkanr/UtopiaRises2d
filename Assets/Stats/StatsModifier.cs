@@ -1,27 +1,40 @@
 ﻿using System;
+using UnityEngine;
 
-public abstract class StatsModifier:IDisposable
+public abstract class StatsModifier : IDisposable
 {
-    public bool markedForRemoval {  get; private set; }
-    public event Action<StatsModifier>OnDispose = delegate { };
-    readonly Timer timer;
-    protected StatsModifier(float _duration)
-    {
-        if (_duration <= 0) return;
+    public bool markedForRemoval { get; private set; }
+    public event Action<StatsModifier> OnDispose = delegate { };
+    private readonly Timer timer;
 
-        timer = new CountdownTimer(_duration);
+    protected StatsModifier(float duration)
+    {
+        if (duration <= 0) return;
+
+        timer = new CountdownTimer(duration);
         timer.OnTimerStop += () => markedForRemoval = true;
         timer.OnTimerStop += Dispose;
         timer.Start();
     }
-    public void Dispose()
-    {
 
-        OnDispose.Invoke(obj:this);
+    // New method to prolong the duration
+    public void ProlongDuration(float additionalTime)
+    {
+        if (additionalTime > 0 && timer != null)
+        {
+            timer.AddTime(additionalTime); // Assuming CountdownTimer supports AddTime
+            Debug.Log($"Effect prolonged by {additionalTime} seconds.");
+        }
     }
 
-    public abstract void Handle(object sender, Query query); 
+    public void Dispose()
+    {
+        OnDispose.Invoke(this);
+    }
+
+    public abstract void Handle(object sender, Query query);
 }
+
 
 public class BasicStatModifier : StatsModifier
 {

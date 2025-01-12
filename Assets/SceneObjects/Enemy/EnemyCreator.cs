@@ -24,7 +24,10 @@ public class EnemyCreator : MonoBehaviour
 
     private static void SetSpriteRenders(SoEnemyObject soEnemyObj, Enemy newEnemy)
     {
-        SpriteRenderer[] spriteRenderers = newEnemy.transform.GetComponentsInChildren<SpriteRenderer>();
+        Transform spritePartent = newEnemy.transform.Find("EnemyMovment");
+
+
+        SpriteRenderer[] spriteRenderers = spritePartent.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer spriteRenderer in spriteRenderers)
         {
             spriteRenderer.sprite = soEnemyObj.sprite;

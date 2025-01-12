@@ -42,6 +42,11 @@ public abstract class Timer
     public void Pause() => IsRunning = false;
 
     public abstract void Tick(BattleSceneTimeArgs timeArgs);
+
+    internal void AddTime(float additionalTime)
+    {
+        Time += additionalTime;
+    }
 }
 
 public class CountdownTimer : Timer

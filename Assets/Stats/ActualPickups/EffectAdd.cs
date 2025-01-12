@@ -1,19 +1,24 @@
 ﻿using System;
 using UnityEngine;
 
+
 public class EffectAdd
 {
     public static void AddEffect(PickupTypes pickupType, SceneObject sceneObject, float duration)
     {
-        Debug.Log("actualEffect");
-        // Check if the pickup type is already active
+        Debug.Log("Checking for existing effect...");
         if (sceneObject.IsPickupActive(pickupType))
         {
-            Debug.Log($"Pickup {pickupType} is already active. Effect not applied.");
-            return;
+            var activeModifier = sceneObject.GetActiveModifier(pickupType);
+            if (activeModifier != null)
+            {
+                activeModifier.ProlongDuration(duration);
+                Debug.Log($"Pickup {pickupType} is already active. Duration prolonged by {duration} seconds.");
+                return;
+            }
         }
 
-        // Create and apply the corresponding StatPickupAddMulti
+        Debug.Log("Applying new effect...");
         StatPickupAddMulti pickup = pickupType switch
         {
             PickupTypes.Slow => new StatPickupAddMulti(
@@ -31,15 +36,19 @@ public class EffectAdd
             _ => throw new ArgumentOutOfRangeException($"Unknown PickupType: {pickupType}")
         };
 
-        Debug.Log(" Apply the effect and track the pickup");
         pickup.ApplyPickupEffect(sceneObject);
-        sceneObject.AddPickup(pickupType);
+
+        var modifier = pickup.GetModifier();
+        sceneObject.AddPickup(pickupType, modifier);
 
         // Subscribe to the OnDispose event for cleanup
-        pickup.OnDispose += _ =>
+        modifier.OnDispose += _ =>
         {
             sceneObject.RemovePickup(pickupType);
             Debug.Log($"Pickup {pickupType} has expired.");
         };
     }
 }
+
+
+

@@ -12,7 +12,7 @@ using UnityEngine.EventSystems;
 
 public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClickableObject
 {
-    private readonly HashSet<PickupTypes> activePickups = new HashSet<PickupTypes>();
+    private readonly Dictionary<PickupTypes, StatsModifier> activeModifiers = new Dictionary<PickupTypes, StatsModifier>();
     [HideInInspector]
     public Collider2D c2D;
     [HideInInspector]
@@ -22,7 +22,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     protected Bounds bounds;
     protected SoSceneObjectBase soBase;
     public bool isDead = false;
-    
+    private EffectSpriteOrganizer effectSpriteOrganizer;
     public SpriteRenderer spriteRenderer;
 
     /// <summary>
@@ -49,7 +49,10 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
             damageAble.idamageableComponent = gameObject.AddComponent<HealthHandler>();
             damageAble.idamageableComponent.Init(this);
         }
-
+        GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
+        GameObject instance = Instantiate(effectSpriteGameObject,transform);
+        effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>() ;
+        effectSpriteOrganizer.Init(this.transform);
        
     }
 
@@ -65,17 +68,24 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     }
     public bool IsPickupActive(PickupTypes pickupType)
     {
-        return activePickups.Contains(pickupType);
+        return activeModifiers.ContainsKey(pickupType);
     }
 
-    public void AddPickup(PickupTypes pickupType)
+    public void AddPickup(PickupTypes pickupType, StatsModifier modifier)
     {
-        activePickups.Add(pickupType);
+        activeModifiers[pickupType] = modifier;
+        effectSpriteOrganizer.AddSpriteEffect(pickupType);
     }
 
     public void RemovePickup(PickupTypes pickupType)
     {
-        activePickups.Remove(pickupType);
+        effectSpriteOrganizer.RemoveSpriteEffect(pickupType);
+        activeModifiers.Remove(pickupType);
+    }
+
+    public StatsModifier GetActiveModifier(PickupTypes pickupType)
+    {
+        return activeModifiers.TryGetValue(pickupType, out var modifier) ? modifier : null;
     }
 
     public void SetStats(Stats _stats)
