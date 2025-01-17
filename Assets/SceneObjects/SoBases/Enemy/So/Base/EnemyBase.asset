@@ -25,5 +25,6 @@ MonoBehaviour:
   description: Destroy this
   sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   prefab: {fileID: 3725115120538833062, guid: 326df3530fb582f45a96839ea1b8dd2b, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 3
   health: 20

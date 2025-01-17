@@ -7,6 +7,7 @@ using TMPro;
 using DG;
 using DG.Tweening;
 
+
 public class TimerGuiController : MonoBehaviour
 {
     public RectTransform timerRect;
@@ -17,15 +18,15 @@ public class TimerGuiController : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleSceneActions.GlobalTimeChanged += UpdateTimers;
-        BattleSceneActions.OnSecondChange += ScaleTimer;
+        TimeActions.GlobalTimeChanged += UpdateTimers;
+        TimeActions.OnSecondChange += ScaleTimer;
     }
 
 
     private void OnDisable()
     {
-        BattleSceneActions.GlobalTimeChanged -= UpdateTimers;
-        BattleSceneActions.OnSecondChange -= ScaleTimer;
+        TimeActions.GlobalTimeChanged -= UpdateTimers;
+        TimeActions.OnSecondChange -= ScaleTimer;
     }
 
     private void UpdateTimers(BattleSceneTimeArgs args)

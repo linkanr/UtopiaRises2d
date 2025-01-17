@@ -9,6 +9,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     public string description;
     public Sprite sprite;
     public SceneObject prefab;
+    public Faction faction;
     public SceneObjectTypeEnum sceneObjectType;
 
     public Stats GetStats() // this sets the base
@@ -18,6 +19,8 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
         stats.Add(StatsInfoTypeEnum.description, description);
         stats.Add(StatsInfoTypeEnum.Sprite, sprite);
         stats.Add(StatsInfoTypeEnum.sceneObjectType, sceneObjectType);
+        stats.Add(StatsInfoTypeEnum.Faction, faction);
+        stats.Add(StatsInfoTypeEnum.takesDamageMultiplier, 1f);
         return GetStatsInernal(stats);
 
     }

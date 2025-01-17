@@ -5,18 +5,21 @@ public class SoAttackSingleTarget : SoAttackSystem
 
 {
     public Transform prefabForAmmo;
-    public override void Attack(TargeterBaseClass attacker, Target defender, int damage)
+    public override void Attack(SceneObject attacker)
     {
+        IcanAttack icanAttack = attacker as IcanAttack;
+
 
         //Debug.Log("attacking attacker is " + attacker.attacker.GetStats().GetString(StatsInfoTypeEnum.name) + "defender is " + defender.transform.gameObject.GetComponent<SceneObject>().GetStats().GetString(StatsInfoTypeEnum.name));
         if (prefabForAmmo != null)
         {
-            Transform ammo = Instantiate(prefabForAmmo, attacker.attacker.transform);
-            ammo.GetComponent<IIsAttackInstanciator>()?.Trigger(attacker, defender);
+            Transform ammo = Instantiate(prefabForAmmo, attacker.transform);
+            ammo.GetComponent<IIsAttackInstanciator>()?.Trigger(icanAttack.targeter, icanAttack.targeter.target);
         }
 
         visualEffect.Play();
-        defender.damagable.idamageableComponent.TakeDamage(damage);
+
+        icanAttack.targeter.target.damagable.idamageableComponent.TakeDamage(attacker.GetStats().damageAmount);
 
     }
 }

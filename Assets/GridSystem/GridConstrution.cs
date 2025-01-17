@@ -36,23 +36,7 @@ public class GridConstrution
 
     }
 
-    private float GetCellHeight(Cell newCell)
-    {
-        Vector3 worldPos = GetWorldPostion(newCell.x, newCell.y);
-        worldPos.y = +10f;
-        Ray ray = new Ray(worldPos,new Vector3(0f,-1f,0f));
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray ,out RaycastHit hitData,1000f, GameSceneRef.instance.collisionLayerGrid))
-    
-        {
-            Debug.Log("setting cell y to " + hitData.point.y);
-           return hitData.point.y;
-            
-        }
-        
-        else {  Debug.Log("no depth info for cell"); return -1; }  
-        
-    }
+
 
     public Vector3 GetWorldPostion(int x, int y)
     {
@@ -66,8 +50,7 @@ public class GridConstrution
             return Vector3.zero;
         }
         Vector3 worldPos =  GetWorldPostion(GetCellByWorldPostion(_position).x,GetCellByWorldPostion(_position).y);
-        worldPos.x += cellSize / 2;
-        worldPos.y += cellSize / 2;
+
         return worldPos;
     }
     public Vector3 GetCurrentCellPostionByMouse()

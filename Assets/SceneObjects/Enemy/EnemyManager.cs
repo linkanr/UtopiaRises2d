@@ -27,8 +27,8 @@ public class EnemyManager : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log((GameManager.instance.levelString));
-        soEnemyLevelList = Resources.Load(GameManager.instance.levelString) as SoEnemyLevelList;
+
+        soEnemyLevelList = GameManager.instance.soEnemyLevelList;
         Debug.Log(soEnemyLevelList);
 
         spawner = GetComponent<EnemySpawner>();

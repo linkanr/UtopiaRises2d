@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 public abstract class Timer
 {
     protected float initialTime;
@@ -23,7 +24,7 @@ public abstract class Timer
         if (!IsRunning)
         {
             IsRunning = true;
-            BattleSceneActions.GlobalTimeChanged += Tick;
+            TimeActions.GlobalTimeChanged += Tick;
             OnTimerStart.Invoke();
         }
     }
@@ -32,7 +33,7 @@ public abstract class Timer
     {
         if (IsRunning)
         {
-            BattleSceneActions.GlobalTimeChanged -= Tick;
+            TimeActions.GlobalTimeChanged -= Tick;
             IsRunning = false;
             OnTimerStop.Invoke();
         }

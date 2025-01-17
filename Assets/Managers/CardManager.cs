@@ -10,8 +10,16 @@ public class CardManager : MonoBehaviour
     
     public static CardManager Instance;
     SoAllCardsGlobalDic allCards;
-    
+    public SoCardList startingCards;
 
+    private void OnEnable()
+    {
+        GlobalActions.OnNewCardAddedToDeck += AddCard;
+    }
+    private void OnDisable()
+    {
+        GlobalActions.OnNewCardAddedToDeck -= AddCard;
+    }
     private void Awake()
     {
         if (Instance == null)
@@ -73,7 +81,7 @@ public class CardManager : MonoBehaviour
 
     internal void GetStartingCards()
     {
-        AddCard(Resources.Load("startingCards") as SoCardList);
+        AddCard(startingCards);
     }
 
 }

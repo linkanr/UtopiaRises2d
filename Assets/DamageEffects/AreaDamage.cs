@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -24,7 +25,7 @@ public class AreaDamage : MonoBehaviour
         if (areaDamage.delay > 0.01)
         {
             areaDamage.effect.Stop();
-            BattleSceneActions.GlobalTimeChanged += areaDamage.UpdateDelay;
+            TimeActions.GlobalTimeChanged += areaDamage.UpdateDelay;
         }
         else
         {

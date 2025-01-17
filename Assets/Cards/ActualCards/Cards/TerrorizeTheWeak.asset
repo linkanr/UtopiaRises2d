@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4675a14ee6483d24681102b9f13a27d5, type: 3}
+  m_Name: TerrorizeTheWeak
+  m_EditorClassIdentifier: 
+  description: Deal damage against all weak targets
+  title: Terrrize the weak
+  image: {fileID: -7685871446693566262, guid: 654e7050ef43f2f47be006094d581c3a, type: 3}
+  rarity: 1
+  cardCanBePlayedOnEnum: 0
+  influenceCost: 2
+  faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
+  damage: 10

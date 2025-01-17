@@ -1,4 +1,5 @@
 using System;
+
 using UnityEngine;
 
 public class TimeLimterSceneObject : MonoBehaviour
@@ -11,11 +12,11 @@ public class TimeLimterSceneObject : MonoBehaviour
     public TimeStruct timeToLive { get { return TimeCalc.TimeToTimeStruct(timeToLiveInternal); }  }
     private void OnEnable()
     {
-        BattleSceneActions.GlobalTimeChanged += TimeTick;
+        TimeActions.GlobalTimeChanged += TimeTick;
     }
     private void OnDisable()
     {
-        BattleSceneActions.GlobalTimeChanged -= TimeTick;
+        TimeActions.GlobalTimeChanged -= TimeTick;
     }
 
 

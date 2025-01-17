@@ -1,154 +1,196 @@
-﻿using Pathfinding;
-using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+﻿using UnityEngine.EventSystems;
 using UnityEngine;
-using UnityEngine.EventSystems;
-/// <summary>
-/// All objects in the scene are based on this
-/// </summary>
-[RequireComponent(typeof(Collider2D))]
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
+/// <summary>
+/// Represents a base class for all scene objects in the game.
+/// </summary>
 public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClickableObject
 {
-    private readonly Dictionary<PickupTypes, StatsModifier> activeModifiers = new Dictionary<PickupTypes, StatsModifier>();
-    [HideInInspector]
-    public Collider2D c2D;
-    [HideInInspector]
-    public Rigidbody2D rB2D;
-    protected Stats stats;
+    /// <summary>
+    /// The Collider2D component attached to the scene object.
+    /// </summary>
+    [HideInInspector] public Collider2D c2D;
+
+    /// <summary>
+    /// The Rigidbody2D component attached to the scene object.
+    /// </summary>
+    [HideInInspector] public Rigidbody2D rB2D;
+
+    /// <summary>
+    /// The sprite representing the scene object.
+    /// </summary>
     public Sprite sprite;
+
+    /// <summary>
+    /// The bounds of the scene object.
+    /// </summary>
     protected Bounds bounds;
+
+    /// <summary>
+    /// The base data for the scene object.
+    /// </summary>
     protected SoSceneObjectBase soBase;
+
+    /// <summary>
+    /// Indicates whether the scene object is dead.
+    /// </summary>
     public bool isDead = false;
+
+    /// <summary>
+    /// The effect sprite organizer for managing sprite effects.
+    /// </summary>
     private EffectSpriteOrganizer effectSpriteOrganizer;
+
+    /// <summary>
+    /// The sprite renderer for the scene object.
+    /// </summary>
     public SpriteRenderer spriteRenderer;
 
     /// <summary>
-    /// sprite sorter are 
+    /// The sprite sorter for sorting the sprite.
     /// </summary>
-    protected SpriteSorter spriteSorter; // these are handled by stati
+    protected SpriteSorter spriteSorter;
 
+    /// <summary>
+    /// The stats handler for managing the scene object's stats.
+    /// </summary>
+    private SceneObjectStatsHandler statsHandler;
 
-
-
-    
-    
-    
+    /// <summary>
+    /// Initializes the scene object by setting up various components and handlers.
+    /// </summary>
+    /// <remarks>
+    /// This method performs the following actions:
+    /// <list type="bullet">
+    /// <item><description>Initializes the sprite sorter and sorts the sprite.</description></item>
+    /// <item><description>Adds and initializes the MouseOverScenObject component.</description></item>
+    /// <item><description>If the scene object implements IDamageAble, adds and initializes the HealthHandler component.</description></item>
+    /// <item><description>Loads, instantiates, and initializes the EffectSpriteOrganizer component.</description></item>
+    /// <item><description>Initializes the SceneObjectStatsHandler with the effect sprite organizer.</description></item>
+    /// </list>
+    /// </remarks>
     protected virtual void Awake()
     {
         spriteSorter = new SpriteSorter(this.transform, spriteRenderer);
         spriteSorter.SortSprite();
         MouseOverScenObject mouseOverScenObject = gameObject.AddComponent<MouseOverScenObject>();
         mouseOverScenObject.Init(spriteRenderer);
+
         if (this is IDamageAble)
         {
             IDamageAble damageAble = this as IDamageAble;
-            
             damageAble.idamageableComponent = gameObject.AddComponent<HealthHandler>();
             damageAble.idamageableComponent.Init(this);
         }
+
         GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
-        GameObject instance = Instantiate(effectSpriteGameObject,transform);
-        effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>() ;
+        GameObject instance = Instantiate(effectSpriteGameObject, transform);
+        effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>();
         effectSpriteOrganizer.Init(this.transform);
-       
+
+        statsHandler = new SceneObjectStatsHandler(this, effectSpriteOrganizer);
     }
 
+    /// <summary>
+    /// Called when the scene object is created.
+    /// </summary>
     protected virtual void Start()
     {
-        
         c2D = GetComponent<Collider2D>();
-        rB2D  = gameObject.AddComponent<Rigidbody2D>();
+        rB2D = gameObject.AddComponent<Rigidbody2D>();
         OnCreated();
         rB2D.gravityScale = 0;
         bounds = c2D.bounds;
         AstarPath.active.UpdateGraphs(bounds);
     }
-    public bool IsPickupActive(PickupTypes pickupType)
-    {
-        return activeModifiers.ContainsKey(pickupType);
-    }
-
-    public void AddPickup(PickupTypes pickupType, StatsModifier modifier)
-    {
-        activeModifiers[pickupType] = modifier;
-        effectSpriteOrganizer.AddSpriteEffect(pickupType);
-    }
-
-    public void RemovePickup(PickupTypes pickupType)
-    {
-        effectSpriteOrganizer.RemoveSpriteEffect(pickupType);
-        activeModifiers.Remove(pickupType);
-    }
-
-    public StatsModifier GetActiveModifier(PickupTypes pickupType)
-    {
-        return activeModifiers.TryGetValue(pickupType, out var modifier) ? modifier : null;
-    }
-
-    public void SetStats(Stats _stats)
-    {
-        stats = _stats;
-        _stats.Add(StatsInfoTypeEnum.sceneObjectsTransform, this.transform  );
-
-    }
-    public Stats GetStats()
-    {
-        return stats;   
-    }
-
 
     /// <summary>
-    /// This adds the class to the list of Sceneobjects In the SceneObjectManager this should call public static Action<IDamageable> OnDamagableCreated
+    /// Sets the stats for the scene object.
+    /// </summary>
+    /// <param name="newStats">The new stats to set.</param>
+    public void SetStats(Stats newStats)
+    {
+        statsHandler.SetStats(newStats);
+    }
+
+    /// <summary>
+    /// Gets the stats of the scene object.
+    /// </summary>
+    /// <returns>The current stats of the scene object.</returns>
+    public Stats GetStats()
+    {
+        return statsHandler.GetStats();
+    }
+
+    /// <summary>
+    /// Gets the stats handler for the scene object.
+    /// </summary>
+    /// <returns>The stats handler.</returns>
+    public SceneObjectStatsHandler GetStatsHandler()
+    {
+        return statsHandler;
+    }
+
+    /// <summary>
+    /// Called when the scene object is created.
     /// </summary>
     public virtual void OnCreated()
     {
-        BattleSceneActions.OnSceneObejctCreated(this);  
+        BattleSceneActions.OnSceneObejctCreated(this);
     }
-    public void DestroySceneObject()//Calls whenever a sceneobject is destroyed
+
+    /// <summary>
+    /// Destroys the scene object.
+    /// </summary>
+    public void DestroySceneObject()
     {
         bounds = c2D.bounds;
         bounds.Expand(.1f);
         BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
         BattleSceneActions.OnSceneObjectDestroyed(this);
 
-        OnObjectDestroyed(); 
-        
-        
+        OnObjectDestroyed();
     }
-    /// <summary>
-    /// This is the specific implementation for each object
-    /// </summary>
-    protected abstract void OnObjectDestroyed(); // the specific implementation of the destruction
 
     /// <summary>
-    /// On click effect with stats
+    /// Called when the scene object is destroyed.
     /// </summary>
-    /// <param name="eventData"></param>
+    protected abstract void OnObjectDestroyed();
+
+    /// <summary>
+    /// Handles pointer click events on the scene object.
+    /// </summary>
+    /// <param name="eventData">The event data for the pointer click.</param>
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!MouseDisplayManager.instance.highligtSceneObjects)//check that we are not in mode for selecting it
+        if (!MouseDisplayManager.instance.highligtSceneObjects)
         {
+
             Stats clickStats = new Stats();
-            clickStats.AddStats(stats);
+            clickStats = StatsCopier.CopyStats(statsHandler.GetStats());
+
+
             AddStatsForClick(clickStats);
 
-            OnClickObject.Create(clickStats);
-        }
-        
 
+
+            OnClickObject.Create(clickStats); // this does not take the modifiers into account. 
+        }
     }
 
     /// <summary>
-    /// This Add extra stats that just shows up in ut information when obejct is clicked
+    /// Adds stats for a click event.
     /// </summary>
-    /// <param name="_stats"></param>
+    /// <param name="_stats">The stats to add.</param>
     protected abstract void AddStatsForClick(Stats _stats);
 
+    /// <summary>
+    /// Gets the clickable type of the scene object.
+    /// </summary>
+    /// <returns>The clickable type.</returns>
     public ClickableType GetClickableType()
     {
-        return  ClickableType.SceneObject;
+        return ClickableType.SceneObject;
     }
 }

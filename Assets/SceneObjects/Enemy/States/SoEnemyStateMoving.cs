@@ -1,4 +1,5 @@
 using System;
+
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
@@ -9,9 +10,8 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
 {
     public override void OnStateEnter()
     {
-        stateMachine.enemy.mover.Move(true);
-        
-        BattleSceneActions.GlobalTimeChanged += CheckIfTargetStillInRange;
+        stateMachine.enemy.mover.StateAllowsMovement(true);
+        TimeActions.GlobalTimeChanged += CheckIfTargetStillInRange;
     }
 
     private void CheckIfTargetStillInRange(BattleSceneTimeArgs args)
@@ -27,7 +27,7 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
 
     public override void OnStateExit()
     {
-        BattleSceneActions.GlobalTimeChanged -= CheckIfTargetStillInRange;
+        TimeActions.GlobalTimeChanged -= CheckIfTargetStillInRange;
     }
 
     public override void OnStateUpdate()

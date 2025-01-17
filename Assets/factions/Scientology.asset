@@ -21,9 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  factionEnum: 5
+  factionEnum: 15
   description: Lasers and celbreties
   color: {r: 0.7971698, g: 1, b: 0.9732416, a: 1}
   politicalAlignment:
+    galTan: 1
     leftRigt: 2
-    galTan: 3

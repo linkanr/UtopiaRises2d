@@ -25,4 +25,5 @@ MonoBehaviour:
   description: A small Tree
   sprite: {fileID: 21300000, guid: 0e1c8f95baee9534f8309971c7d8b026, type: 3}
   prefab: {fileID: 69631546739173138, guid: 057735918ef6e914cae45e9436b9938b, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 5

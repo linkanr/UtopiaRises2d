@@ -8,22 +8,18 @@ public class SoEnemyObject:SoSceneObjectBase
     public int health;
     public SoAttackSystem attackSystem;
     public SoSeekSytemForEnemies seekSystem;
-   
+    public DamagerBaseClass damagerBaseClass;
     public SoDamageEffect damageEffect;
     public List<SceneObjectTypeEnum> possibleTargetTypes;
     public float speed;
-    public int damage;
-    public float maxShootingDistance;
-    public float reloadTime;
+
     
 
     protected override Stats GetStatsInernal(Stats _statsInforDic)
     {
         _statsInforDic.Add(StatsInfoTypeEnum.health, health);
-        _statsInforDic.Add(StatsInfoTypeEnum.damageAmount, damage);
+        _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
         _statsInforDic.Add(StatsInfoTypeEnum.speed, speed);
-        _statsInforDic.Add(StatsInfoTypeEnum.maxShotingDistance, maxShootingDistance);
-        _statsInforDic.Add(StatsInfoTypeEnum.reloadTime, reloadTime);
         _statsInforDic.Add(StatsInfoTypeEnum.Sprite, sprite);
         _statsInforDic.Add(StatsInfoTypeEnum.SoDamageEffect, damageEffect);
         _statsInforDic.Add(StatsInfoTypeEnum.seekSystem, seekSystem);

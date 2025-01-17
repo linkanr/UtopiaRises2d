@@ -61,9 +61,8 @@ public abstract class TargeterBaseClass : MonoBehaviour
 
     public void Attack()
     {
-        soAttackSystem.Attack(this, target, attacker.GetStats().damage);
+        soAttackSystem.Attack(attacker);
     }
 
-
-
+    public abstract void Initialize(SceneObject sceneObject, SoSeekSystemBase SeekSystem, List<SceneObjectTypeEnum> possibleTargetTypes, SoAttackSystem attackSystem, Mover mover = null);
 }

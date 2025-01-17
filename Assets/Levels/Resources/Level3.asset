@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level3
   m_EditorClassIdentifier: 
   SoEnemyBase: {fileID: 11400000, guid: 10eae2d0cfc9781479233a5e3d3baf1d, type: 2}
-  basePosition: {x: 25, y: 45, z: 0}
+  basePosition: {x: 5, y: 25, z: 0}
   enemyWaveList:
   - enemyList: 00000000000000000100000000000000020000000000000000000000
     timer: 10
@@ -21,3 +21,4 @@ MonoBehaviour:
     timer: 10
   - enemyList: 02000000020000000100000000000000
     timer: 10
+  luck: 0

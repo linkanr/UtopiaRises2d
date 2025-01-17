@@ -16,7 +16,8 @@ public class SoMouseStateDisplaySprite : BaseState<MouseDisplayStateMachine>
 
     public override void OnStateUpdate()
     {
-        stateMachine.spriteGO.transform.position = GridCellManager.Instance.gridConstrution.GetCurrentCellPostionByMouse();
+        if (GridCellManager.Instance != null)
+            stateMachine.spriteGO.transform.position = GridCellManager.Instance.gridConstrution.GetCurrentCellPostionByMouse();
        
     }
 }

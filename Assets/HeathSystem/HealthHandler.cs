@@ -54,7 +54,9 @@ public class HealthHandler : MonoBehaviour, IdamagableComponent
         {
             return;
         }
-        bool hasDied = healthSystem.TakeDamage(amount);
+        float fdamage =  amount * sceneObject.GetStats().takesDamageMultiplier;
+        int idamage = (int)fdamage;
+        bool hasDied = healthSystem.TakeDamage(idamage);
         if (hasDied)
         {
             Die();

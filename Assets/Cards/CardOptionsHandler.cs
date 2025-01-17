@@ -5,21 +5,15 @@ using UnityEngine;
 public class CardOptionsHandler : MonoBehaviour
 {
 
-    readonly float costRare = 120f;
-    readonly float costUncommon = 15f;
+    const float costRare = 120f;
+    const float costUncommon = 10f;
 
-    SoAllCardsGlobalDic SoCardGlobalDic;
-    private void Awake()
-    {
-        SoCardGlobalDic = Resources.Load("CardNames") as SoAllCardsGlobalDic;
-
-    }
-    private List<CardRareEnums> GetRareEnums(int luck, int cardAmount)
+    public static List<CardRareEnums> GetRareEnums(int luck, int cardAmount)
     {
         List<CardRareEnums> returnList = new List<CardRareEnums>();
         for (int i=0; i<cardAmount; i++)
         {
-            float roll = Random.Range(0, 250) + luck;
+            float roll = Random.Range(0, 350) + luck;
             float rareChance = roll / costRare;
             float uncommonChance = roll / costUncommon;
             Debug.Log("uncommon chance is " + uncommonChance.ToString() + " rare chance " + rareChance.ToString());

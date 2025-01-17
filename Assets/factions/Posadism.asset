@@ -21,9 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  factionEnum: 6
+  factionEnum: 3
   description: Aliens and dolphins
   color: {r: 0.38679248, g: 0, b: 0, a: 0}
   politicalAlignment:
-    leftRigt: -4
     galTan: 0
+    leftRigt: 1

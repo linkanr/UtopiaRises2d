@@ -5,22 +5,45 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.VFX;
 /// <summary>
-/// Based on buidling but add functionality with the shoting building state machince and IcanShot interface
+/// Represents a shooting building in the game, inheriting from Building and implementing IcanAttack interface.
 /// </summary>
-public class ShootingBuilding : Building
+public class ShootingBuilding : Building, IcanAttack
 {
-    
-
+    /// <summary>
+    /// The position from where the building will shoot.
+    /// </summary>
     public Transform shotingPos;
-    public ShotingBuildingStateMachine stateMachine;
-    public TargeterForStaticObjects targeter;
 
+    /// <summary>
+    /// The state machine managing the shooting building's states.
+    /// </summary>
+    public ShotingBuildingStateMachine stateMachine;
+
+    /// <summary>
+    /// The targeter component responsible for seeking and attacking targets.
+    /// </summary>
+    public TargeterBaseClass targeter { get; set; }
+    public DamagerBaseClass damageDealer
+    {
+        get
+        {
+            return GetStats().damagerBaseClass;
+        }
+        set
+        {
+            ;
+        }
+    }
+
+
+    /// <summary>
+    /// Initializes the shooting building, setting up the state machine and time limiter.
+    /// </summary>
     protected override void Start()
     {
         base.Start();
         stateMachine = GetComponent<ShotingBuildingStateMachine>();
         SetTimeLimiter();
-       
     }
 
 }

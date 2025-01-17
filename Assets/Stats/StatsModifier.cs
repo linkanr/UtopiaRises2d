@@ -6,8 +6,9 @@ public abstract class StatsModifier : IDisposable
     public bool markedForRemoval { get; private set; }
     public event Action<StatsModifier> OnDispose = delegate { };
     private readonly Timer timer;
+    public PickupTypes pickupTypes { get; protected set; }
 
-    protected StatsModifier(float duration)
+    protected StatsModifier(float duration, PickupTypes pickupTypes)
     {
         if (duration <= 0) return;
 
@@ -15,6 +16,7 @@ public abstract class StatsModifier : IDisposable
         timer.OnTimerStop += () => markedForRemoval = true;
         timer.OnTimerStop += Dispose;
         timer.Start();
+        this.pickupTypes = pickupTypes;
     }
 
     // New method to prolong the duration
@@ -38,9 +40,9 @@ public abstract class StatsModifier : IDisposable
 
 public class BasicStatModifier : StatsModifier
 {
-    readonly StatsInfoTypeEnum type;
-    readonly Func<float,float> operation;
-    public BasicStatModifier(StatsInfoTypeEnum type, float _duration, Func<float, float> operation): base(_duration)
+    public readonly StatsInfoTypeEnum type;
+    public readonly Func<float,float> operation;
+    public BasicStatModifier(StatsInfoTypeEnum type, float _duration, Func<float, float> operation, PickupTypes pickupTypes) : base(_duration, pickupTypes)
     {
         this.type = type;
         this.operation = operation;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 using UnityEngine.Diagnostics;
+using UnityEngine.UI;
 
 public class DebuggerGlobal : MonoBehaviour
 {
@@ -25,19 +26,7 @@ public class DebuggerGlobal : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-           SceneObject s =SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(WorldSpaceUtils.GetMouseWorldPosition());
 
-           Debug.Log("adding rage " + s.GetStats().name);
-           EffectAdd.AddEffect(PickupTypes.Rage, s,5f);
-   
-        }
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            EffectAdd.AddEffect(PickupTypes.Slow, SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(WorldSpaceUtils.GetMouseWorldPosition()), 2f);
-
-        }
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -45,10 +34,13 @@ public class DebuggerGlobal : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            AstarPath.active.Scan();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
         }
 
-
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            EffectAdd.AddEffect(PickupTypes.Slow, SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(WorldSpaceUtils.GetMouseWorldPosition()), 5);
+        }
 
 
         if (debugSceneObejcts && Input.GetKeyDown(KeyCode.Z))

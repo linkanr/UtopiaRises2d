@@ -25,5 +25,6 @@ MonoBehaviour:
   description: A cool follower
   sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
   prefab: {fileID: 7534513178700637068, guid: 9abb8ee137bf3304c89defe4ea7ad6ab, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 1
   health: 10

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using UnityEngine;
 
 public class BattleClock: MonoBehaviour
@@ -14,13 +15,14 @@ public class BattleClock: MonoBehaviour
     public bool paused { get; private set; }
     private float timerPingMax = .1f;
     private float timerPing;
-    public float interwall;
+    private float interwall = 10f;
+
     public float interwallTimer = 0f;
     public float deltaValue;
 
     private void OnEnable()
     {
-        BattleSceneActions.OnPause += HandlePauseTrigger;
+        TimeActions.OnPause += HandlePauseTrigger;
     }
     private void Awake()
     {
@@ -72,10 +74,11 @@ public class BattleClock: MonoBehaviour
             timerPing += Time.deltaTime;
             if (timerPing >= timerPingMax)
             {
-                //Debug.Log("time ping");
-                BattleSceneActions.GlobalTimeChanged?.Invoke(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
+                TimeActions.GlobalTimeChanged?.Invoke(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
+                interwallTimer += timerPing;
                 timerPing = 0f;
-                interwallTimer += timerPingMax;
+
+
 
             }
             if (interwallTimer > interwall)

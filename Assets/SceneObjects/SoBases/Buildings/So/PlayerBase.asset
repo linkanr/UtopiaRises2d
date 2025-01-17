@@ -25,5 +25,6 @@ MonoBehaviour:
   description: A basic base
   sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   prefab: {fileID: 1851142524277121413, guid: 71253a56a2558144580222487f7e74c3, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 4
   health: 100

@@ -27,20 +27,9 @@ public static class BattleSceneActions
     public static Action<SceneObject> OnSceneObejctCreated;
     public static Action<int> OnBaseDamaged;
     public static Action<SceneObject> OnSceneObjectDestroyed;
-    public static Action<Bounds> OnUpdateBounds; 
-
-    public static Action<BattleSceneTimeArgs> GlobalTimeChanged;
-    public static Action OnSecondChange;
-    public static Action<bool> OnPause;
-
-
+    public static Action<Bounds> OnUpdateBounds;
     public static Action<int> OnFollowerCountChanged;
     public static Action<int> setInfluence; // this is used to directly set the influence
     public static Action <int> OnInfluenceChanged;
 }
 
-public class BattleSceneTimeArgs
-{
-    public float time;
-    public float deltaTime;
-}

@@ -11,19 +11,19 @@ public class SceneObjectGetter
     public SceneObjectGetter(SceneObjectManager _sceneObjectManager)
     {
         sceneObjectManager = _sceneObjectManager;
-    } 
+    }
 
-    
+
     public SceneObject GetSceneObject(Vector3 position, SceneObjectTypeEnum sceneObjectTypeEnum = SceneObjectTypeEnum.all, List<SceneObjectTypeEnum> sceneObjectTypeEnumsList = null, float maxDistance = float.PositiveInfinity, bool onlyDamageables = false)
     {
         SceneObject newSceneObject = null;
-        
+
         foreach (SceneObject sceneObject in sceneObjectManager.sceneObjectsInScene)
         {
             //Debug.Log("starting to look for scene object " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name));
             if (sceneObject is not IDamageAble && onlyDamageables)
             {
-              //  Debug.Log("not damagable " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name));
+                //  Debug.Log("not damagable " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name));
                 continue;
             }
             Vector3 objPos = sceneObject.transform.position;
@@ -43,7 +43,7 @@ public class SceneObjectGetter
             {
                 if (!sceneObjectTypeEnumsList.Contains(sceneObject.GetStats().sceneObjectType))
                 {
-                  //  Debug.Log("not matching list" + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name));
+                    //  Debug.Log("not matching list" + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name));
                     continue;
 
                 }
@@ -60,20 +60,20 @@ public class SceneObjectGetter
         }
         return newSceneObject;
     }
-    
 
 
 
 
 
-    
-    
 
 
-    public List<SceneObject> GetSceneObjects(Vector3 position, int amount = -1,SceneObjectTypeEnum objectTypeEnum = SceneObjectTypeEnum.all, List<SceneObjectTypeEnum> sceneObjectTypeEnumsList = null, float maxDistance = float.PositiveInfinity, bool onlyDamageables = false)
+
+
+
+    public List<SceneObject> GetSceneObjects(Vector3 position, int amount = -1, SceneObjectTypeEnum objectTypeEnum = SceneObjectTypeEnum.all, List<SceneObjectTypeEnum> sceneObjectTypeEnumsList = null, float maxDistance = float.PositiveInfinity, bool onlyDamageables = false)
     {
         if (DebuggerGlobal.instance.debugSceneObejcts)
-            Debug.Log("looking for" +  objectTypeEnum.ToString() + " at " + position.ToString());
+            Debug.Log("looking for" + objectTypeEnum.ToString() + " at " + position.ToString());
         List<ListPostition> listPoss = new List<ListPostition>();
 
         int i = 0;
@@ -82,15 +82,16 @@ public class SceneObjectGetter
             if (sceneObject is not IDamageAble && onlyDamageables)
             {
                 if (DebuggerGlobal.instance.debugSceneObejcts)
-                    Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() +" not added because its not damagable" );
+                    Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because its not damagable");
                 continue;
             }
-            if (objectTypeEnum !=SceneObjectTypeEnum.all)
+            if (objectTypeEnum != SceneObjectTypeEnum.all)
             {
-                if (objectTypeEnum !=sceneObject.GetStats().sceneObjectType)
+                if (objectTypeEnum != sceneObject.GetStats().sceneObjectType)
                 {
                     if (DebuggerGlobal.instance.debugSceneObejcts)
                         Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because its not " + objectTypeEnum.ToString());
+                    i++;
                     continue;
                 }
             }
@@ -100,8 +101,9 @@ public class SceneObjectGetter
                 if (!sceneObjectTypeEnumsList.Contains(sceneObject.GetStats().sceneObjectType) || sceneObjectTypeEnumsList.Contains(SceneObjectTypeEnum.all))
                 {
                     if (DebuggerGlobal.instance.debugSceneObejcts)
-                        Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because " + objectTypeEnum.ToString()+ " is not in list");
-                    continue ;
+                        Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because " + objectTypeEnum.ToString() + " is not in list");
+                    i++;
+                    continue;
                 }
             }
 
@@ -115,9 +117,9 @@ public class SceneObjectGetter
                     Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " added to the list at position " + i);
                     DebuggerGlobal.DrawLine(objPos, position, Color.red);
                 }
-                    
+
                 listPoss.Add(listPostition);
-                
+
             }
 
             i++;
@@ -129,11 +131,11 @@ public class SceneObjectGetter
         {
             amount = listPoss.Count;
         }
-        else if (amount> listPoss.Count)
+        else if (amount > listPoss.Count)
         {
             amount = listPoss.Count;
         }
-        for (int j = 0; j<amount ; j++) // Loop for the amount and then add it using created list
+        for (int j = 0; j < amount; j++) // Loop for the amount and then add it using created list
         {
             if (DebuggerGlobal.instance.debugSceneObejcts)
                 Debug.Log("added " + sceneObjectManager.sceneObjectsInScene[listPoss[j].i].GetStats().GetString(StatsInfoTypeEnum.name));
@@ -142,8 +144,42 @@ public class SceneObjectGetter
         return list;
 
     }
-    
+    public List<SceneObject> FilterBasedOnFaction(List<SceneObject> sceneObjects, Faction faction)
+    {
+        List<SceneObject> newList = new List<SceneObject>();
+        foreach (SceneObject obj in sceneObjects)
+        {
+            if (obj.GetStats().faction == faction)
+            {
+                newList.Add(obj);
+            }
 
+
+        }
+        return newList;
+    }
+    public List<SceneObject> FilterBasedOnModifers(List<SceneObject> sceneObjects, PickupTypes pickupTypes)
+    {
+        List<SceneObject> newList = new List<SceneObject>();
+        foreach (SceneObject obj in sceneObjects)
+        {
+            foreach (StatsModifier statsModifier in obj.GetStats().statsMediator.modifiers)
+            {
+                if (DebuggerGlobal.instance.debugSceneObejcts)
+                    Debug.Log("Checking object: " + obj.GetStats().GetString(StatsInfoTypeEnum.name) + " for modifier: " + pickupTypes.ToString() + " it has the following modifer " + statsModifier.pickupTypes.ToString());
+
+                if (statsModifier.pickupTypes == pickupTypes)
+                {
+                    if (DebuggerGlobal.instance.debugSceneObejcts)
+                        Debug.Log("Adding object: " + obj.GetStats().GetString(StatsInfoTypeEnum.name) + " with matching modifier: " + statsModifier.pickupTypes.ToString());
+
+                    newList.Add(obj);
+                    break;
+                }
+            }
+        }
+        return newList;
+    }
 }
 public class ListPostition 
 {

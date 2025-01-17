@@ -25,13 +25,12 @@ MonoBehaviour:
   description: Hunts you from below
   sprite: {fileID: 21300000, guid: bd16235085842094d977ab7315ceda9f, type: 3}
   prefab: {fileID: 8283187678325239932, guid: e7fe3343bf1730c47b9908d7eaaa5767, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 2
   health: 25
   attackSystem: {fileID: 11400000, guid: cedae3c7fba99434f8301f5ceaa27c67, type: 2}
   seekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
+  damagerBaseClass: {fileID: 11400000, guid: ed5c5f4e5637d734ba0569bd9a7c892d, type: 2}
   damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
   possibleTargetTypes: 04000000
-  speed: 3
-  damage: 3
-  maxShootingDistance: 30
-  reloadTime: 1
+  speed: 1

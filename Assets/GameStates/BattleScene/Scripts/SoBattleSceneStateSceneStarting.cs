@@ -7,7 +7,7 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
     {
 
         BattleSceneActions.OnInitializeScene();
-        stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
+        stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
     }
 
     public override void OnStateExit()

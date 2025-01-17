@@ -4,15 +4,23 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MovingSceneObject, IDamageAble
+public class Enemy : MovingSceneObject, IDamageAble, IcanAttack
 {
 
     [HideInInspector]
 
-    public TargeterForEnemies targeter;
+    public TargeterBaseClass targeter { get;set; }
     public Mover mover;
     public IdamagableComponent idamageableComponent { get; set; }
     public SceneObject sceneObject { get { return this; } }
+
+    public DamagerBaseClass damageDealer 
+    { 
+        get 
+        { return GetStats().damagerBaseClass;}
+        set {; }
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -26,7 +34,10 @@ public class Enemy : MovingSceneObject, IDamageAble
     protected override void AddStatsForClick(Stats stats)
     {
         stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.GetHealth());
+
+
     }
-
-
 }
+
+
+

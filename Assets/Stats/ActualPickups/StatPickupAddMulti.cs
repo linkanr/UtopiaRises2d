@@ -11,12 +11,14 @@ public class StatPickupAddMulti : StatPickup
     private float statsModifierDuration;
     private StatsModifier createdModifier;
 
-    public StatPickupAddMulti(StatsInfoTypeEnum statType, float value, float duration, OperatorType operatorType)
+
+    public StatPickupAddMulti(StatsInfoTypeEnum statType, float value, float duration, OperatorType operatorType, PickupTypes pickupType)
     {
         this.statType = statType;
         this.statsModifierValue = value;
         this.statsModifierDuration = duration;
         this.operatorType = operatorType;
+        this.pickupType = pickupType;
     }
 
     public override void ApplyPickupEffect(SceneObject sceneObject)
@@ -26,12 +28,12 @@ public class StatPickupAddMulti : StatPickup
             OperatorType.Add => new BasicStatModifier(
                 statType,
                 statsModifierDuration,
-                v => v + statsModifierValue
+                v => v + statsModifierValue,pickupType
             ),
             OperatorType.Multiply => new BasicStatModifier(
                 statType,
                 statsModifierDuration,
-                v => v * statsModifierValue
+                v => v * statsModifierValue,pickupType
             ),
             _ => throw new ArgumentOutOfRangeException()
         };

@@ -7,7 +7,7 @@ public class SoBattleSceneStateSpawningDone : BaseState<BattleSceneStateMachine>
     public override void OnStateEnter()
     {
         EnemyManager.Instance.SetSpawning(false);
-        BattleSceneActions.OnPause(true);
+        TimeActions.OnPause(true);
 
 
     }

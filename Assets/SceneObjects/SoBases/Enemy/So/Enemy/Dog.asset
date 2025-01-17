@@ -25,13 +25,12 @@ MonoBehaviour:
   description: A small Dog
   sprite: {fileID: 21300000, guid: 081b642cf5c31a348ac6e9447ceb8780, type: 3}
   prefab: {fileID: 8283187678325239932, guid: e7fe3343bf1730c47b9908d7eaaa5767, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 2
   health: 3
   attackSystem: {fileID: 11400000, guid: cedae3c7fba99434f8301f5ceaa27c67, type: 2}
   seekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
+  damagerBaseClass: {fileID: 11400000, guid: b591fb67891d53c4092d9566e21192a2, type: 2}
   damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
   possibleTargetTypes: 0400000001000000
-  speed: 3
-  damage: 3
-  maxShootingDistance: 10
-  reloadTime: 1
+  speed: 1.5

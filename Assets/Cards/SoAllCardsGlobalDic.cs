@@ -31,23 +31,6 @@ public class SoAllCardsGlobalDic : SerializedScriptableObject, IEnumerable<SoCar
         return GetEnumerator();
     }
 }
-public enum CardNames
-{
-    createSniperTower,
-    createFollower,
-    placeStone,
-    lightArtillery,
-    heavyArtillery,
-    scarambleDefence,
-    longTermDefence,
-    poisonWells,
-    backstab,
-    strikeBack,
-    growForest
-
-
-
-}
 
 
 

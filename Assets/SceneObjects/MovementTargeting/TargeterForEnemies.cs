@@ -18,11 +18,17 @@ public class TargeterForEnemies : TargeterBaseClass
 
     public void Initialize(Mover moverComponent, SoEnemyObject soEnemyInformationPackage, SceneObject attacker)
     {
-        this.mover = moverComponent;
-        this.soAttackSystem = Instantiate(soEnemyInformationPackage.attackSystem);
-        this.possibleTargetTypes = soEnemyInformationPackage.possibleTargetTypes;
-        this.seeker = Instantiate(soEnemyInformationPackage.seekSystem);
-        this.attacker = attacker;
+
+    }
+
+    public override void Initialize(SceneObject _sceneObject, SoSeekSystemBase SeekSystem, List<SceneObjectTypeEnum> possibleTargetTypes, SoAttackSystem attackSystem, Mover mover = null)
+    {
+        this.mover = mover;
+        this.soAttackSystem = Instantiate(attackSystem);
+        this.possibleTargetTypes = possibleTargetTypes;
+        this.seeker = Instantiate(SeekSystem) as SoSeekSytemForEnemies;
+        this.attacker = _sceneObject;
+         
     }
 
     public override void Seek()

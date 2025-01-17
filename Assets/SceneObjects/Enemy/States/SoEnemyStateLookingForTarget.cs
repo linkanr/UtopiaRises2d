@@ -26,12 +26,12 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
     {
         if (stateMachine.enemy.targeter.target == null)
         {
-            stateMachine.enemy.targeter.seeker.Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,seekStyle:SeekStyle.findRoute,moverComponent:stateMachine.enemy.mover);
+            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,seekStyle:SeekStyle.findRoute,moverComponent:stateMachine.enemy.mover);
         }
         else if (!stateMachine.enemy.targeter.target.IsValid())
         {
 
-            stateMachine.enemy.targeter.seeker.Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes, stateMachine.enemy.targeter);
+            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes, stateMachine.enemy.targeter);
 
         }
         else

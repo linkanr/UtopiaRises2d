@@ -8,12 +8,13 @@ public class EnemyCreator : MonoBehaviour
     {
         // Initialize the enemy instance
         SceneObject newEnemyInstance = soEnemyInformationPackage.Init(pos);
-        newEnemyInstance.SetStats(soEnemyInformationPackage.GetStats());
-        newEnemyInstance.transform.parent = GameSceneRef.instance.enemyParent;
+        Enemy newEnemy = newEnemyInstance as Enemy;
+        newEnemy.SetStats(soEnemyInformationPackage.GetStats());
+        newEnemy.transform.parent = GameSceneRef.instance.enemyParent;
 
         // Get the Enemy component and configure it
-        Enemy newEnemy = newEnemyInstance.GetComponent<Enemy>();
-        SetEnemyHealthSystem(soEnemyInformationPackage, newEnemyInstance.gameObject, newEnemy);
+
+        SetEnemyHealthSystem(soEnemyInformationPackage, newEnemy);
         SetAiPathSeek(soEnemyInformationPackage, newEnemy);
         SetSpriteRenders(soEnemyInformationPackage, newEnemy);
 
@@ -21,7 +22,25 @@ public class EnemyCreator : MonoBehaviour
     }
 
     #region Enemy Setter Functions
+    private static void SetEnemyHealthSystem(SoEnemyObject soEnemyInformationPackage, Enemy newEnemy)
+    {
 
+        newEnemy.idamageableComponent.healthSystem.SetInitialHealth(soEnemyInformationPackage.health);
+        newEnemy.idamageableComponent.healthSystem.damageEffect = soEnemyInformationPackage.damageEffect;
+    }
+
+    private static void SetAiPathSeek(SoEnemyObject soEnemyInformationPackage, Enemy newEnemy)
+    {
+        // Initialize AI Path components
+        Mover moverComponent = newEnemy.gameObject.AddComponent<Mover>();
+        newEnemy.mover = moverComponent;
+        TargeterForEnemies _targeter = newEnemy.AddComponent<TargeterForEnemies>();
+        newEnemy.targeter = _targeter;
+        newEnemy.targeter.Initialize(newEnemy, soEnemyInformationPackage.seekSystem, soEnemyInformationPackage.possibleTargetTypes, soEnemyInformationPackage.attackSystem, moverComponent);
+        newEnemy.mover.Init(newEnemy.transform.GetComponent<Seeker>(), newEnemy.targeter);
+        newEnemy.targeter.Seek();
+
+    }
     private static void SetSpriteRenders(SoEnemyObject soEnemyObj, Enemy newEnemy)
     {
         Transform spritePartent = newEnemy.transform.Find("EnemyMovment");
@@ -34,25 +53,8 @@ public class EnemyCreator : MonoBehaviour
         }
     }
 
-    private static void SetAiPathSeek(SoEnemyObject soEnemyInformationPackage,  Enemy newEnemy)
-    {
-        // Initialize AI Path components
-        Mover moverComponent = newEnemy.gameObject.AddComponent<Mover>();
-        newEnemy.mover = moverComponent;
-        TargeterForEnemies _targeter = newEnemy.AddComponent<TargeterForEnemies>();
-        newEnemy.targeter = _targeter;
-        newEnemy.targeter.Initialize(moverComponent,soEnemyInformationPackage,newEnemy);
-        newEnemy.mover.Init(newEnemy.transform.GetComponent<Seeker>(), newEnemy.targeter);
-        newEnemy.targeter.Seek();
 
-    }
 
-    private static void SetEnemyHealthSystem(SoEnemyObject soEnemyInformationPackage, GameObject newEnemyTransform, Enemy newEnemy)
-    {
-
-        newEnemy.idamageableComponent.healthSystem.SetInitialHealth(soEnemyInformationPackage.health);
-        newEnemy.idamageableComponent.healthSystem.damageEffect = soEnemyInformationPackage.damageEffect;
-    }
 
     #endregion
 }

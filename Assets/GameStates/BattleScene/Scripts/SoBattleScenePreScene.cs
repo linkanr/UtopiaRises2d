@@ -11,6 +11,7 @@ public class SoBattleScenePreScene : BaseState<BattleSceneStateMachine>
         CardManager.Instance.GetStartingCards();
         BattleSceneActions.setInfluence(3);
         stateMachine.SetState(typeof(SoBattleSceneStateSceneStarting));
+        Instantiate(Resources.Load("mouseDisplayManager") as GameObject,stateMachine.transform);
 
 
 

@@ -25,12 +25,11 @@ MonoBehaviour:
   description: QuickDefence
   sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
   prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 0
   lifeTime: 20
   health: 50
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
   seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
   possibleTargetTypes: 02000000
-  damage: 5
-  maxShootingDistance: 12
-  reloadtime: 1
+  damagerBaseClass: {fileID: 11400000, guid: 61e39b6e7ff72774c8d174aa7efd292c, type: 2}

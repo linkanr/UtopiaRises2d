@@ -12,7 +12,7 @@ public class SoBattleScene : BaseState<GameStateMachine>
 
     public override void OnStateExit()
     {
-        //Go to next state
+        
     }
 
     public override void OnStateUpdate()

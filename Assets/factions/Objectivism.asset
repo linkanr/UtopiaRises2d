@@ -21,9 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  factionEnum: 4
+  factionEnum: 14
   description: Following the egocentric teachings of Rand
   color: {r: 0.048279036, g: 0, b: 0.509434, a: 1}
   politicalAlignment:
-    leftRigt: 5
-    galTan: -3
+    galTan: 1
+    leftRigt: 2

@@ -35,7 +35,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
         else if (stateMachine.shootingBuilding.targeter.attackTimer > stateMachine.shootingBuilding.GetStats().reloadTime) // This happens when target is existing and valid
         {
 
-            stateMachine.shootingBuilding.targeter.soAttackSystem.Attack(stateMachine.shootingBuilding.targeter, stateMachine.shootingBuilding.targeter.target, stateMachine.shootingBuilding.GetStats().damage);
+            stateMachine.shootingBuilding.targeter.soAttackSystem.Attack(stateMachine.shootingBuilding);
 
             stateMachine.shootingBuilding.targeter.attackTimer = 0f;
         }

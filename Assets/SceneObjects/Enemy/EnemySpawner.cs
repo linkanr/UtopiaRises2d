@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Diagnostics;
@@ -13,38 +14,69 @@ public class EnemySpawner : MonoBehaviour
     public SoEnemyBase soEnemyBase;
     public Transform SpawnPos;
     private float timer;
-    private float timerMax = .45f;
+    private float spawnTimer;
+    private float spawnTimerMax = .25f;
+    private float timerMax = 10f;
 
     private float actualTimer;
     public bool spawn = false;
+    public bool timerReachedSpawn = false;
     EnemyEnumToGO enemyEnumToGameObjectList;
+
+    private void OnEnable()
+    {
+        TimeActions.GlobalTimeChanged += ChangeTimer;
+    }
+
+    private void ChangeTimer(BattleSceneTimeArgs args)
+    {
+        timer += args.deltaTime;
+        spawnTimer += args.deltaTime;
+    }
+
     private void Start()
     {
         enemyEnumToGameObjectList = Resources.Load("EnemyGo") as EnemyEnumToGO;
-        actualTimer = timerMax;
+        timer = 5f;
         
     }
 
     // Update is called once per frame
     void Update()
-    {  if (spawn)
+    {  
+        if (spawn && !timerReachedSpawn)
         {
-            timer += BattleClock.Instance.deltaValue;
-            if (timer > actualTimer)
+            if (timer > timerMax)
             {
-                
-                SoEnemyObject soEnemyObject = Instantiate( enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
-             
-                Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(5f,1f,1f) * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
-
-                EnemyCreator.CreateEnemy(soEnemyObject,position);
-
+                timerReachedSpawn = true;
                 timer = 0;
-                actualTimer = timerMax;
-                ReduceList();
+
             }
         }
+        if (timerReachedSpawn)
+        {
+            if (spawnTimer > spawnTimerMax)
+            {
+                spawnTimer = 0;
+                SpawnEnemy();
+            }
+           
+        }
 
+
+
+    }
+
+    private void SpawnEnemy()
+    {
+        SoEnemyObject soEnemyObject = Instantiate(enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
+
+        Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 1f) * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
+
+        EnemyCreator.CreateEnemy(soEnemyObject, position);
+
+
+        ReduceList();
     }
 
     private void ReduceList()
@@ -56,22 +88,34 @@ public class EnemySpawner : MonoBehaviour
             
             if (enemyWaves.Count == 1)
             {
-                enemyWaves.RemoveAt(0);
-                Debug.Log("end of all lists");
-                BattleSceneActions.OnAllEnemiesSpawned();
+                AllWavesDone();
             }
             else
             {
-                actualTimer += enemyWaves[1].timer;
-                Debug.Log("end of list");
-                enemyWaves.RemoveAt(0);
+                CurrentWaveDone();
             }
-            
+
 
         }
         else
         {
             enemyWaves[0].enemyList.RemoveAt(0);
         }
+    }
+
+    private void AllWavesDone()
+    {
+        timerReachedSpawn = false;
+        enemyWaves.RemoveAt(0);
+        Debug.Log("end of all lists");
+        
+        BattleSceneActions.OnAllEnemiesSpawned();
+    }
+
+    private void CurrentWaveDone()
+    {
+        timerReachedSpawn = false;
+        Debug.Log("end of list");
+        enemyWaves.RemoveAt(0);
     }
 }

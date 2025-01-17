@@ -1,15 +1,102 @@
 ﻿using System.Numerics;
+using UnityEditor.PackageManager;
 using UnityEngine.Diagnostics;
 [System.Serializable]
-public class PoliticalAlignment
+public struct PoliticalAlignment
 {
-    public int leftRigt;
-    public int galTan;
-    public Vector2 polticalVector { get { return new Vector2(leftRigt, galTan); } }
-    public Vector2 GetNormalizedPolticalVector()
+    public galTan galTan;
+    public leftRigt leftRigt;
+
+    public bool isLeft()
     {
-        float normalizedX = GeneralUtils.fit(leftRigt, -5f, 5f, 0f, 1f);
-        float normalizedY = GeneralUtils.fit(galTan, -5f, 5f, 0f, 1f);
-        return new Vector2(normalizedX, normalizedY);
+        return leftRigt == leftRigt.left;
     }
+    public bool isRigt()
+    {
+        return leftRigt == leftRigt.rigt;
+    }
+    public bool isGal()
+    {
+        return galTan == galTan.liberterian;
+    }
+    public bool isTan()
+    {
+        return galTan == galTan.authoriterian;
+    }
+    public bool isGalTanNeutral()
+    {
+        return galTan == galTan.neutral;
+    }
+    public bool isLeftRigtNeutral()
+    {
+        return leftRigt == leftRigt.neutral;
+    }
+    public IdeolgicalAlignment ideolgicalAlignment
+    {
+        get
+        {
+            if (isGalTanNeutral() && isLeftRigtNeutral())
+            {
+                return IdeolgicalAlignment.Centrist;
+            }
+            if (isGalTanNeutral() && isLeft())
+            {
+                return IdeolgicalAlignment.Left;
+            }
+            if (isGalTanNeutral() && isRigt())
+            {
+                return IdeolgicalAlignment.Rigth;
+            }
+            if (isTan() && isLeftRigtNeutral())
+            {
+                return IdeolgicalAlignment.AutoritarianCentrist;
+            }
+            if (isGal() && isLeftRigtNeutral())
+            {
+                return IdeolgicalAlignment.LibertarianCentrist;
+            }
+            if (isTan() && isLeft())
+            {
+                return IdeolgicalAlignment.AutoritarianLeft;
+            }
+            if (isTan() && isRigt())
+            {
+                return IdeolgicalAlignment.AutoritarianRigt;
+            }
+            if (isGal() && isLeft())
+            {
+                return IdeolgicalAlignment.LibertarianLeft;
+            }
+            if (isGal() && isRigt())
+            {
+                return IdeolgicalAlignment.LibertarianRigt;
+            }
+            throw new System.Exception("ideolgicalAlignment not found");
+        }
+    }
+}
+
+public enum galTan
+{
+    neutral,
+    liberterian,
+    authoriterian
+}
+public enum leftRigt
+{
+    neutral,
+    left,
+    rigt
+}
+public enum IdeolgicalAlignment
+{
+    Centrist,
+    LibertarianCentrist,
+    AutoritarianCentrist,
+    AutoritarianLeft,
+    Left,
+    LibertarianLeft,
+    AutoritarianRigt,
+    Rigth,
+    LibertarianRigt
 }

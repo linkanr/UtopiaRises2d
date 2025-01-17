@@ -9,48 +9,34 @@ public class HighlightGridObject : MonoBehaviour
 {
     public Material gridMaterial;
 
-    private void SetHightligt(List<Cell> cells)
+private void SetHightligt(List<Cell> cells)
+{
+    float minx = float.MaxValue;
+    float miny = float.MaxValue;
+    float maxx = float.MinValue;
+    float maxy = float.MinValue;
+
+    foreach (var cell in cells)
     {
-        float minx = float.MaxValue;
-        float miny = float.MaxValue;
-        float maxx = float.MinValue;
-        float maxy = float.MinValue;
-        foreach (var cell in cells) 
-        {
-            //Debug.Log("setting highlight");
+        GridConstrution grid = cell.gridRef;
 
-            if (cell.x == 0)
-            {
-                minx = 0;
-            }
-            else
-            {
-                minx = Mathf.Min(minx, (float)cell.x / (float)cell.gridRef.sizeX); 
-            }
-            if (cell.y == 0)
-            {
-                miny = 0;
-            }
-            else
-            {
-                miny = Mathf.Min(miny, (float)cell.y / (float)cell.gridRef.sizeY);
-            }
-            //Debug.Log("cell.x i s" + cell.x + "cell grid ref x is " + cell.gridRef.sizeX.ToString());
-            maxx = Mathf.Max(maxx, ((float)cell.x + 1f) / (float)cell.gridRef.sizeX);
+        // Calculate UV coordinates
+        float uvX = (float)cell.x / grid.sizeX;
+        float uvY = (float)cell.y / grid.sizeY;
 
-            maxy = Mathf.Max(maxy, ((float)cell.y + 1f) / (float)cell.gridRef.sizeY);
-
-
-        }
-
-
-
-        gridMaterial.SetFloat("_xmin", minx);
-        gridMaterial.SetFloat("_ymin", miny);
-        gridMaterial.SetFloat("_xmax", maxx);
-        gridMaterial.SetFloat("_ymax", maxy);
-
+        minx = Mathf.Min(minx, uvX);
+        miny = Mathf.Min(miny, uvY);
+        maxx = Mathf.Max(maxx, (cell.x + 1f) / grid.sizeX);
+        maxy = Mathf.Max(maxy, (cell.y + 1f) / grid.sizeY);
     }
+
+    // Apply calculated UVs to the material
+    gridMaterial.SetFloat("_xmin", minx);
+    gridMaterial.SetFloat("_ymin", miny);
+    gridMaterial.SetFloat("_xmax", maxx);
+    gridMaterial.SetFloat("_ymax", maxy);
+}
+
     public void ResetGridMaterail()
     {
         gridMaterial.SetFloat("_xmin", 0f);
@@ -61,6 +47,10 @@ public class HighlightGridObject : MonoBehaviour
     private void OnMouseOver()
     {
         //Debug.Log("onmouse over");
+        if (MouseDisplayManager.instance == null)
+        {
+            return;
+        }
         
         if (MouseDisplayManager.instance.displayCellChange)
         {

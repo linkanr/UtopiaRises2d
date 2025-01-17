@@ -58,12 +58,24 @@ public class EffectSpriteOrganizer : SerializedMonoBehaviour
     /// </summary>
     private void UpdateSprites()
     {
+        if (spriteRenderers == null)
+        {
+            Debug.LogWarning("SpriteRenderers array is null.");
+            return;
+        }
+
         // Get all sprites from the queue as an array
         Sprite[] sprites = spriteQueue.ToArray();
 
         // Update each SpriteRenderer with the corresponding sprite
         for (int i = 0; i < spriteRenderers.Length; i++)
         {
+            if (spriteRenderers[i] == null)
+            {
+                Debug.LogWarning($"SpriteRenderer at index {i} has been destroyed.");
+                continue;
+            }
+
             if (i < sprites.Length)
             {
                 spriteRenderers[i].sprite = sprites[i];

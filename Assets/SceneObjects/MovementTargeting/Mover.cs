@@ -11,6 +11,19 @@ public class Mover :MonoBehaviour, IMoverComponent
     public Seeker seeker { get; set; }
     public AIPath aIPath { get; set; }
     private Stats stats;
+    private bool stateAllowsMovement;
+    private bool movementBlocked;   
+    public void StateAllowsMovement(bool _blocked)
+    {
+        stateAllowsMovement = _blocked;
+        OnMovementBlockersChanged();
+    }
+    private void MovementBlocked (bool _blocked)
+    {
+        movementBlocked = _blocked;
+        OnMovementBlockersChanged();
+
+    }
 
 
     public void  Init(Seeker _seeker, TargeterBaseClass targetsystem)
@@ -21,15 +34,24 @@ public class Mover :MonoBehaviour, IMoverComponent
         //aIPath = gameObject.AddComponent<AIPath>();
         aIPath.orientation = OrientationMode.YAxisForward;
         aIPath.gravity = new Vector3 (0f,0f,0f);
-       
+        Debug.Log(targetsystem + "is not null");
+        Debug.Log(targetsystem.attacker + "is not null");
+        Debug.Log(targetsystem.attacker.GetStats() + " is not null");
         stats = targetsystem.attacker.GetStats();
         aIPath.maxSpeed = stats.speed;
+        aIPath.canMove = true;
 
         targetsystem.OnTargetChanged += OnTargetChanged;
-        BattleSceneActions.OnPause += HandlePause;
-       
+        TimeActions.OnPause += HandlePause;
+        stateAllowsMovement = true;
+        movementBlocked = false;
+
     }
 
+    private void OnMovementBlockersChanged()
+    {
+        TryToMove();
+    }
     private void OnTargetChanged(Target e)
     {
 
@@ -39,14 +61,14 @@ public class Mover :MonoBehaviour, IMoverComponent
     private void HandlePause(bool obj)
     {
         if (obj)
-            Move(false);
+            MovementBlocked(true);
         else
-            Move(true);
+            MovementBlocked(false);
 
     }
-    public void Move(bool move)
+    public void TryToMove()
     {
-        if (move)
+        if (stateAllowsMovement && !movementBlocked)
             aIPath.canMove = true;
         else
             aIPath.canMove = false;

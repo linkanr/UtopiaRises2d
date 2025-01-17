@@ -1,34 +1,19 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
-[RequireComponent(typeof(RectTransform))]
+using UnityEngine;
+
 public class PanelRebuildLayout : MonoBehaviour
 {
     private RectTransform rectTransform;
-    private LayoutGroup group;
-    private bool needsUpdate;
+
     private void Awake()
     {
-        group = GetComponent<LayoutGroup>();
         rectTransform = GetComponent<RectTransform>();
     }
+
     private void OnEnable()
     {
         BattleSceneActions.OnCardsBeginDrawn += Rebuild;
         BattleSceneActions.OnCardsEndDrawn += StopRebuild;
-    }
-
-    private void StopRebuild()
-    {
-        needsUpdate = false;
-    }
-
-    private void Rebuild()
-    {
-        needsUpdate = true;
-        StartCoroutine(UpdateLayoutGroup());
     }
 
     private void OnDisable()
@@ -36,15 +21,15 @@ public class PanelRebuildLayout : MonoBehaviour
         BattleSceneActions.OnCardsBeginDrawn -= Rebuild;
         BattleSceneActions.OnCardsEndDrawn -= StopRebuild;
     }
-    IEnumerator UpdateLayoutGroup()
+
+    private void Rebuild()
     {
-        while (needsUpdate)
-        {
-           LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
-           yield return new WaitForEndOfFrame();
-        }
-        //Debug.Log("no longer updatering");
-        yield return null;
-        
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+        Canvas.ForceUpdateCanvases();
+    }
+
+    private void StopRebuild()
+    {
+        // Optionally handle any cleanup if needed
     }
 }

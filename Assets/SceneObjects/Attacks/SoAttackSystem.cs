@@ -5,7 +5,7 @@ public class SoAttackSystem:ScriptableObject
 {
     public Sprite displayRangeSprite;
     public VisualEffect visualEffect;
-    public virtual void Attack(TargeterBaseClass attacker, Target defender, int damage)
+    public virtual void Attack(SceneObject attacker)
     {
 
     }

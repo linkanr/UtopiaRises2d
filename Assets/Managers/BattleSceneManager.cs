@@ -17,6 +17,7 @@ public class BattleSceneManager : MonoBehaviour
     }
     private void LevelClear()
     {
+        TimeActions.OnPause(true);
         GlobalActions.BattleSceneCompleted();
     }
 

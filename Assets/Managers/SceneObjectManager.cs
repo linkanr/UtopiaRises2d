@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages scene objects within the game, handling their creation, destruction, and retrieval.
+/// </summary>
 public class SceneObjectManager : MonoBehaviour
-
 {
     public static SceneObjectManager Instance;
-    public List<Transform> followerList;
     public SceneObjectGetter sceneObjectGetter;
-    public int influence  {get; private set;}
-    public List<SceneObject> sceneObjectsInScene; // All idamageable should add themself to this list
+    public List<SceneObject> sceneObjectsInScene; // All idamageable should add themselves to this list
+
     private void Awake()
     {
         if (Instance == null)
@@ -19,69 +20,55 @@ public class SceneObjectManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("dubble manager");
+            Debug.LogError("Duplicate manager detected");
         }
-        followerList = new List<Transform>();
-        sceneObjectsInScene = new List<SceneObject> ();
+
+        sceneObjectsInScene = new List<SceneObject>();
         sceneObjectGetter = new SceneObjectGetter(this);
     }
+
     private void OnEnable()
-    {//Refactor into a OnSceneObjectCreated
-        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated; // triggers every time someone with ITargatableByEnemy is created
- 
-        BattleSceneActions.setInfluence += SetInfluence; // SET influence each turn Triggered by statemachine 
-
+    {
+        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed;
+        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated;
     }
-
 
     private void OnDisable()
     {
         BattleSceneActions.OnSceneObjectDestroyed -= HandleDamagableDestroyed;
         BattleSceneActions.OnSceneObejctCreated -= HandleDamagableCreated;
-
-        BattleSceneActions.setInfluence -= SetInfluence;
-    }
-    //Influece should be moved to a player asset manager
-
-    private void SetInfluence(int obj)
-    {
-        influence =obj;
-        BattleSceneActions.OnInfluenceChanged(influence);
-    }
-    public void AddInfluence(int amount)
-    {
-        influence += amount;
-        BattleSceneActions.OnInfluenceChanged(influence);
-    }
-    private void RemoveFollowerFromList(Transform transform)
-    {
-        followerList.Remove(transform);
-        BattleSceneActions.OnFollowerCountChanged(followerList.Count);
     }
 
-    private void AddFollowerToList(Transform transform)
+    private void Update()
     {
-        followerList.Add(transform);
-        BattleSceneActions.OnFollowerCountChanged(followerList.Count);
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            string objInScene = "Scene objects in scene: ";
+            Debug.Log("Amount of scene objects is " + sceneObjectsInScene.Count);
+            foreach (SceneObject sceneObject in sceneObjectsInScene)
+            {
+                objInScene += sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " ";
+            }
+            Debug.Log(objInScene);
+        }
     }
 
+    /// <summary>
+    /// Handles the creation of a damageable scene object.
+    /// </summary>
+    /// <param name="target">The scene object that was created.</param>
     private void HandleDamagableCreated(SceneObject target)
     {
-        if(target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
-        {
-            AddFollowerToList(target.transform);
-        }
-        //Debug.Log("target added" + target.ToString());
-        sceneObjectsInScene.Add( target );
-        
+        Debug.Log("Added " + target.GetStats().GetString(StatsInfoTypeEnum.name) + " to sceneObjectsInScene");
+        sceneObjectsInScene.Add(target);
     }
+
+    /// <summary>
+    /// Handles the destruction of a damageable scene object.
+    /// </summary>
+    /// <param name="target">The scene object that was destroyed.</param>
     private void HandleDamagableDestroyed(SceneObject target)
     {
-        if (target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
-        {
-            RemoveFollowerFromList(target.transform);
-        }
         sceneObjectsInScene.Remove(target);
     }
 }

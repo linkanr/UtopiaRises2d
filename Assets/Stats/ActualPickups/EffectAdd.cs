@@ -7,9 +7,9 @@ public class EffectAdd
     public static void AddEffect(PickupTypes pickupType, SceneObject sceneObject, float duration)
     {
         Debug.Log("Checking for existing effect...");
-        if (sceneObject.IsPickupActive(pickupType))
+        if (sceneObject.GetStatsHandler().IsPickupActive(pickupType))
         {
-            var activeModifier = sceneObject.GetActiveModifier(pickupType);
+            var activeModifier = sceneObject.GetStatsHandler().GetActiveModifier(pickupType);
             if (activeModifier != null)
             {
                 activeModifier.ProlongDuration(duration);
@@ -25,13 +25,20 @@ public class EffectAdd
                 StatsInfoTypeEnum.speed,
                 0.5f,
                 duration,
-                StatPickupAddMulti.OperatorType.Multiply
+                StatPickupAddMulti.OperatorType.Multiply,
+                pickupType
             ),
             PickupTypes.Rage => new StatPickupAddMulti(
                 StatsInfoTypeEnum.damageAmount,
                 2.0f,
                 duration,
-                StatPickupAddMulti.OperatorType.Multiply
+                StatPickupAddMulti.OperatorType.Multiply,pickupType
+            ),
+            PickupTypes.Weak => new StatPickupAddMulti(
+                StatsInfoTypeEnum.takesDamageMultiplier,
+                2f,
+                duration,
+                StatPickupAddMulti.OperatorType.Multiply, pickupType
             ),
             _ => throw new ArgumentOutOfRangeException($"Unknown PickupType: {pickupType}")
         };
@@ -39,12 +46,12 @@ public class EffectAdd
         pickup.ApplyPickupEffect(sceneObject);
 
         var modifier = pickup.GetModifier();
-        sceneObject.AddPickup(pickupType, modifier);
+        sceneObject.GetStatsHandler().AddPickup(pickupType, modifier);
 
         // Subscribe to the OnDispose event for cleanup
         modifier.OnDispose += _ =>
         {
-            sceneObject.RemovePickup(pickupType);
+            sceneObject.GetStatsHandler().RemovePickup(pickupType);
             Debug.Log($"Pickup {pickupType} has expired.");
         };
     }

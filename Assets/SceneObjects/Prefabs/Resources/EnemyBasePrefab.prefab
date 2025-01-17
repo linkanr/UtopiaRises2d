@@ -25,13 +25,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2225814590799136869}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4610881726596588356}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!212 &5928430468342057693
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179,9 +179,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c2D: {fileID: 4149859833349796814}
   rB2D: {fileID: 0}
+  sprite: {fileID: 0}
+  isDead: 0
   spriteRenderer: {fileID: 5928430468342057693}
-  sceneObjectType: 3
-  soEnemyBase: {fileID: 0}
 --- !u!114 &8723099500599229288
 MonoBehaviour:
   m_ObjectHideFlags: 0

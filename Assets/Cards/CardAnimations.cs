@@ -1,65 +1,106 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
-using System.Xml.Serialization;
-using System;
+using UnityEngine.UI;
+using UnityEngine;
 
-public class CardAnimations 
+public class CardAnimations
 {
-    public CardAnimations(LayoutElement _layOutElement, Vector3 size, RectTransform _rectTransform,Ease ease)
-    {
-        layoutElement = _layOutElement;
-        prefX = size.x;
-        prefY = size.y;
-        rectTransform = _rectTransform;
-        this.ease = ease;
-    } 
-    Ease ease;
-    public LayoutElement layoutElement;
-    public Vector3 transformVector;
-    public RectTransform rectTransform;
-    public bool animating = false;
-    public float prefX;
-    public float prefY;
-    public Sequence mouseOverSequence;
+    private Ease ease;
+    private LayoutElement layoutElement;
+    private RectTransform rectTransform;
+    private RectTransform parentRectTransform; // Reference to the parent layout's RectTransform
+    private float prefX;
+    private float prefY;
+    public float inAnimationTime = 0.5f;
+    public float upDownScaleTime = 0.2f;
+    public float mouseOverScale = 1.5f;
+    public float clickScale = 2f;
 
+    public CardAnimations(LayoutElement layoutElement, RectTransform rectTransform, Ease ease, RectTransform parentRectTransform)
+    {
+        this.layoutElement = layoutElement;
+        this.rectTransform = rectTransform;
+        this.ease = ease;
+        this.prefX = 1f;
+        this.prefY = 1f;
+        this.parentRectTransform = parentRectTransform;
+    }
 
     public void SetScale(float scale)
     {
-        rectTransform.localScale = new Vector2(scale, scale);
-    }
-    public void SimpleAnimation(float animationTime, float scale, Action _onComplete = null)
-    {
-        Vector3 origSize = new Vector3(prefX * scale, prefY * scale);
-        rectTransform.DOScale(origSize, animationTime).SetEase(ease);
-    }
-    public  void AnimateScale(float animationTime, Card card, float scale, Action _onComplete = null)
-    {
-        
-
-            Vector3 origSize = new Vector3(prefX* scale, prefY *scale);
-            CardStateEnum previusState = card.cardState;
-            card.cardState = CardStateEnum.lockedForAnimation;
-            BattleSceneActions.OnCardsBeginDrawn?.Invoke();            
-            rectTransform.DOScale(origSize, animationTime).SetEase(ease).onComplete = () => { card.cardState = previusState;BattleSceneActions.OnCardsEndDrawn();_onComplete?.Invoke(); };
-            //layoutElement.DOPreferredSize(origSize, animationTime, false).SetEase(ease).onComplete = () => { card.cardState = previusState; };
-
-
-       
+        rectTransform.localScale = new Vector3(scale, scale, 1f);
+        UpdateLayoutElement(scale);
+        ForceUIUpdate();
     }
 
-
-    public void ScaleResetAndRelease(float animationTime, Card card, Action _onComplete = null)
+    public void SimpleAnimation(float scale)
     {
-        BattleSceneActions.OnCardsBeginDrawn?.Invoke();
-        Vector3 origSize = new Vector3(prefX, prefY);
-        CardStateEnum previusState = card.cardState;
+        Vector3 targetSize = new Vector3(prefX * scale, prefY * scale, 1f);
+        rectTransform.DOScale(targetSize, inAnimationTime)
+            .SetEase(ease)
+            .OnUpdate(() =>
+            {
+                UpdateLayoutElement(scale);
+                ForceUIUpdate(); // Ensure updates during animation
+            });
+    }
+
+    public void AnimateScale(float scale, Card card)
+    {
+        Vector3 targetSize = new Vector3(prefX * scale, prefY * scale, 1f);
+        CardStateEnum previousState = card.cardState;
+        card.cardState = CardStateEnum.lockedForAnimation;
+
+        rectTransform.DOScale(targetSize, upDownScaleTime)
+            .SetEase(ease)
+            .OnUpdate(() =>
+            {
+                UpdateLayoutElement(scale);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
+                Canvas.ForceUpdateCanvases(); // Ensure updates during animation
+            })
+            .OnComplete(() =>
+            {
+                card.cardState = previousState;
+                LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile); // Final layout update
+            });
+    }
+
+
+    public void ScaleResetAndRelease(Card card)
+    {
+        Vector3 originalSize = new Vector3(prefX, prefY, 1f);
+        CardStateEnum previousState = card.cardState;
         card.cardState = CardStateEnum.resetting;
-        rectTransform.DOScale(origSize, animationTime).SetEase(ease).onComplete = () => { card.cardState = previusState; _onComplete?.Invoke(); BattleSceneActions.OnCardsEndDrawn(); };
-        //layoutElement.DOPreferredSize(origSize, animationTime, false).SetEase(ease).onComplete = () => { card.cardState = previusState; };
+
+        rectTransform.DOScale(originalSize, upDownScaleTime)
+            .SetEase(ease)
+            .OnUpdate(() =>
+            {
+                UpdateLayoutElement(1f);
+                ForceUIUpdate(); // Ensure updates during animation
+            })
+            .OnComplete(() =>
+            {
+                card.cardState = previousState;
+                ForceUIUpdate(); // Ensure updates after animation completes
+            });
     }
 
+    private void UpdateLayoutElement(float scale)
+    {
+        if (layoutElement != null)
+        {
+            layoutElement.preferredWidth = prefX * scale;
+            layoutElement.preferredHeight = prefY * scale;
+        }
+    }
 
+    private void ForceUIUpdate()
+    {
+        if (parentRectTransform != null)
+        {
+            LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
+            Canvas.ForceUpdateCanvases(); // Ensure canvas redraw
+        }
+    }
 }

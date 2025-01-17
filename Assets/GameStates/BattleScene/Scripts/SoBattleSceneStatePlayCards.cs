@@ -15,8 +15,8 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
         Debug.Log("Entering play cards state");
         GameSceneRef.instance.inHandPile.gameObject.SetActive(true);//Change to a simple 
         BattleSceneActions.OnDrawCard(PlayerGlobalsManager.instance.cardAmount);
-        BattleSceneActions.setInfluence(PlayerGlobalsManager.instance.influenceEachTurn); 
-        BattleSceneActions.OnPause(true);
+        BattleSceneActions.setInfluence(PlayerGlobalsManager.instance.influenceEachTurn);
+        TimeActions.OnPause(true);
         Action unityAction = new Action(() => { EndTurn(); });
         ButtonWithDelegate.CreateThis(unityAction, GameSceneRef.instance.endTurnParent, "End Turn");
 

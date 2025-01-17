@@ -27,8 +27,8 @@ public abstract class Building : StaticSceneObject, IDamageAble, IHasLifeSpan
     public TimeStruct getBirthLifeSpan()
 
     {
-        Debug.Log(stats.ToString());
-        return TimeCalc.TimeToTimeStruct(stats.GetFloat(StatsInfoTypeEnum.lifeTime));
+        
+        return TimeCalc.TimeToTimeStruct(GetStatsHandler().GetStats().GetFloat(StatsInfoTypeEnum.lifeTime));
     }
 
     public void SetTimeLimiter()
@@ -61,6 +61,7 @@ public abstract class Building : StaticSceneObject, IDamageAble, IHasLifeSpan
 
     protected override void AddStatsForClick(Stats stats)
     {
+       
         stats.Add(StatsInfoTypeEnum.health,idamageableComponent.healthSystem.health);
     }
 
