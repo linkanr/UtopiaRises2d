@@ -17,8 +17,9 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: dde22bfa11ac75547841d6b6c86b3669, type: 3}
   rarity: 2
   cardCanBePlayedOnEnum: 0
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   prefab: {fileID: 11400000, guid: d33599c68755ca84cb7c5ddbbfd0c457, type: 2}
-  sizeX: 8
-  sizeY: 1
+  sizeX: 2
+  sizeY: 2

@@ -13,16 +13,16 @@ public class MouseDisplayStateMachine : BaseStateMachine<MouseDisplayStateMachin
     protected override void Init()
     {
         spriteRenderer = spriteGO.GetComponent<SpriteRenderer>();
-        MouseDisplayManager.OnRemoveDisplay += ChangeToNoDisplayState;
-        MouseDisplayManager.OnSetNewSprite += ChangeToDisplaySpriteState;
+        DisplayActions.OnRemoveMouseSprite += ChangeToNoDisplayState;
+        DisplayActions.OnSetMouseSprite += ChangeToDisplaySpriteState;
     }
     private void OnDisable()
     {
-        MouseDisplayManager.OnRemoveDisplay -= ChangeToNoDisplayState;
-        MouseDisplayManager.OnSetNewSprite -= ChangeToDisplaySpriteState;
+        DisplayActions.OnRemoveMouseSprite -= ChangeToNoDisplayState;
+        DisplayActions.OnSetMouseSprite -= ChangeToDisplaySpriteState;
     }
 
-    private void ChangeToDisplaySpriteState(OnSetSpriteArgs onSetSpriteArgs)
+    private void ChangeToDisplaySpriteState(OnDisplaySpriteArgs onSetSpriteArgs)
     {
 
         spriteRenderer.sprite = onSetSpriteArgs.sprite;

@@ -53,6 +53,7 @@ MonoBehaviour:
   displayCellChange: 0
   displaySizeX: 0
   displaySizeY: 0
+  mouseSpriteRenderer: {fileID: 4027750934713208024}
 --- !u!114 &8116641591340616981
 MonoBehaviour:
   m_ObjectHideFlags: 0

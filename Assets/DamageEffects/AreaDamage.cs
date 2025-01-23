@@ -59,8 +59,9 @@ public class AreaDamage : MonoBehaviour
 
     private void DealDamage(int damage)
     {
-        Debug.Log("dealing damage");
+        //  Debug.Log("dealing damage");
         List<SceneObject> list = new List<SceneObject>();
+        Debug.Log("dealing damage" + transform.position);
         list = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, maxDistance: diameter / 2, onlyDamageables: true);//Get IDamages uses radius
         foreach (SceneObject a in list)
         {

@@ -1,61 +1,60 @@
 using DG.Tweening;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IClickableObject
 {
+    public enum CardMode { playable, selectable, inspectable }
+
+    [Header("UI Components")]
+    [SerializeField] private TextMeshProUGUI titleText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] public TextMeshProUGUI costText;
+    [SerializeField] private Image factionColorImage;
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private GameObject outline;
+
     public CardAnimations cardAnimations;
-    public SoCardBase cardBase;
-    public CardStateEnum cardState;
-    public bool isSelected = false;
-    public TextMeshProUGUI titleText;
-    public TextMeshProUGUI descriptionText;
-    public TextMeshProUGUI cost;
-    public Image factionColorImage;
-    public Image backgroundImage;
+    public CardSelectionHandler selectionHandler;
+
     public CardCostModifier cardCostModifier;
+    public SelectionBase selectionBase;
 
-    private CardSelectionHandler selectionHandler;
-    private CardHighlightHandler highlightHandler;
+    public SoCardBase cardBase { get; private set; }
+    public CardStateEnum cardState;
+    public bool isSelected;
+    public CardMode mode;
 
-    private void Awake()
+    public static Card currentlySelectedCard; // Track the currently selected card
+
+    public void Initialize(SoCardBase cardBase, CardMode mode)
     {
-        InitializeCardAnimations();
-        InitializeHandlers();
-    }
+        selectionHandler = new CardSelectionHandler(this);
 
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
-    }
+        outline.SetActive(false);
+        selectionBase = new SelectionBase(this);
+        this.cardBase = cardBase;
+        this.mode = mode;
 
-    public void MoveFromHandToDiscardList()
-    {
-        CardsInPlayManager.instance.DiscardCardInHand(this);
-    }
+        cardAnimations = new CardAnimations(
+            GetComponent<LayoutElement>(),
+            GetComponent<RectTransform>(),
+            Ease.InOutSine,
+            GameSceneRef.instance.inHandPile
+        );
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (selectionHandler.IsCardClickable())
-        {
-            selectionHandler.LockCardForSelection();
-        }
-    }
+        isSelected = false;
+        cardState = mode == CardMode.selectable ? CardStateEnum.inDisplayMenu : CardStateEnum.availible;
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        highlightHandler.HighlightCard();
-    }
+        titleText.text = cardBase.title;
+        descriptionText.text = cardBase.description;
+        costText.text = cardBase.influenceCost.ToString();
+        factionColorImage.color = cardBase.faction.color;
+        backgroundImage.sprite = cardBase.image;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        highlightHandler.ResetCardHighlight();
+        outline.SetActive(false);
     }
 
     private void Update()
@@ -64,33 +63,91 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
         {
             selectionHandler.HandleSelectionUpdate();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        // Handle playable cards
+        if (mode == CardMode.playable && selectionHandler.IsCardClickable())
         {
-            selectionHandler.ResetCardSelection();
+            // Deselect the currently selected card (if any)
+            if (currentlySelectedCard != null && currentlySelectedCard != this)
+            {
+                currentlySelectedCard.Deselect();
+            }
+
+            // Lock this card for selection
+            selectionHandler.LockCardForSelection();
+            currentlySelectedCard = this; // Update the global reference
+        }
+        // Handle selectable cards
+        else if (mode == CardMode.selectable)
+        {
+            Select();
         }
     }
 
-    private void InitializeCardAnimations()
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        cardAnimations = new CardAnimations(
-            GetComponent<LayoutElement>(),
-
-            GetComponent<RectTransform>(),
-            Ease.InOutSine,
-        GetComponentInParent<RectTransform>()
-
-        ); 
+        DisplayActions.OnMouseOverCard();
+        if (!isSelected && currentlySelectedCard != this && cardState != CardStateEnum.lockedForSelection)
+        {
+            cardState = CardStateEnum.mousedOver;
+            cardAnimations.SimpleAnimation(mode == CardMode.selectable ? 1.6f : 1.2f);
+        }
     }
 
-    private void InitializeHandlers()
+    public void OnPointerExit(PointerEventData eventData)
     {
-        selectionHandler = new CardSelectionHandler(this);
-        highlightHandler = new CardHighlightHandler(this);
+        DisplayActions.OnMouseNotOverCard();
+        // Prevent resetting state if the card is selected or locked for animation
+        if (cardState == CardStateEnum.lockedForSelection || cardState == CardStateEnum.lockedForAnimation)
+        {
+            return;
+        }
+        // Reset state and scale only if the card is not selected
+        cardState = CardStateEnum.availible;
+        cardAnimations.SimpleAnimation(1f); // Reset scale to default
     }
 
-    private void UnsubscribeEvents()
+    public void Select()
     {
-        BattleSceneActions.OnStartSpawning -= MoveFromHandToDiscardList;
+        // Deselect the previously selected card if it's not this one
+        if (currentlySelectedCard != null && currentlySelectedCard != this)
+        {
+            currentlySelectedCard.Deselect();
+        }
+
+        // Set this card as the currently selected card
+        currentlySelectedCard = this;
+        isSelected = true;
+        outline.SetActive(true);
+
+        // Lock the card for selection
+        cardState = CardStateEnum.lockedForSelection;
+
+        // Immediately override any ongoing animations
+        cardAnimations.AnimateScale(cardAnimations.clickScale, this);
+
+        // Notify listeners
+        SelectCardsActions.InvokeCardSelected(selectionBase);
+    }
+
+    private void Deselect()
+    {
+        isSelected = false;
+        outline.SetActive(false);
+        cardState = CardStateEnum.availible;
+
+        // Immediately reset scale
+        cardAnimations.ScaleResetAndRelease(this);
+
+        // Clear the global reference to the currently selected card
+        if (currentlySelectedCard == this)
+        {
+            currentlySelectedCard = null;
+        }
     }
 
     public ClickableType GetClickableType()

@@ -379,14 +379,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a866cb2b738a73a438f4e74600c6f6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardBase: {fileID: 0}
-  cardState: 3
-  isSelected: 0
   titleText: {fileID: 4259864720190231390}
   descriptionText: {fileID: 7252022560333487417}
-  cost: {fileID: 2302158206768623883}
+  costText: {fileID: 2302158206768623883}
   factionColorImage: {fileID: 3767218614663747182}
   backgroundImage: {fileID: 4166874472681368934}
+  outline: {fileID: 2627798747051588029}
 --- !u!1 &6060482916460948164
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,9 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 /// </summary>
 public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClickableObject
 {
+    public bool walkable;
+
+    public int walkPenalty;
     /// <summary>
     /// The Collider2D component attached to the scene object.
     /// </summary>

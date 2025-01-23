@@ -83,6 +83,7 @@ public class SceneObjectGetter
             {
                 if (DebuggerGlobal.instance.debugSceneObejcts)
                     Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because its not damagable");
+                i++;
                 continue;
             }
             if (objectTypeEnum != SceneObjectTypeEnum.all)

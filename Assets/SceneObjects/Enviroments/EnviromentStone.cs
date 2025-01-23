@@ -3,19 +3,28 @@ using UnityEngine;
 
 public class EnviromentStone : EnviromentObject
 {
-    
 
-    public override EnviromentObject DoCreate(Vector3 position)
+
+    public SceneObjectTypeEnum damageableType => SceneObjectTypeEnum.enviromentObject;
+
+    public IdamagableComponent idamageableComponent { get; set; }
+
+
+
+
+
+
+
+
+
+
+    protected override void AddStatsForClick(Stats _stats)
     {
-        Transform transform = Instantiate(this.transform, position,Quaternion.identity);
-        EnviromentObject enviromentObject = transform.GetComponent<EnviromentObject>();
-        return enviromentObject;
+        base.AddStatsForClick(_stats);
+        _stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.health);
+
     }
 
-    protected override void AddStatsForClick(Stats stats)
-    {
-        base.AddStatsForClick(stats);
-    }
 
 
 }

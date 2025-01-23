@@ -7,7 +7,7 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
     public override void OnStateEnter()
     {
         TimeActions.OnPause(false);
-        BattleSceneActions.OnStartSpawning?.Invoke();
+        BattleSceneActions.OnLiveStatsStarting?.Invoke();
         GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
         EnemyManager.Instance.SetSpawning(true);
         BattleSceneActions.OnSpawnInterwallDone += OnSpawningDone;

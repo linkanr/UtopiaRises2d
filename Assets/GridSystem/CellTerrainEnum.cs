@@ -1,7 +1,7 @@
 ﻿public enum CellTerrainEnum
 { 
-    grass,
-    mountain,
-    water
+    g, // grass
+    u  // uppassable
+   
 
 }

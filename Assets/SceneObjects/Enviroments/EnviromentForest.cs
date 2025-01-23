@@ -16,12 +16,7 @@ public class EnviromentForest : EnviromentObject,IDamageAble
 
 
 
-    public override EnviromentObject DoCreate(Vector3 position)
-    {
-        Transform transform = Instantiate(this.transform, position, Quaternion.identity);
-        EnviromentObject enviromentObject = transform.GetComponent<EnviromentObject>();
-        return enviromentObject;
-    }
+
 
 
 

@@ -96,7 +96,7 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: a0472853e3148244797e96b438940162, type: 3}
   isDead: 0
   spriteRenderer: {fileID: 3345237173302432945}
-  sceneObjectType: 0
+  moveFactor: 0
 --- !u!1 &2747570304315498044
 GameObject:
   m_ObjectHideFlags: 0

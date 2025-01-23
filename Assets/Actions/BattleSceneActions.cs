@@ -17,7 +17,7 @@ public static class BattleSceneActions
     public static Action OnCardsBeginDrawn;
     public static Action OnCardsEndDrawn;
     public static Action OnSpawnInterwallDone;
-    public static Action OnStartSpawning;
+    public static Action OnLiveStatsStarting;
 
 
     public static Action <Cell> OnCellClicked;

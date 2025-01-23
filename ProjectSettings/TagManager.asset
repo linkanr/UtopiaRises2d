@@ -43,6 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Backgrounds
+    uniqueID: 899999013
+    locked: 0
+  - name: EnviromentObjects
+    uniqueID: 905683431
+    locked: 0
+  - name: EnviromentEffects
+    uniqueID: 3027357987
+    locked: 0
   - name: SceneObjects
     uniqueID: 2742286455
     locked: 0

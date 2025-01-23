@@ -38,7 +38,7 @@ public abstract class SoCardInstanciate : SoCardBase
         }
         foreach (Cell cell in cells)
         {
-            prefab.Init(cell.worlPosition);
+            prefab.Init(cell.worldPosition);
         }
         return true;
 

@@ -1,6 +1,6 @@
 using DG.Tweening;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CardAnimations
 {
@@ -10,9 +10,9 @@ public class CardAnimations
     private RectTransform parentRectTransform; // Reference to the parent layout's RectTransform
     private float prefX;
     private float prefY;
-    public float inAnimationTime = 0.5f;
-    public float upDownScaleTime = 0.2f;
-    public float mouseOverScale = 1.5f;
+    public  float inAnimationTime = 0.1f;
+    public const  float upDownScaleTime = 0.1f;
+    public  float mouseOverScale = 1.5f;
     public float clickScale = 2f;
 
     public CardAnimations(LayoutElement layoutElement, RectTransform rectTransform, Ease ease, RectTransform parentRectTransform)
@@ -27,6 +27,7 @@ public class CardAnimations
 
     public void SetScale(float scale)
     {
+        Debug.Log("setting scale to " + scale);
         rectTransform.localScale = new Vector3(scale, scale, 1f);
         UpdateLayoutElement(scale);
         ForceUIUpdate();
@@ -36,34 +37,46 @@ public class CardAnimations
     {
         Vector3 targetSize = new Vector3(prefX * scale, prefY * scale, 1f);
         rectTransform.DOScale(targetSize, inAnimationTime)
+
             .SetEase(ease)
             .OnUpdate(() =>
             {
                 UpdateLayoutElement(scale);
-                ForceUIUpdate(); // Ensure updates during animation
+                ForceUIUpdate();
             });
     }
 
-    public void AnimateScale(float scale, Card card)
+    public void AnimateScale(float scale, Card card, float time = upDownScaleTime)
     {
+
+        Debug.Log("setting scale "+ scale + "  in time " + time);
         Vector3 targetSize = new Vector3(prefX * scale, prefY * scale, 1f);
+
+        // Temporarily lock the card's state
         CardStateEnum previousState = card.cardState;
         card.cardState = CardStateEnum.lockedForAnimation;
 
-        rectTransform.DOScale(targetSize, upDownScaleTime)
+        rectTransform.DOScale(targetSize, time)
             .SetEase(ease)
             .OnUpdate(() =>
             {
                 UpdateLayoutElement(scale);
-                LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
-                Canvas.ForceUpdateCanvases(); // Ensure updates during animation
+                ForceUIUpdate();
             })
             .OnComplete(() =>
             {
-                card.cardState = previousState;
-                LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile); // Final layout update
+                // Restore the previous state only if the card is not selected
+
+
+                    card.cardState = previousState;
+
+ 
+
+                ForceUIUpdate();
             });
     }
+
+
 
 
     public void ScaleResetAndRelease(Card card)
@@ -77,12 +90,12 @@ public class CardAnimations
             .OnUpdate(() =>
             {
                 UpdateLayoutElement(1f);
-                ForceUIUpdate(); // Ensure updates during animation
+                ForceUIUpdate();
             })
             .OnComplete(() =>
             {
                 card.cardState = previousState;
-                ForceUIUpdate(); // Ensure updates after animation completes
+                ForceUIUpdate();
             });
     }
 
@@ -100,7 +113,7 @@ public class CardAnimations
         if (parentRectTransform != null)
         {
             LayoutRebuilder.ForceRebuildLayoutImmediate(parentRectTransform);
-            Canvas.ForceUpdateCanvases(); // Ensure canvas redraw
+            Canvas.ForceUpdateCanvases();
         }
     }
 }

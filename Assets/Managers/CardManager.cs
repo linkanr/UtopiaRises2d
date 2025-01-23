@@ -1,25 +1,24 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
     public List<SoCardBase> ownedCards;
-    
+
     public static CardManager Instance;
-    SoAllCardsGlobalDic allCards;
+    private SoAllCardsGlobalDic allCards;
     public SoCardList startingCards;
 
     private void OnEnable()
     {
         GlobalActions.OnNewCardAddedToDeck += AddCard;
     }
+
     private void OnDisable()
     {
         GlobalActions.OnNewCardAddedToDeck -= AddCard;
     }
+
     private void Awake()
     {
         if (Instance == null)
@@ -28,60 +27,46 @@ public class CardManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("double trouble");
+            Debug.LogError("Duplicate CardManager instance detected!");
         }
-        allCards = Resources.Load("cardNames") as SoAllCardsGlobalDic;
 
-
-
+        allCards = Resources.Load<SoAllCardsGlobalDic>("cardNames");
     }
 
     public SoCardBase GetRandomCard()
     {
-        int random = UnityEngine.Random.Range(0, allCards.length - 1);
-        return allCards.GetCard(random);
+        int randomIndex = Random.Range(0, allCards.length);
+        return allCards.GetCard(randomIndex);
     }
+
     public SoCardBase GetRandomCard(CardRareEnums rarity)
     {
-        List<SoCardBase> returnList = new List<SoCardBase>();
-        foreach (SoCardBase soCardBase in allCards)
-        {
-            if (soCardBase.rarity == rarity)
-            {
-                returnList.Add(soCardBase);
-            }
-        }
-        int l = returnList.Count;
-        int rand = UnityEngine.Random.Range(0,l-1);
-        return returnList[rand];
-
-        
-    }
-    public SoCardBase GetRandomCard(SoCardList cardlist)
-    {
-        int random = UnityEngine.Random.Range(0, cardlist.lengt -1);
-        return  allCards.GetCard(cardlist.list[random]);
+        List<SoCardBase> filteredCards = allCards.GetCardsByRarity(rarity);
+        return filteredCards[Random.Range(0, filteredCards.Count)];
     }
 
-    public void AddCard(SoCardBase soCardBase) // regular bases
+    public SoCardBase GetRandomCard(SoCardList cardList)
     {
-        SoCardBase newCard =  Instantiate(soCardBase);
-        
+        int randomIndex = Random.Range(0, cardList.lengt);
+        return allCards.GetCard(cardList.list[randomIndex]);
+    }
+
+    public void AddCard(SoCardBase cardBase)
+    {
+        SoCardBase newCard = Instantiate(cardBase);
         ownedCards.Add(newCard);
     }
 
-    public void AddCard(SoCardList soCardList) // uses the custom list class
+    public void AddCard(SoCardList cardList)
     {
-        foreach (SoCardBase soCardBase in soCardList)
+        foreach (SoCardBase cardBase in cardList)
         {
-            SoCardBase newCard = Instantiate(soCardBase);
-            ownedCards.Add(newCard);
+            AddCard(cardBase);
         }
     }
 
-    internal void GetStartingCards()
+    public void GetStartingCards()
     {
         AddCard(startingCards);
     }
-
 }

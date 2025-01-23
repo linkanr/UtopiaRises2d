@@ -49,7 +49,7 @@ public class SceneObjectManager : MonoBehaviour
             {
                 objInScene += sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " ";
             }
-            Debug.Log(objInScene);
+           // Debug.Log(objInScene);
         }
     }
 

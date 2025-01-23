@@ -9,39 +9,55 @@ public class CardSelectionHandler
         this.card = card;
     }
 
+    /// <summary>
+    /// Determines if the card is currently clickable.
+    /// </summary>
     public bool IsCardClickable()
     {
-        Debug.Log("IsCardClickable");
-        return card.cardState != CardStateEnum.lockedForSelection &&
-               card.cardState != CardStateEnum.resetting &&
-               card.cardState != CardStateEnum.inDisplayMenu;
+        bool isClickable = (card.cardState == CardStateEnum.availible || card.cardState == CardStateEnum.mousedOver) &&
+                           card.mode == Card.CardMode.playable;
+
+        return isClickable;
     }
 
+    /// <summary>
+    /// Locks the card for selection and updates its state.
+    /// </summary>
     public void LockCardForSelection()
     {
+        DisplayActions.OnRemoveMouseSprite?.Invoke();
+        // Update mouse display for cards with a click effect
         if (card.cardBase is IHasClickEffect effect)
         {
-            MouseDisplayManager.OnRemoveDisplay();
-            MouseDisplayManager.OnSetNewSprite(new OnSetSpriteArgs { sprite = effect.GetSprite(), size = effect.GetSpriteSize() });
+            DisplayActions.OnRemoveMouseSprite?.Invoke();
+            DisplayActions.OnSetMouseSprite?.Invoke(new OnDisplaySpriteArgs(effect.GetSprite(), effect.GetSpriteSize()));
         }
 
+        // Highlight scene objects if the card can be played on them
         if (card.cardBase.cardCanBePlayedOnEnum == CardCanBePlayedOnEnum.damagable)
         {
             DisplayActions.OnHighligtSceneObject(true);
         }
 
+        // Lock the card for selection
         card.isSelected = true;
         card.cardState = CardStateEnum.lockedForSelection;
 
+        // Animate card to visually indicate selection
         card.cardAnimations.AnimateScale(card.cardAnimations.clickScale, card);
+
         HighlightPlayableArea();
     }
 
+    /// <summary>
+    /// Highlights the playable area based on the card's playability.
+    /// </summary>
     private void HighlightPlayableArea()
     {
         int sizeX = 1;
         int sizeY = 1;
 
+        // Adjust the playable area for cards with instantiation size
         if (card.cardBase is SoCardInstanciate soCardInstanciate)
         {
             sizeX = soCardInstanciate.sizeX;
@@ -54,31 +70,29 @@ public class CardSelectionHandler
         ));
     }
 
+    /// <summary>
+    /// Handles mouse click updates for card selection.
+    /// </summary>
     public void HandleSelectionUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !MouseDisplayManager.instance.mouseOverCard)
         {
-            Debug.Log("mouse down");
             ProcessSelectionClick();
         }
     }
 
+    /// <summary>
+    /// Processes the selection click logic.
+    /// </summary>
     private void ProcessSelectionClick()
     {
         ClickableType clickableType = WorldSpaceUtils.CheckClickableType();
-
-        if (MouseDisplayManager.instance.mouseOverCard)
-        {
-            ResetCardSelection();
-            return;
-        }
 
         switch (card.cardBase.cardCanBePlayedOnEnum)
         {
             case CardCanBePlayedOnEnum.instantClick:
                 if (clickableType != ClickableType.card)
                 {
-                    Debug.Log("instant click");
                     PlayCard();
                 }
                 else
@@ -101,7 +115,6 @@ public class CardSelectionHandler
             case CardCanBePlayedOnEnum.emptyGround:
                 if (clickableType != ClickableType.card)
                 {
-                    Debug.Log("empty ground");
                     PlayCard();
                 }
                 else
@@ -109,25 +122,41 @@ public class CardSelectionHandler
                     ResetCardSelection();
                 }
                 break;
+
+            default:
+                Debug.LogError($"Unhandled CardCanBePlayedOnEnum value: {card.cardBase.cardCanBePlayedOnEnum}");
+                ResetCardSelection();
+                break;
         }
     }
 
+    /// <summary>
+    /// Resets the card selection and updates the state.
+    /// </summary>
     public void ResetCardSelection()
     {
-        MouseDisplayManager.OnRemoveDisplay();
+        // Remove mouse display
+        DisplayActions.OnRemoveMouseSprite?.Invoke();
+
+        // Reset card state
         card.cardState = CardStateEnum.availible;
         card.isSelected = false;
+
+        // Reset scene and UI highlights
         DisplayActions.OnHighligtSceneObject(false);
         DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false));
+
+        // Reset card animation
         card.cardAnimations.ScaleResetAndRelease(card);
     }
 
+    /// <summary>
+    /// Handles the play logic for the selected card.
+    /// </summary>
     private void PlayCard()
     {
-        Debug.Log("play card");
         if (card.cardBase.Effect(WorldSpaceUtils.GetMouseWorldPosition(), out string result, card.cardCostModifier))
         {
-            Debug.Log("play card success");
             FinalizeSuccessfulPlay();
         }
         else
@@ -136,16 +165,22 @@ public class CardSelectionHandler
         }
     }
 
+    /// <summary>
+    /// Finalizes the play process for the card.
+    /// </summary>
     private void FinalizeSuccessfulPlay()
     {
-        Debug.Log("finalize play");
+        // Clear cost modifier and reset card state
         card.cardCostModifier = null;
-        card.cardState = CardStateEnum.availible;
+        card.cardState = CardStateEnum.inDiscardPile;
         card.isSelected = false;
+
+        // Reset display actions
         DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false));
         DisplayActions.OnHighligtSceneObject(false);
-        MouseDisplayManager.OnRemoveDisplay();
+        DisplayActions.OnRemoveMouseSprite?.Invoke();
 
+        // Move card to the appropriate pile
         if (card.cardBase.cardPlayTypeEnum == CardPlayTypeEnum.exhuast)
         {
             CardsInPlayManager.instance.ExhausedCardInHand(card);
@@ -153,7 +188,6 @@ public class CardSelectionHandler
         else
         {
             CardsInPlayManager.instance.DiscardCardInHand(card);
-            card.cardState = CardStateEnum.inDiscardPile;
         }
     }
 }

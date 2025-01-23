@@ -31,14 +31,30 @@ public class CardsInPlayManager : MonoBehaviour
         Debug.Log("subbing");
         BattleSceneActions.OnInitializeScene += InitializeDrawPile;
         BattleSceneActions.OnDrawCard += DrawCards;
+        BattleSceneActions.OnLiveStatsStarting += DiscardAllCards;
     }
+
+
     private void OnDisable()
     {
 
         BattleSceneActions.OnInitializeScene -= InitializeDrawPile;
         BattleSceneActions.OnDrawCard -= DrawCards;
+        BattleSceneActions.OnLiveStatsStarting -= DiscardAllCards;
     }
 
+    private void DiscardAllCards()
+    {
+        List<Card> tempList = new List<Card>();
+        foreach (Card card in InHandList)
+        {
+            tempList.Add(card);
+        }
+        foreach (Card card in tempList)
+        {
+            DiscardCardInHand(card);
+        }   
+    }
     public bool CheckForLockedCard()
     {
         foreach (Card card in InHandList)
@@ -58,7 +74,7 @@ public class CardsInPlayManager : MonoBehaviour
     {
         foreach (SoCardBase card in CardManager.Instance.ownedCards)
         {
-            Card newCard = CardFactory.Create(card);
+            Card newCard = CardFactory.Create(card,Card.CardMode.playable,GameSceneRef.instance.drawPile);
             InDrawPileList.Add(newCard);
         }
         ShuffleDrawPile();
@@ -104,34 +120,37 @@ public class CardsInPlayManager : MonoBehaviour
     }
     private void AddToHandFromDraw(Card currentCard)
     {
+        Debug.Log($"Adding card to hand: {currentCard.cardBase.title}");
+
         // Remove from draw pile and add to hand
         InDrawPileList.Remove(currentCard);
         InHandList.Add(currentCard);
 
-        // Set initial scale to 0 and parent the card
-        currentCard.cardAnimations.SetScale(0f);
-        currentCard.transform.SetParent(GameSceneRef.instance.inHandPile, worldPositionStays: false);
+        // Ensure cardAnimations is initialized
+        if (currentCard.cardAnimations == null)
+        {
+            Debug.LogError($"CardAnimations is null for card: {currentCard.cardBase.title}");
+            currentCard.Initialize(currentCard.cardBase, Card.CardMode.playable);
+        }
 
+        // Set initial scale to 0 and parent the card
+       
+        currentCard.transform.SetParent(GameSceneRef.instance.inHandPile, worldPositionStays: false);
+        currentCard.cardAnimations.SetScale(0f);
         // Immediately update layout after re-parenting
         LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
         Canvas.ForceUpdateCanvases();
 
-        // Update card state and animate the card
-        currentCard.cardState = CardStateEnum.availible;
-        currentCard.cardAnimations.AnimateScale(1f, currentCard);
-
-        // Ensure another layout update after animation
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
+        // Animate the card into view and set it to playable
+        currentCard.cardState = CardStateEnum.availible; // Set to a clickable state
+        currentCard.cardAnimations.AnimateScale(1f, currentCard,.3f);
     }
+
+
 
 
     // Helper to ensure layout is updated at the next frame
-    private IEnumerator ForceLayoutAfterFrame()
-    {
-        yield return new WaitForEndOfFrame(); // Wait for Unity to process the frame
-        LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
-        Canvas.ForceUpdateCanvases();
-    }
+
 
 
     private void AddDiscardToDrawPile()

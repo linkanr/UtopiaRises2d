@@ -10,7 +10,7 @@ public class CardCostModifier
     // Constructor takes the Card instance and applies the modification
     public CardCostModifier(Card card, ModifyCostHandler modifyCostHandler, bool permanent =false)
     {
-        if (card == null || card.cardBase == null || card.cost == null)
+        if (card == null || card.cardBase == null || card.costText == null)
         {
             UnityEngine.Debug.LogError("Card, CardBase, or cost field is null.");
             return;
@@ -23,8 +23,8 @@ public class CardCostModifier
         modifiedCost = modifyCostHandler?.Invoke(baseCost) ?? baseCost;
 
         // Update the UI with the modified cost
-        card.cost.text = modifiedCost.ToString();
-        card.cost.color = Color.green;
+        card.costText.text = modifiedCost.ToString();
+        card.costText.color = Color.green;
         this.permanent = permanent;
     }
 }
