@@ -10,7 +10,9 @@ public class Mover :MonoBehaviour, IMoverComponent
     public AIDestinationSetter destinationSetter { get; set; }
     public Seeker seeker { get; set; }
     public AIPath aIPath { get; set; }
-    private Stats stats;
+    private SceneObject sceneObject;
+    TargeterBaseClass targetSystem;
+
     private bool stateAllowsMovement;
     private bool movementBlocked;   
     public void StateAllowsMovement(bool _blocked)
@@ -26,7 +28,7 @@ public class Mover :MonoBehaviour, IMoverComponent
     }
 
 
-    public void  Init(Seeker _seeker, TargeterBaseClass targetsystem)
+    public void  Init(Seeker _seeker, TargeterBaseClass _targetsystem)
     {
         destinationSetter = gameObject.AddComponent<AIDestinationSetter>();
         seeker = _seeker;
@@ -34,19 +36,25 @@ public class Mover :MonoBehaviour, IMoverComponent
         //aIPath = gameObject.AddComponent<AIPath>();
         aIPath.orientation = OrientationMode.YAxisForward;
         aIPath.gravity = new Vector3 (0f,0f,0f);
-        Debug.Log(targetsystem + "is not null");
-        Debug.Log(targetsystem.attacker + "is not null");
-        Debug.Log(targetsystem.attacker.GetStats() + " is not null");
-        stats = targetsystem.attacker.GetStats();
-        aIPath.maxSpeed = stats.speed;
+        sceneObject = _targetsystem.attacker;
+        targetSystem = _targetsystem;
+        aIPath.maxSpeed = sceneObject.GetStats().speed;
         aIPath.canMove = true;
-
-        targetsystem.OnTargetChanged += OnTargetChanged;
-        TimeActions.OnPause += HandlePause;
         stateAllowsMovement = true;
         movementBlocked = false;
 
+        targetSystem.OnTargetChanged += OnTargetChanged;
+        TimeActions.OnPause += HandlePause;
+        TimeActions.GlobalTimeChanged += MoveUpdate;
+
     }
+    private void OnDestroy()
+    {
+        targetSystem.OnTargetChanged -= OnTargetChanged;
+        TimeActions.OnPause -= HandlePause;
+        TimeActions.GlobalTimeChanged -= MoveUpdate;
+    }
+
 
     private void OnMovementBlockersChanged()
     {
@@ -73,8 +81,31 @@ public class Mover :MonoBehaviour, IMoverComponent
         else
             aIPath.canMove = false;
     }
-    private void Update()
+    private void MoveUpdate(BattleSceneTimeArgs args)
     {
-        aIPath.maxSpeed = stats.speed;
+        if (sceneObject == null)
+        {
+            Debug.LogError("sceneObject is null");
+            return;
+        }
+
+        var stats = sceneObject.GetStats();
+        if (stats == null)
+        {
+            Debug.LogError("sceneObject.GetStats() returned null");
+            return;
+        }
+
+        var gridCell = GridCellManager.Instance.gridConstrution.GetCellByWorldPostion(sceneObject.transform.position);
+        if (gridCell == null)
+        {
+            Debug.LogError("GridCellManager.Instance.gridConstrution.GetCellByWorldPostion returned null");
+            return;
+        }
+
+        var walkPenalty = gridCell.GetWalkPenalty();
+        aIPath.maxSpeed = stats.speed * walkPenalty;
     }
+
+
 }

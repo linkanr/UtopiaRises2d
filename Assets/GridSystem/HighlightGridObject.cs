@@ -8,9 +8,22 @@ using UnityEngine.EventSystems;
 public class HighlightGridObject : MonoBehaviour
 {
     public Material gridMaterial;
-
-private void SetHightligt(List<Cell> cells)
+    GridConstrution grid;
+    
+    private void Start()
+    {
+        
+        
+    }
+    private void SetHightligt(List<Cell> cells)
 {
+
+    if (grid == null)
+        {
+            grid = GridCellManager.Instance.gridConstrution;
+            transform.localScale = new Vector3(grid.sizeX*100, grid.sizeY*100, 1);
+        }
+    gridMaterial.SetColor("_DisplayColor", MouseDisplayManager.instance.displayColor);
     float minx = float.MaxValue;
     float miny = float.MaxValue;
     float maxx = float.MinValue;
@@ -18,9 +31,14 @@ private void SetHightligt(List<Cell> cells)
 
     foreach (var cell in cells)
     {
-        GridConstrution grid = cell.gridRef;
+      
 
         // Calculate UV coordinates
+       // Debug.Log(cell.x);
+       //Debug.Log(cell.y);
+        //Debug.Log(grid.sizeX);
+          //  Debug.Log(grid.sizeY);
+
         float uvX = (float)cell.x / grid.sizeX;
         float uvY = (float)cell.y / grid.sizeY;
 
@@ -54,7 +72,7 @@ private void SetHightligt(List<Cell> cells)
         
         if (MouseDisplayManager.instance.displayCellChange)
         {
-            //Debug.Log("Triggered");
+            //Debug.Log("Displaying cell");
 
             List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(),MouseDisplayManager.instance.displaySizeX,MouseDisplayManager.instance.displaySizeY);
             if (cells.Count > 0)
@@ -66,6 +84,7 @@ private void SetHightligt(List<Cell> cells)
         }
         else if (!MouseDisplayManager.instance.displayCellChange)
         {
+            //Debug.Log("Mouse manager not displaying cell change grid mat");
             ResetGridMaterail();
         }
 

@@ -7,9 +7,9 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 /// </summary>
 public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClickableObject
 {
-    public bool walkable;
 
-    public int walkPenalty;
+
+
     /// <summary>
     /// The Collider2D component attached to the scene object.
     /// </summary>
@@ -20,10 +20,6 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     [HideInInspector] public Rigidbody2D rB2D;
 
-    /// <summary>
-    /// The sprite representing the scene object.
-    /// </summary>
-    public Sprite sprite;
 
     /// <summary>
     /// The bounds of the scene object.
@@ -105,7 +101,8 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         OnCreated();
         rB2D.gravityScale = 0;
         bounds = c2D.bounds;
-        AstarPath.active.UpdateGraphs(bounds);
+        spriteRenderer.sprite = GetStats().sprite;
+
     }
 
     /// <summary>
@@ -148,16 +145,14 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public void DestroySceneObject()
     {
-        bounds = c2D.bounds;
-        bounds.Expand(.1f);
-        BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
+
         BattleSceneActions.OnSceneObjectDestroyed(this);
 
         OnObjectDestroyed();
     }
 
     /// <summary>
-    /// Called when the scene object is destroyed.
+    /// Called when the scene object is destroyed.Only needs to implement specific logic for the scene object.The call to the list is allready done
     /// </summary>
     protected abstract void OnObjectDestroyed();
 

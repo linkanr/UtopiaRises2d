@@ -8,7 +8,7 @@ public class SoBattleScenePreScene : BaseState<BattleSceneStateMachine>
     public override void OnStateEnter()
     {
         PlayerGlobalsManager.instance.soPlayerBaseBuilding.Init(PlayerGlobalsManager.instance.basePositions);
-        CardManager.Instance.GetStartingCards();
+        
         BattleSceneActions.setInfluence(3);
         stateMachine.SetState(typeof(SoBattleSceneStateSceneStarting));
         Instantiate(Resources.Load("mouseDisplayManager") as GameObject,stateMachine.transform);
@@ -16,14 +16,18 @@ public class SoBattleScenePreScene : BaseState<BattleSceneStateMachine>
 
 
     }
+    public override void OnObjectDestroyed()
+    {
+
+    }
 
 
 
- 
+
     public override void OnStateExit()
     {
      
-
+        
     }
 
     public override void OnStateUpdate()

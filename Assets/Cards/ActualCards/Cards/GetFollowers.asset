@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Rally
   image: {fileID: 21300000, guid: b7f7159c181c787408fdb05fc500aa82, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 2
+  cardCanBePlayedOnEnum: 3
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   prefab: {fileID: 11400000, guid: 60afa40d0a23e5248b7ba79dcda1ac49, type: 2}

@@ -21,7 +21,7 @@ public class CardScapegoating : SoCardBase, IHasClickEffect
         foreach (SceneObject obj in objects)
          {
             //Debug.Log("Applying slow to " + obj.GetStats().GetString(StatsInfoTypeEnum.name));
-            EffectAdd.AddEffect(PickupTypes.Weak, obj,lifetime);
+            PickupEffectAdd.AddEffect(PickupTypes.Weak, obj,lifetime);
          }
        
         failureReason = "";

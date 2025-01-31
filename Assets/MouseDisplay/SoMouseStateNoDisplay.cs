@@ -4,6 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/States/MouseStates/NoDisplay")]
 public class SoMouseStateNoDisplay : BaseState<MouseDisplayStateMachine>
 {
+    public override void OnObjectDestroyed()
+    {
+        
+    }
+
     public override void OnStateEnter()
     {
         stateMachine.TurnOfDisplay();

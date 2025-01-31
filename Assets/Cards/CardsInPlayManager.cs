@@ -87,7 +87,7 @@ public class CardsInPlayManager : MonoBehaviour
         {
             if (InDrawPileList.Count == 0)
             {
-                Debug.Log("reshuffle");
+               // Debug.Log("reshuffle");
                 AddDiscardToDrawPile();
                 ShuffleDrawPile();
                 //Debug.Log("amount after reshuffle " + InDrawPileList.Count);
@@ -120,7 +120,7 @@ public class CardsInPlayManager : MonoBehaviour
     }
     private void AddToHandFromDraw(Card currentCard)
     {
-        Debug.Log($"Adding card to hand: {currentCard.cardBase.title}");
+        //Debug.Log($"Adding card to hand: {currentCard.cardBase.title}");
 
         // Remove from draw pile and add to hand
         InDrawPileList.Remove(currentCard);

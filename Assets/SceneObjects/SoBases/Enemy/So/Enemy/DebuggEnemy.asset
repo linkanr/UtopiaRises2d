@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7382116c9b09ffd4bb7c05f6cca5541a, type: 3}
+  m_Name: DebuggEnemy
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  sceneObjectName: Slime
+  description: Its fucking slimy
+  sprite: {fileID: 21300000, guid: d35a8a3bea72a8641a6a702cceda5b42, type: 3}
+  prefab: {fileID: 8283187678325239932, guid: e7fe3343bf1730c47b9908d7eaaa5767, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  sceneObjectType: 2
+  health: 15
+  attackSystem: {fileID: 11400000, guid: cedae3c7fba99434f8301f5ceaa27c67, type: 2}
+  seekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
+  damagerBaseClass: {fileID: 11400000, guid: 20c983d979c52644f90a59e498622036, type: 2}
+  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
+  possibleTargetTypes: 04000000
+  speed: 0

@@ -39,9 +39,9 @@ public class TargeterForEnemies : TargeterBaseClass
         }
         else
         {
-            UnityEngine.Debug.Log("mover is present");
+           // UnityEngine.Debug.Log("mover is present");
         }
-        seeker.Seek(attacker.transform.position, possibleTargetTypes, this, SeekStyle.findRoute, mover);
+        seeker.Seek(attacker.transform.position, possibleTargetTypes, this, mover);
     }
     public void SetNewTarget(Path p)
     {
@@ -52,4 +52,4 @@ public class TargeterForEnemies : TargeterBaseClass
     }
 
 
-}
+} 

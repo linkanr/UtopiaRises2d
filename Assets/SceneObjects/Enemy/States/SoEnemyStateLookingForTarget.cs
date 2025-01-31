@@ -4,6 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/States/Enemy/EnemyLookingForTarget")]
 public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
 {
+    public override void OnObjectDestroyed()
+    {
+        
+    }
+
     public override void OnStateEnter()
     {
         
@@ -26,7 +31,7 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
     {
         if (stateMachine.enemy.targeter.target == null)
         {
-            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,seekStyle:SeekStyle.findRoute,moverComponent:stateMachine.enemy.mover);
+            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.idamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,moverComponent:stateMachine.enemy.mover);
         }
         else if (!stateMachine.enemy.targeter.target.IsValid())
         {

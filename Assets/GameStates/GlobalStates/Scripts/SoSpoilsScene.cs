@@ -15,4 +15,8 @@ public class SoSpoilsScne : BaseState<GameStateMachine>
     {
         // DO nothing
     }
+    public override void OnObjectDestroyed()
+    {
+
+    }
 }

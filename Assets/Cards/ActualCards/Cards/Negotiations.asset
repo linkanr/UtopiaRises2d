@@ -17,7 +17,7 @@ MonoBehaviour:
   title: Negotiations
   image: {fileID: 21300000, guid: e52c0b28a42a2bf47b0c96c06e668c69, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 3
   cardPlayTypeEnum: 0
   influenceCost: 0
   faction: {fileID: 11400000, guid: 2a6ba5fa3fb359849baa0536ae704cc1, type: 2}

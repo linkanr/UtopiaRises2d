@@ -12,6 +12,10 @@ public class SoBattleSceneStateSpawningDone : BaseState<BattleSceneStateMachine>
 
     }
 
+    public override void OnObjectDestroyed()
+    {
+
+    }
 
 
     public override void OnStateExit()

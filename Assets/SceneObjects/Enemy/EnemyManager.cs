@@ -45,12 +45,12 @@ public class EnemyManager : MonoBehaviour
     private void OnEnable()
     {
         BattleSceneActions.OnInitializeScene += SpawEnemyBase;
-        BattleSceneActions.OnAllEnemiesSpawned += RestartSpawning;
+      
     }
 
     private void OnDisable()
     {
-        BattleSceneActions.OnAllEnemiesSpawned -= RestartSpawning;
+     
         BattleSceneActions.OnInitializeScene -= SpawEnemyBase;
     }
 

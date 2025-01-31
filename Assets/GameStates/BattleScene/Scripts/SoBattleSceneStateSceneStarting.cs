@@ -9,6 +9,10 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
         BattleSceneActions.OnInitializeScene();
         stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
     }
+    public override void OnObjectDestroyed()
+    {
+
+    }
 
     public override void OnStateExit()
     {

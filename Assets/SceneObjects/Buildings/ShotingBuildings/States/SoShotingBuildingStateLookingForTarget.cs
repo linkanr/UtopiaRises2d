@@ -36,6 +36,9 @@ public class SoShotingBuildingStateLookingForTarget : BaseState<ShotingBuildingS
             stateMachine.SetState(typeof(SoShotingBuildingStateTargetFound));
         }
     }
+    public override void OnObjectDestroyed()
+    {
 
+    }
 
 }

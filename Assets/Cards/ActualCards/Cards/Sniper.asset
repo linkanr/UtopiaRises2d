@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Sniper
   image: {fileID: 21300000, guid: 9175defc0bbc85f4aace41e08fe2aa40, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 5
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
   prefab: {fileID: 11400000, guid: 7502794e51dd2c04f97693f75636eb09, type: 2}

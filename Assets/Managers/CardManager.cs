@@ -24,6 +24,7 @@ public class CardManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            GetStartingCards();
         }
         else
         {

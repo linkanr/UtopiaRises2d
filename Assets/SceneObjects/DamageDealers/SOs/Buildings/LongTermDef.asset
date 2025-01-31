@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b936a449edcd11a4495cd46bb4b1422d, type: 3}
   m_Name: LongTermDef
   m_EditorClassIdentifier: 
-  baseDamage: 5
+  baseDamage: 4
   reloadTime: 1
   attackRange: 10

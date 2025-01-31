@@ -1,8 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
 
 public class CardSelectionHandler
 {
     private readonly Card card;
+    private Color naColor = Color.red;
+    private Color AvilibleColor = Color.green;
 
     public CardSelectionHandler(Card card)
     {
@@ -46,7 +51,7 @@ public class CardSelectionHandler
         // Animate card to visually indicate selection
         card.cardAnimations.AnimateScale(card.cardAnimations.clickScale, card);
 
-        HighlightPlayableArea();
+        
     }
 
     /// <summary>
@@ -56,25 +61,164 @@ public class CardSelectionHandler
     {
         int sizeX = 1;
         int sizeY = 1;
-
+        bool activateDisplay = true;
         // Adjust the playable area for cards with instantiation size
         if (card.cardBase is SoCardInstanciate soCardInstanciate)
         {
             sizeX = soCardInstanciate.sizeX;
             sizeY = soCardInstanciate.sizeY;
         }
+        if (card.cardBase.cardCanBePlayedOnEnum == CardCanBePlayedOnEnum.instantClick)
+        {
 
-        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(
-            card.cardBase.cardCanBePlayedOnEnum == CardCanBePlayedOnEnum.emptyGround,
-            sizeX, sizeY
-        ));
+            activateDisplay = false;
+        }
+         
+        Cell activeCell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+        if (activeCell == null)
+        {
+            
+            return;
+        }
+        SceneObject[] containingObject = activeCell.containingSceneObjects;
+        Color displayColor;
+
+        if (!activeCell.hasSceneObejct)
+        {
+            Debug.Log("Empty cell");
+            displayColor = HandleEmptyCell(activeCell);
+        }
+        else
+        {
+            Debug.Log("Non empty cell");
+            displayColor = HandleNonEmptyCell(containingObject, activeCell);
+        }
+
+        SetDisplayHandle(displayColor, activateDisplay, sizeX, sizeY);
     }
+
+    private Color HandleNonEmptyCell(SceneObject[] containingObject, Cell activeCell)
+    {
+        Debug.Log("HandleNonEmptyCell");
+        switch (card.cardBase.cardCanBePlayedOnEnum)
+        {
+            case CardCanBePlayedOnEnum.damagable:
+                Debug.Log("damagable");
+                foreach (SceneObject sceneObject in containingObject)
+                {
+                    if (sceneObject is IDamageAble)
+                    {
+                        Debug.Log("damagable found Color Green");
+                        return AvilibleColor;
+                    }
+                }
+                Debug.Log("damagable not found Color Red");
+                return naColor;
+                
+            case CardCanBePlayedOnEnum.construtcionBase:
+                foreach (SceneObject sceneObject in containingObject)
+                {
+                    if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
+                    {
+                        Debug.Log("construtcionBase found Color Green");
+                        return AvilibleColor;
+                    }
+                }
+                Debug.Log("construtcionBase not found Color Red");
+                return naColor;
+
+            case CardCanBePlayedOnEnum.enemyGround:
+                if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.enemyTerain)
+                {
+                    Debug.Log("enemyGround found Color Green");
+                    return AvilibleColor;
+                }
+                else
+                {
+                    return naColor;
+                }
+            case CardCanBePlayedOnEnum.playerGround:
+                if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                {
+                    Debug.Log("playerGround found Color Green");
+                    return AvilibleColor;
+                }
+                else
+                {
+                    return naColor;
+                }
+            case CardCanBePlayedOnEnum.playerOrEnemyGround:
+                {
+                    if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.enemyTerain || activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                    {
+                        Debug.Log("playerOrEnemyGround found Color Green");
+                        return AvilibleColor;
+                    }
+                    else
+                    {
+                        return naColor;
+                    }
+
+                }
+             default:
+             return naColor;
+        }
+    }
+
+    private void SetDisplayHandle(Color displayColor, bool active, int sizeX, int sizeY)
+    {
+        Debug.Log("SetDisplayHandle to active: " + active);
+        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(
+        active,displayColor,
+        sizeX, sizeY));
+    }
+
+    private Color HandleEmptyCell(Cell activeCell)
+    {
+        Debug.Log("HandleEmptyCell");
+        CellTerrainEnum cellTerrainEnum = activeCell.cellTerrain.cellTerrainEnum;
+        List<CardCanBePlayedOnEnum> avilibleEnums = GetAvibleEnums(cellTerrainEnum);
+        Debug.Log("avilibleEnums count: " + avilibleEnums.Count);
+        foreach (CardCanBePlayedOnEnum cardCanBePlayedOnEnum in avilibleEnums)
+        {
+           if (cardCanBePlayedOnEnum == card.cardBase.cardCanBePlayedOnEnum)
+            {
+                return AvilibleColor;
+            }
+           
+          
+
+        }
+        Debug.Log("HandleEmptyCell No cardcanbeplayedEnum found naColor");
+        return naColor;
+    }
+
+    private List<CardCanBePlayedOnEnum> GetAvibleEnums(CellTerrainEnum cellTerrainEnum)
+    {
+        List<CardCanBePlayedOnEnum> returnList = new List<CardCanBePlayedOnEnum>();
+        switch (cellTerrainEnum)
+        {
+            case CellTerrainEnum.playerTerrain:
+                returnList.Add(CardCanBePlayedOnEnum.playerGround);
+                returnList.Add(CardCanBePlayedOnEnum.playerOrEnemyGround);
+
+                break;
+            case CellTerrainEnum.enemyTerain:
+                returnList.Add(CardCanBePlayedOnEnum.enemyGround);
+                returnList.Add(CardCanBePlayedOnEnum.playerOrEnemyGround);
+                break;
+            
+        }
+        return returnList;
+    }
+
 
     /// <summary>
     /// Handles mouse click updates for card selection.
     /// </summary>
     public void HandleSelectionUpdate()
     {
+        HighlightPlayableArea(); 
         if (Input.GetMouseButtonDown(0) && !MouseDisplayManager.instance.mouseOverCard)
         {
             ProcessSelectionClick();
@@ -86,6 +230,10 @@ public class CardSelectionHandler
     /// </summary>
     private void ProcessSelectionClick()
     {
+        if (card.mode != Card.CardMode.playable)
+        {
+            return;
+        }
         ClickableType clickableType = WorldSpaceUtils.CheckClickableType();
 
         switch (card.cardBase.cardCanBePlayedOnEnum)
@@ -112,17 +260,87 @@ public class CardSelectionHandler
                 }
                 break;
 
-            case CardCanBePlayedOnEnum.emptyGround:
+            case CardCanBePlayedOnEnum.playerGround:
                 if (clickableType != ClickableType.card)
                 {
-                    PlayCard();
+                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                    {
+                        PlayCard();
+                    }
+                    else
+                    {
+                        ResetCardSelection();
+                    }
                 }
                 else
                 {
                     ResetCardSelection();
                 }
                 break;
+            case CardCanBePlayedOnEnum.enemyGround:
+                if (clickableType != ClickableType.card)
+                {
+                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.enemyTerain)
+                    {
+                        PlayCard();
+                    }
+                    else
+                    {
+                        ResetCardSelection();
+                    }
+                }
+                else
+                {
+                    ResetCardSelection();
+                }
+                break;
+            case CardCanBePlayedOnEnum.playerOrEnemyGround:
+                if (clickableType != ClickableType.card)
+                {
+                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.enemyTerain || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                    {
+                        PlayCard();
+                    }
+                    else
+                    {
+                        ResetCardSelection();
+                    }
+                }
+                else
+                {
+                    ResetCardSelection();
+                }
+                break;
+                case CardCanBePlayedOnEnum.construtcionBase:
+                if (clickableType != ClickableType.card)
+                {
+                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    if (!cell.hasSceneObejct)
+                    {
+                        ResetCardSelection();
+                        break;
+                    }
+                    foreach (SceneObject sceneObject in cell.containingSceneObjects)
+                    {
+                        if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
+                        {
+                            PlayCard();
+                        }
+                    }
 
+                    ResetCardSelection();
+
+
+
+                }
+                else
+                {
+                    ResetCardSelection();
+                }
+                break;
             default:
                 Debug.LogError($"Unhandled CardCanBePlayedOnEnum value: {card.cardBase.cardCanBePlayedOnEnum}");
                 ResetCardSelection();
@@ -144,7 +362,7 @@ public class CardSelectionHandler
 
         // Reset scene and UI highlights
         DisplayActions.OnHighligtSceneObject(false);
-        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false));
+        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false, naColor));
 
         // Reset card animation
         card.cardAnimations.ScaleResetAndRelease(card);
@@ -176,7 +394,7 @@ public class CardSelectionHandler
         card.isSelected = false;
 
         // Reset display actions
-        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false));
+        DisplayActions.OnDisplayCell(new OnDisplayCellArgs(false,naColor));
         DisplayActions.OnHighligtSceneObject(false);
         DisplayActions.OnRemoveMouseSprite?.Invoke();
 

@@ -10,8 +10,12 @@ public abstract class BaseState<T>:ScriptableObject where T : MonoBehaviour
     public abstract void OnStateEnter();
     public abstract void OnStateExit();
     public abstract void OnStateUpdate();
+    public abstract void OnObjectDestroyed();
 
-
+    private void OnDestroy()
+    {
+        OnObjectDestroyed();
+    }
 
 
 

@@ -12,6 +12,7 @@ public class MouseDisplayManager : MonoBehaviour
     public bool displayCellChange;
     public int displaySizeX;
     public int displaySizeY;
+    public Color displayColor;
 
     [Header("Mouse Display Components")]
     [SerializeField] private SpriteRenderer mouseSpriteRenderer;
@@ -30,10 +31,11 @@ public class MouseDisplayManager : MonoBehaviour
         DisplayActions.OnMouseOverCard += OnMouseOverCard;
         DisplayActions.OnMouseNotOverCard += OnMouseNotOverCard;
         DisplayActions.OnHighligtSceneObject += OnHighlightSceneObject;
-
+       
         DisplayActions.OnSetMouseSprite += HandleSetMouseSprite;
         DisplayActions.OnRemoveMouseSprite += HandleRemoveMouseSprite;
     }
+
 
     private void OnDisable()
     {
@@ -41,7 +43,7 @@ public class MouseDisplayManager : MonoBehaviour
         DisplayActions.OnMouseOverCard -= OnMouseOverCard;
         DisplayActions.OnMouseNotOverCard -= OnMouseNotOverCard;
         DisplayActions.OnHighligtSceneObject -= OnHighlightSceneObject;
-
+      
         DisplayActions.OnSetMouseSprite -= HandleSetMouseSprite;
         DisplayActions.OnRemoveMouseSprite -= HandleRemoveMouseSprite;
     }
@@ -54,6 +56,7 @@ public class MouseDisplayManager : MonoBehaviour
     private void OnHandleCellchange(OnDisplayCellArgs obj)
     {
         displayCellChange = obj.setDisplay;
+        displayColor = obj.color;
         displaySizeX = obj.sizeX;
         displaySizeY = obj.sizeY;
     }

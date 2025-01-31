@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class EnviromentObject : StaticSceneObject
 {
-    public float moveFactor;
+
     
 
 
@@ -24,6 +24,7 @@ public abstract class EnviromentObject : StaticSceneObject
 
 
         sceneObject.transform.SetParent(GameObject.Find("PersistantParent").transform);
+
         return sceneObject;
     }
     protected override void AddStatsForClick(Stats _stats)
@@ -36,7 +37,17 @@ public abstract class EnviromentObject : StaticSceneObject
 
     protected override void OnObjectDestroyed()
     {
+        bounds = c2D.bounds;
+        bounds.Expand(.1f);
+        BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
         Destroy(gameObject);
+    }
+    public override void OnCreated()
+    {
+        base.OnCreated();
+        bounds = c2D.bounds;
+        bounds.Expand(.1f);
+        BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
     }
 }
 

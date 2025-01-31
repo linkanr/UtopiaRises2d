@@ -14,7 +14,10 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
     {
         
     }
+    public override void OnObjectDestroyed()
+    {
 
+    }
     public override void OnStateUpdate()
     {
         stateMachine.shootingBuilding.targeter.attackTimer += BattleClock.Instance.deltaValue;

@@ -174,7 +174,7 @@ public class Stats
     /// <summary>
     /// Gets or sets the health of the game object.
     /// </summary>
-    public int health { get; set; }
+    public int   health => statsInfoDic.GetValue<int>(StatsInfoTypeEnum.health);
 
     /// <summary>
     /// Gets or sets the speed of the game object.
@@ -188,6 +188,10 @@ public class Stats
         }
         set {; }
     }
+
+    public float moveFactor => statsInfoDic.GetValue<float>(StatsInfoTypeEnum.moveFactor);
+
+
     /// <summary>
     /// Gets  the damage multiplier that is read by the idamageable component
     /// </summary>
@@ -246,7 +250,8 @@ public enum StatsInfoTypeEnum
     reloadTime,
     maxShotingDistance,
     damageAmount,
-    takesDamageMultiplier
+    takesDamageMultiplier,
+    moveFactor ///for Env objects
 
 
 }

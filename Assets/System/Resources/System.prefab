@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4766fb3a96030b499343b86dcf8bf23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soPlayerBaseBuilding: {fileID: 11400000, guid: a060602bc0dded54b832c3974cf2e02c, type: 2}
-  basePositions: {x: 45, y: 25, z: 0}
+  soPlayerBaseBuilding: {fileID: 11400000, guid: 4bd11e5f40ac6f54f8335cba52499af3, type: 2}
+  basePositions: {x: 70, y: 25, z: 0}
   followerList: []
 --- !u!1 &2909800979548665763
 GameObject:

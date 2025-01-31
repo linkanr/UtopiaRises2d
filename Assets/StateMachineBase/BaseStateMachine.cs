@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Playables;
 
@@ -12,7 +13,13 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
     public List<BaseState<T>> instanciatedStates;
     public readonly Dictionary<Type, BaseState<T>> _stateByType = new();
     public BaseState<T> activeState;
-    
+   
+    protected bool stopped = false;
+    public void Stopp()
+    {
+        activeState.OnStateExit();
+        stopped = true;
+    }
 
     protected virtual void Start()
     {
@@ -54,6 +61,7 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
     }
     protected void Update()
     {
+        if (stopped) return;
         activeState.OnStateUpdate();
         
     }
@@ -65,6 +73,24 @@ public abstract class BaseStateMachine<T> : MonoBehaviour where T : MonoBehaviou
     public BaseState<T> GetActiveState()
     {
         return _stateByType[activeState.GetType()];
+    }
+    protected virtual void OnDestroy()
+    {
+        if (activeState != null)
+        {
+            activeState.OnStateExit();
+        }
+        // Notify all states about destruction
+        foreach (var state in instanciatedStates)
+        {
+            state.OnObjectDestroyed();
+            Destroy(state); // Destroy ScriptableObject instances
+        }
+
+        // Clear lists and dictionaries
+        instanciatedStates.Clear();
+        _stateByType.Clear();
+        stopped = true;
     }
 
 }

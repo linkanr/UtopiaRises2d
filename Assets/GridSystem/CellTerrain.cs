@@ -11,6 +11,7 @@ public class CellTerrain:ScriptableObject
     public bool isWalkable;
     public int walkPenalty;
     public float damageMulti;
+    public bool canHaveTower;
         
 
 }

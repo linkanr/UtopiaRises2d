@@ -10,7 +10,7 @@ public static class BattleSceneActions
  
     public static Action OnAllEnemiesDestroyed;
     public static Action OnEnemyBaseDestroyed;
-    public static Action OnAllEnemiesSpawned;
+
 
     public static Action<Card> OnNewCardAdded;
     public static Action<int> OnDrawCard;

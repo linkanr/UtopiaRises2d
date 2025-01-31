@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Scapegoating
   image: {fileID: 21300000, guid: 284b3e88f16f2f34686c9b340f31d74f, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 4
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
   lifetime: 30

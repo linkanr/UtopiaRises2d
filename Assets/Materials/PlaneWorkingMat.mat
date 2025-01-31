@@ -57,6 +57,7 @@ Material:
     - _ymax: 0
     - _ymin: 0
     m_Colors:
+    - _DisplayColor: {r: 0, g: 1, b: 0, a: 1}
     - _UvMaz: {r: 0.63, g: 0.8, b: 0, a: 0}
     - _Uvmax: {r: 1, g: 1, b: 0, a: 0}
     - _Uvmaz: {r: 0.64, g: 0.8, b: 0, a: 0}

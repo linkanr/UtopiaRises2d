@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: grass
   m_EditorClassIdentifier: 
   cellTerrainEnum: 0
-  isWalkable: 1
-  walkPenalty: 0
+  binaryInList: 0
+  isWalkable: 0
+  walkPenalty: 1
   damageMulti: 1
+  canHaveTower: 1

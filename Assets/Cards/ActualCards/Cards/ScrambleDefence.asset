@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Scarmble defence
   image: {fileID: 21300000, guid: 39b79059dc2e406429405baecd1bb4ae, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 5
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   prefab: {fileID: 11400000, guid: 88658008c124f174ab1ac886fe1e4a91, type: 2}

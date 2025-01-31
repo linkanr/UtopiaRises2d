@@ -5,9 +5,10 @@ using UnityEngine;
 public class SoEnviromentObject : SoSceneObjectBase
 {
   
-
+    public float moveFactor;
     protected override Stats GetStatsInernal(Stats stats)
     {
+        stats.Add(StatsInfoTypeEnum.moveFactor, moveFactor);
         return stats;
     }
 

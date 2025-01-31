@@ -34,4 +34,8 @@ public class SoLoadBattleScene : BaseState<GameStateMachine>
 
         yield return new WaitForEndOfFrame();
     }
+    public override void OnObjectDestroyed()
+    {
+
+    }
 }

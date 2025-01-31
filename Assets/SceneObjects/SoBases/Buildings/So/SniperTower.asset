@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes: []
   sceneObjectName: Sniper Tower
   description: A sniper tower
-  sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
+  sprite: {fileID: 21300000, guid: 82d7d77e69b5eb949948c5503215078a, type: 3}
   prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
   faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
   sceneObjectType: 0

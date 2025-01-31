@@ -27,3 +27,4 @@ MonoBehaviour:
   prefab: {fileID: 69631546739173138, guid: 057735918ef6e914cae45e9436b9938b, type: 3}
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 5
+  moveFactor: 0.8

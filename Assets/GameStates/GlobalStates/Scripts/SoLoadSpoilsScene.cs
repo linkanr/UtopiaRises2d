@@ -11,7 +11,10 @@ public class SoLoadSpoilsScene : BaseState<GameStateMachine>
         stateMachine.StartCoroutine(LoadScene("SpoilsScene"));
 
     }
+    public override void OnObjectDestroyed()
+    {
 
+    }
     public override void OnStateExit()
     {
         //Go to next state

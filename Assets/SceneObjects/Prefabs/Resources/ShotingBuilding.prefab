@@ -66,11 +66,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c2D: {fileID: 0}
   rB2D: {fileID: 0}
-  sprite: {fileID: 0}
   isDead: 0
   spriteRenderer: {fileID: 1254883561299938048}
-  sceneObjectType: 0
-  timer: 0
   shotingPos: {fileID: 8236128589012249382}
   stateMachine: {fileID: 0}
 --- !u!114 &4836590446493347504
@@ -152,7 +149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8721239202112313747
 Transform:
   m_ObjectHideFlags: 0
@@ -207,7 +204,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 322991189
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -245,13 +242,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6978930034661954714}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 646823091175401262}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!212 &1254883561299938048
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -291,10 +288,10 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 322991189
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 1
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.39681002, g: 0.93333334, b: 0.13725486, a: 1}
+  m_Sprite: {fileID: 21300000, guid: f7fa2c19896a8754187680f9a0e0c9ef, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -480,7 +477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3728519569087374882, guid: ec767351588365142bf62497d88e9919, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3728519569087374882, guid: ec767351588365142bf62497d88e9919, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

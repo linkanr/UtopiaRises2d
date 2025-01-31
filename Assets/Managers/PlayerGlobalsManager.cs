@@ -8,7 +8,10 @@ public class PlayerGlobalsManager : MonoBehaviour
     public static PlayerGlobalsManager instance;
     public Vector3 basePositions;
     public int influence { get; private set; }
-    public List<Transform> followerList;
+    public PlayerGlobalVariables playerGlobalVariables;
+    public int influenceEachTurn { get; private set; }
+
+    public int cardAmount { get; private set; }
 
     private void Awake()
     {
@@ -20,23 +23,19 @@ public class PlayerGlobalsManager : MonoBehaviour
         {
             Debug.LogError("two global managers");
         }
-        followerList = new List<Transform>();
+        playerGlobalVariables = new PlayerGlobalVariables();
     }
 
     private void OnEnable()
     {
-        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated;
+
         BattleSceneActions.setInfluence += SetInfluence; // SET influence each turn Triggered by statemachine 
     }
     private void OnDisable()
     {
-        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed; // triggers every time someone with ITargatableByEnemy is created
-        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated;
+
         BattleSceneActions.setInfluence -= SetInfluence;
     }
-    public int influenceEachTurn { get; private set; }
-    public int cardAmount { get; private set; }
     private void Start()
     {
 
@@ -53,29 +52,13 @@ public class PlayerGlobalsManager : MonoBehaviour
         influence += amount;
         BattleSceneActions.OnInfluenceChanged(influence);
     }
-    private void RemoveFollowerFromList(Transform transform)
-    {
-        followerList.Remove(transform);
-        BattleSceneActions.OnFollowerCountChanged(followerList.Count);
-    }
 
-    private void AddFollowerToList(Transform transform)
-    {
-        followerList.Add(transform);
-        BattleSceneActions.OnFollowerCountChanged(followerList.Count);
-    }
-    private void HandleDamagableCreated(SceneObject target)
-    {
-        if (target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
-        {
-            AddFollowerToList(target.transform);
-        }
-    }
-    private void HandleDamagableDestroyed(SceneObject target)
-    {
-        if (target.GetStats().sceneObjectType == SceneObjectTypeEnum.follower)
-        {
-            RemoveFollowerFromList(target.transform);
-        }
-    }
+}
+
+public class PlayerGlobalVariables
+{
+    public int gasDamageMulti = 1;
+    public int fireDamageMulti = 1;
+    public int gasLifeTimeMulit = 1;
+
 }

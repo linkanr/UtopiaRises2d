@@ -18,6 +18,7 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 0eb99959b517f164790fd1e9cea62451, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 1
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   damagaAmount: 10

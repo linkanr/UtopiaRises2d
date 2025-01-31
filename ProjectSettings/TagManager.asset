@@ -13,8 +13,8 @@ TagManager:
   - 
   - Water
   - UI
-  - CollisionLayer
-  - CollidingObejcts
+  - WalkableSurface
+  - NotWalkableSurface
   - bush
   - stone
   - damage
@@ -22,10 +22,10 @@ TagManager:
   - enemy
   - humanBuildings
   - SceneObjects
-  - sapling
-  - tree
-  - oldTree
   - 
+  - tree
+  - 
+  - CellOverlay
   - 
   - 
   - 

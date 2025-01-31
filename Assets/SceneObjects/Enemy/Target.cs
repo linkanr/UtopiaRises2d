@@ -16,7 +16,7 @@ public class Target
     public Target (IDamageAble _damageable, TargeterBaseClass attacker) 
     {
         damagable = _damageable;
-        Debug.Log("creating new target attacker is " + attacker.attacker.GetStats().name + " defender is " + _damageable.idamageableComponent.sceneObject.GetStats().name);
+        //Debug.Log("creating new target attacker is " + attacker.attacker.GetStats().name + " defender is " + _damageable.idamageableComponent.sceneObject.GetStats().name);
         damagable.idamageableComponent.OnDeath += (sender, e) => attacker.RemoveTarget();
         transform = damagable.idamageableComponent.GetTransform();
     }

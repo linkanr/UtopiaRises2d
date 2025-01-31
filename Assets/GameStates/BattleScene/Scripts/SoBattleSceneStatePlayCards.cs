@@ -12,7 +12,7 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
     public override void OnStateEnter()
     {
         //Show end state button
-        Debug.Log("Entering play cards state");
+        //Debug.Log("Entering play cards state");
         GameSceneRef.instance.inHandPile.gameObject.SetActive(true);//Change to a simple 
         BattleSceneActions.OnDrawCard(PlayerGlobalsManager.instance.cardAmount);
         BattleSceneActions.setInfluence(PlayerGlobalsManager.instance.influenceEachTurn);
@@ -32,10 +32,16 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
 
     public override void OnStateExit()
     {
-        GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
+        if (GameSceneRef.instance.inHandPile != null)
+            GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
     }
 
     public override void OnStateUpdate()
+    {
+        
+    }
+
+    public override void OnObjectDestroyed()
     {
         
     }

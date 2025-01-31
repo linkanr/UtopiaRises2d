@@ -11,7 +11,7 @@ public class SoSeekSytemForEnemies : SoSeekSystemBase//Goes straigt to damagable
 {
 
 
-    public override SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, SeekStyle seekStyle = SeekStyle.findclosest, IMoverComponent moverComponent = null)
+    public override SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, IMoverComponent moverComponent = null)
     {
 
         TargeterForEnemies movingTargeter = attackerComponent as TargeterForEnemies;
@@ -35,7 +35,7 @@ public class SoSeekSytemForEnemies : SoSeekSystemBase//Goes straigt to damagable
             {
                 Debug.LogWarning("transform is null"); 
             }
-            Debug.Log("i is" + i + " pos is " + positions[i].ToString());
+           // Debug.Log("i is" + i + " pos is " + positions[i].ToString());
             i++;
             
         }

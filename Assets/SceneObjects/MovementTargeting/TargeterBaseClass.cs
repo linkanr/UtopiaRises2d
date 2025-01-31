@@ -30,29 +30,12 @@ public abstract class TargeterBaseClass : MonoBehaviour
 
     public virtual void SetNewTarget(SceneObject _iDamageable)
     {
-        Debug.Log("SettingnewTarget");
+        //Debug.Log("SettingnewTarget");
         target = new Target(_iDamageable as IDamageAble, this);
         OnTargetChanged?.Invoke(target);
     }
 
-    public bool CheckIfTargetIsInDistance()
-    {
-        if (target == null || attacker == null)
-        {
-            return false;
-        }
-            
-        if (!target.IsValid())
-        {
-            return false;
-        }
-        if (Vector2.Distance(target.transform.position, attacker.transform.position) < attacker.GetStats().maxShootingDistance)
-        {
-            Debug.Log("target within distance");
-            return true;
-        }
-        return false;
-    }
+
 
     public virtual void Seek()
     {

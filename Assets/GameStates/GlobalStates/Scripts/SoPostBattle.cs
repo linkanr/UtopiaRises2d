@@ -21,4 +21,8 @@ public class SoPostBattle : BaseState<GameStateMachine>
     {
         //
     }
+    public override void OnObjectDestroyed()
+    {
+
+    }
 }

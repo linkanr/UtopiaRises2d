@@ -23,7 +23,7 @@ MonoBehaviour:
     SerializationNodes: []
   sceneObjectName: LongTermDefence
   description: A sniper tower
-  sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
+  sprite: {fileID: 21300000, guid: 44b6c29e151433946af3723ce3ec0bd7, type: 3}
   prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 0

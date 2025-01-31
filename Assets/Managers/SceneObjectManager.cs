@@ -44,7 +44,7 @@ public class SceneObjectManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             string objInScene = "Scene objects in scene: ";
-            Debug.Log("Amount of scene objects is " + sceneObjectsInScene.Count);
+            //Debug.Log("Amount of scene objects is " + sceneObjectsInScene.Count);
             foreach (SceneObject sceneObject in sceneObjectsInScene)
             {
                 objInScene += sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " ";
@@ -59,7 +59,7 @@ public class SceneObjectManager : MonoBehaviour
     /// <param name="target">The scene object that was created.</param>
     private void HandleDamagableCreated(SceneObject target)
     {
-        Debug.Log("Added " + target.GetStats().GetString(StatsInfoTypeEnum.name) + " to sceneObjectsInScene");
+        //Debug.Log("Added " + target.GetStats().GetString(StatsInfoTypeEnum.name) + " to sceneObjectsInScene");
         sceneObjectsInScene.Add(target);
     }
 

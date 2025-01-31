@@ -16,7 +16,7 @@ MonoBehaviour:
   title: Divine Revitalization
   image: {fileID: 1088011745, guid: 9685c3a024e22a946a7e8c2ce3542300, type: 3}
   rarity: 2
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 3
   cardPlayTypeEnum: 1
   influenceCost: 0
   faction: {fileID: 11400000, guid: 67fe37c3678f5a64ca80f0e143713da4, type: 2}

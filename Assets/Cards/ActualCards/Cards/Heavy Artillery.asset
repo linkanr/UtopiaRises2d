@@ -16,10 +16,11 @@ MonoBehaviour:
   title: HEavey artillery
   image: {fileID: 21300000, guid: e52c0b28a42a2bf47b0c96c06e668c69, type: 3}
   rarity: 1
-  cardCanBePlayedOnEnum: 0
-  influenceCost: 1
+  cardCanBePlayedOnEnum: 4
+  cardPlayTypeEnum: 0
+  influenceCost: 2
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
-  damage: 30
+  damage: 12
   delay: 0
   diameter: 10
   visualEffect: {fileID: 5637707959465163233, guid: 43964e1aba874d84182487785f04c692, type: 3}

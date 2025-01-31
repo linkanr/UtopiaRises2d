@@ -6,11 +6,16 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
 {
     public override void OnStateEnter()
     {
+        AstarPath.active.Scan();
         TimeActions.OnPause(false);
         BattleSceneActions.OnLiveStatsStarting?.Invoke();
         GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
         EnemyManager.Instance.SetSpawning(true);
         BattleSceneActions.OnSpawnInterwallDone += OnSpawningDone;
+    }
+    public override void OnObjectDestroyed()
+    {
+        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningDone;
     }
 
     private void OnSpawningDone()

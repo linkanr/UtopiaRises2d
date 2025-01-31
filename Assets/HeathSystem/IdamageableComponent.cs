@@ -50,6 +50,7 @@ public enum SceneObjectTypeEnum
     enemyBase,
     playerBase,
     enviromentObject,
+    playerConstructionBase,
     all,
     
 }

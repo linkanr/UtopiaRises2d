@@ -18,51 +18,7 @@ public class GridConstrution
     public Cell[,] gridArray;
     
     
-    public GridConstrution(int sizeX, int sizeY, float cellSize, Vector3 offset, List<CellTerrain> _cellTerrainList, float xmulti, float ymulti)
-    {
-        Debug.Log($"cellTerrainList: {(_cellTerrainList == null ? "null" : "not null")}");
-        if (_cellTerrainList != null)
-        {
-            Debug.Log($"cellTerrainList count: {_cellTerrainList.Count}");
-        }
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
-        this.cellSize = cellSize;
-        this.offset = offset;
-        gridArray = new Cell[sizeX, sizeY];
-        for (int x = 0; x < gridArray.GetLength(0); x++)
-        {
-            for (int y = 0; y < gridArray.GetLength(1); y++)
-            {
-                float fx = (float)x*1.35f;
-                float fy = (float)y*1.35f;
-                float rand = Mathf.PerlinNoise(fx * xmulti, fy * ymulti);
-                //Debug.Log($"x: {fx}, y: {fy}, PerlinNoise: {rand}");
-                CellTerrain cellTerrain = null;
-                ObjectTypeEnums objectType = ObjectTypeEnums.none;
-                if (rand > 0.7f) /// genereate water
-                {
-                    cellTerrain = _cellTerrainList[1];
-                }
-                else
-                {
-                    cellTerrain = _cellTerrainList[0];
-                    if (rand < .2f)
-                    {
-                        objectType = ObjectTypeEnums.forest;
-                    }
-                    if (rand < .1f)
-                    {
-                        objectType = ObjectTypeEnums.stone;
-                    }
-
-                }
-                Cell newCell = new Cell(x, y, this, cellTerrain,objectType);
-                gridArray[x, y] = newCell;
-            }
-        }
-
-    }
+   
 
     public GridConstrution(Texture2D texture, List<CellTerrain> _cellTerrainList, float cellSize, Vector3 offset)
     {
@@ -77,14 +33,31 @@ public class GridConstrution
             for (int y = 0; y < sizeY; y++)
             {
                 Color pixelColor = texture.GetPixel(x, y);
-
-                CellTerrainEnum cellTerrain = CellTerrainToColor.GetTerrain(pixelColor);
+                CellReturnInfoArgs cellReturn = CellTerrainToColor.GetTerrain(pixelColor);
+                CellTerrainEnum cellTerrain = cellReturn.cellTerrainEnum;
+                CellContainsEnum cellContains = cellReturn.cEllContainsEnum;
                 CellTerrain cellTerrainObject = _cellTerrainList.Find(x => x.cellTerrainEnum == cellTerrain);
                 if (cellTerrainObject == null)
                 {
                     Debug.LogError("cellTerrainObject is null");
                 }
                 gridArray[x, y] = new Cell(x, y, this, cellTerrainObject);
+                if (cellContains != CellContainsEnum.none)
+                {
+                    switch (cellContains)
+                    {
+                        case CellContainsEnum.playerBase:
+                            // Istanciate player base
+                            break;
+                        case CellContainsEnum.enemyBase:
+                            // instanciate enemy base
+                            break;
+                        case CellContainsEnum.constructionCore:
+                            ConstructionBaseSceneObject constructionBaseSceneObject =  ConstructionBaseSceneObject.Create(new Vector3 (x+ cellSize/2, y+cellSize/2,0f));
+                            
+                            break;
+                    }
+                }
                 //Debug.Log("cellTerrainObject: " + cellTerrainObject.cellTerrainEnum + " at " + x +" "+ y);
             }
         }
@@ -165,6 +138,7 @@ public class GridConstrution
 
         List<Cell> returnList = new List<Cell>();
         Cell startCell = GetCellByWorldPostion(position);
+
         int starty = startCell.y;
         int startx = startCell.x;
 
@@ -224,39 +198,6 @@ public class GridConstrution
     }
 
 
-    public void SetTextToCellList(List<Cell> cells)
-    {
-        foreach (Cell cell in cells)
-        {
-            cell.information = "test";
-
-        }
-    }
-    public void SetCellText(Vector3 position, string value)
-    {
-        Cell cell = GetCellByWorldPostion(position);
-        if (cell != null)
-        {
-            GetCellByWorldPostion(position).information = value;
-
-
-        }
-        else
-        {
-            Debug.Log("no cell");
-        }
-
-    }
-    public void SetCellText(Cell cell, string value)
-    {
-
-        cell.information = value;
-
-
-
-
-    }
-
     public List<Cell> GetCellList()
     {
         Debug.Log("GetCellList");
@@ -282,5 +223,39 @@ public class GridConstrution
             }
         }
         return returnList;
+    }
+
+    internal Cell GetRandomNeighbour(Cell parent)
+    {
+        List<Cell> neighbors = new List<Cell>();
+
+        int parentX = parent.x;
+        int parentY = parent.y;
+
+        // Check all 8 possible neighbors
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0) continue; // Skip the parent cell itself
+
+                int checkX = parentX + x;
+                int checkY = parentY + y;
+
+                // Check if the neighbor is within bounds
+                if (checkX >= 0 && checkX < sizeX && checkY >= 0 && checkY < sizeY)
+                {
+                    neighbors.Add(gridArray[checkX, checkY]);
+                }
+            }
+        }
+
+        if (neighbors.Count > 0)
+        {
+            int randomIndex = UnityEngine.Random.Range(0, neighbors.Count);
+            return neighbors[randomIndex];
+        }
+
+        return null;
     }
 }

@@ -12,10 +12,11 @@ public class CardDamageArea : SoCardBase, IHasClickEffect
     public float diameter;
     public VisualEffect visualEffect;
     public Sprite clickSprite;
+    public float burnChance;
 
     public override bool ActualEffect(Vector3 position, out string failureReason)
     {
-        AreaDamage.Create(position,diameter, visualEffect, damage, delay);
+        AreaDamage.Create(position,diameter, visualEffect, damage, delay,burnChance);
         failureReason = "";
         return true;
     }

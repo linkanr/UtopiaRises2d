@@ -12,8 +12,9 @@ public class AreaDamage : MonoBehaviour
     private int damage;
     private float delay;
     private float diameter;
+    private float burnChance;
     private bool init = false;
-    public static void Create(Vector3 position, float diameter, VisualEffect visualEffect, int damage, float delay)
+    public static void Create(Vector3 position, float diameter, VisualEffect visualEffect, int damage, float delay, float burnChance = 0f)
     {
         GameObject prefab = Resources.Load("areaDamage") as GameObject;
         AreaDamage areaDamage = Instantiate(prefab, position, Quaternion.identity).GetComponent<AreaDamage>();
@@ -22,6 +23,7 @@ public class AreaDamage : MonoBehaviour
         areaDamage.effect = Instantiate(visualEffect, areaDamage.transform);
         areaDamage.effect.SetFloat("size", diameter);
         areaDamage.diameter = diameter;
+        areaDamage.burnChance = burnChance;
         if (areaDamage.delay > 0.01)
         {
             areaDamage.effect.Stop();
@@ -50,12 +52,30 @@ public class AreaDamage : MonoBehaviour
     IEnumerator StartAreaDamage()
     {
         yield return PlayEffect();
+
         DealDamage(damage);
         Destroy(gameObject);
 
     }
 
-
+    private void AddFire()
+    {
+        Debug.Log("adding fire");
+        if (burnChance > 0)
+        {
+            Debug.Log("adding fire burn chance over zero");
+            Cell[] cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)diameter / 2).ToArray();
+            foreach (Cell cell in cells)
+            {
+                Debug.Log("Looping over cells");
+                if (UnityEngine.Random.Range(0f, 1f) < burnChance)
+                {
+                    Debug.Log("adding fire to cell");
+                    cell.CreateCellEffect(CellEffectEnum.Fire);
+                }
+            }
+        }
+    }
 
     private void DealDamage(int damage)
     {
@@ -69,14 +89,16 @@ public class AreaDamage : MonoBehaviour
             IDamageAble damageable = a as IDamageAble;
             damageable.idamageableComponent.TakeDamage(damage);
         }
+
     }
 
     IEnumerator PlayEffect()
     {
         Debug.Log("playing effect");
         effect.Play();
-        yield return new WaitForSeconds(.5f);
 
+        yield return new WaitForSeconds(.7f);
+        AddFire();
         while (effect.aliveParticleCount > 0)
         {
             yield return null; // Wait for one frame and check again

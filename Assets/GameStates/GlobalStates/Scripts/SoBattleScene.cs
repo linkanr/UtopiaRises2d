@@ -19,6 +19,9 @@ public class SoBattleScene : BaseState<GameStateMachine>
     {
         // DO nothing
     }
+    public override void OnObjectDestroyed()
+    {
 
+    }
 
 }

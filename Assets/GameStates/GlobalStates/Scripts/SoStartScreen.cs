@@ -15,6 +15,10 @@ public class SoStartScreen : BaseState<GameStateMachine>
             
         }
     }
+    public override void OnObjectDestroyed()
+    {
+        GlobalActions.OnClickStartGame-= StartGame;
+    }
 
     private void StartGame()
     {
@@ -23,7 +27,7 @@ public class SoStartScreen : BaseState<GameStateMachine>
 
     public override void OnStateExit()
     {
-       
+        GlobalActions.OnClickStartGame -= StartGame;
     }
 
     public override void OnStateUpdate()

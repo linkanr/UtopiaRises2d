@@ -7,6 +7,6 @@ using UnityEngine;
 
 public abstract class SoSeekSystemBase : ScriptableObject
 { 
-    public abstract SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, SeekStyle seekStyle = SeekStyle.findclosest, IMoverComponent moverComponent = null);
+    public abstract SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, IMoverComponent moverComponent = null);
 
 }

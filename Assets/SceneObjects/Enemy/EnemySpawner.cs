@@ -15,7 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public Transform SpawnPos;
     private float timer;
     private float spawnTimer;
-    private float spawnTimerMax = .25f;
+    private float spawnTimerMax = .5f;
     private float timerMax = 10f;
 
     private float actualTimer;
@@ -71,7 +71,7 @@ public class EnemySpawner : MonoBehaviour
     {
         SoEnemyObject soEnemyObject = Instantiate(enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
 
-        Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 1f) * 5f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
+        Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 1f) * 1f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
 
         EnemyCreator.CreateEnemy(soEnemyObject, position);
 
@@ -106,16 +106,16 @@ public class EnemySpawner : MonoBehaviour
     private void AllWavesDone()
     {
         timerReachedSpawn = false;
-        enemyWaves.RemoveAt(0);
-        Debug.Log("end of all lists");
+
+
         
-        BattleSceneActions.OnAllEnemiesSpawned();
+
     }
 
     private void CurrentWaveDone()
     {
         timerReachedSpawn = false;
-        Debug.Log("end of list");
+        //Debug.Log("end of list");
         enemyWaves.RemoveAt(0);
     }
 }

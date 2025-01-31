@@ -27,7 +27,7 @@ public class CardAnimations
 
     public void SetScale(float scale)
     {
-        Debug.Log("setting scale to " + scale);
+        //Debug.Log("setting scale to " + scale);
         rectTransform.localScale = new Vector3(scale, scale, 1f);
         UpdateLayoutElement(scale);
         ForceUIUpdate();
@@ -49,7 +49,7 @@ public class CardAnimations
     public void AnimateScale(float scale, Card card, float time = upDownScaleTime)
     {
 
-        Debug.Log("setting scale "+ scale + "  in time " + time);
+        //Debug.Log("setting scale "+ scale + "  in time " + time);
         Vector3 targetSize = new Vector3(prefX * scale, prefY * scale, 1f);
 
         // Temporarily lock the card's state

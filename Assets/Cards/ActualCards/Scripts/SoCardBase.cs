@@ -57,8 +57,11 @@ public abstract class SoCardBase:ScriptableObject
 
 public enum CardCanBePlayedOnEnum
 {
-    emptyGround,
+    playerGround,
+    enemyGround,
     damagable,
-    instantClick
+    instantClick,
+    playerOrEnemyGround,
+    construtcionBase
 
 }

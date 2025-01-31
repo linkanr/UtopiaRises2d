@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public static class DisplayActions
@@ -11,17 +12,19 @@ public static class DisplayActions
     // New actions for handling mouse sprites
     public static Action<OnDisplaySpriteArgs> OnSetMouseSprite;
     public static Action OnRemoveMouseSprite;
+
 }
 
 public class OnDisplayCellArgs
 {
-    public OnDisplayCellArgs(bool _setDisplay, int _sizeX = 1, int _sizeY = 1)
+    public OnDisplayCellArgs(bool _setDisplay, Color _color, int _sizeX = 1, int _sizeY = 1)
     {
         setDisplay = _setDisplay;
         sizeX = _sizeX;
         sizeY = _sizeY;
+        color = _color;
     }
-
+    public Color color;
     public bool setDisplay;
     public int sizeX;
     public int sizeY;
@@ -37,5 +40,6 @@ public class OnDisplaySpriteArgs
     }
 
     public Sprite sprite;
+
     public float size;
 }

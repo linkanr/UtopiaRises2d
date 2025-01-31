@@ -16,7 +16,8 @@ MonoBehaviour:
   title: PoisonWells
   image: {fileID: 21300000, guid: 76a189e93af634f4584cbf5b5d5d1b1e, type: 3}
   rarity: 1
-  cardCanBePlayedOnEnum: 1
+  cardCanBePlayedOnEnum: 2
+  cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
   damagaAmount: 3

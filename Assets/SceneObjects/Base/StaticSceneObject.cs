@@ -12,5 +12,5 @@ public abstract class StaticSceneObject : SceneObject
 
         rB2D.constraints = RigidbodyConstraints2D.FreezeAll;
     }
-
+    
 }

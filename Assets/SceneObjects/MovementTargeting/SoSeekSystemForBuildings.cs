@@ -5,7 +5,7 @@ public class SoSeekSystemForBuildings : SoSeekSystemBase
 {
 
 
-    public override SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, SeekStyle seekStyle = SeekStyle.findclosest, IMoverComponent moverComponent = null)
+    public override SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, IMoverComponent moverComponent = null)
     {
         SceneObject newTarget = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(position, sceneObjectTypeEnumsList: sceneObjectTypeEnums, maxDistance: attackerComponent.attacker.GetStats().maxShootingDistance);
         if (newTarget != null)

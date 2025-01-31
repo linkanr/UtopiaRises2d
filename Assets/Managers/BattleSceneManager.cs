@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class BattleSceneManager : MonoBehaviour
 {
-    public static BattleSceneManager Instance;
+    public static BattleSceneManager instance;
     public BattleSceneStateMachine stateMachine;
+    public PlayerGlobalVariables playerGlobalVariables;
     private void OnEnable()
     {
         BattleSceneActions.OnEnemyBaseDestroyed += LevelClear;
@@ -23,8 +24,9 @@ public class BattleSceneManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
         stateMachine = GetComponent<BattleSceneStateMachine>();
+        playerGlobalVariables = new PlayerGlobalVariables();
     }
     private void Update()
     {

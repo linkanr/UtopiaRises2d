@@ -16,7 +16,8 @@ MonoBehaviour:
   title: Terrrize the weak
   image: {fileID: -7685871446693566262, guid: 654e7050ef43f2f47be006094d581c3a, type: 3}
   rarity: 1
-  cardCanBePlayedOnEnum: 0
+  cardCanBePlayedOnEnum: 4
+  cardPlayTypeEnum: 0
   influenceCost: 2
   faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
   damage: 10

@@ -14,6 +14,7 @@ public class BattleClock: MonoBehaviour
     public int intValue { get { return (int) Value; } }
     public bool paused { get; private set; }
     private float timerPingMax = .1f;
+    private int timerPingSecond = 0;
     private float timerPing;
     private float interwall = 10f;
 
@@ -77,6 +78,13 @@ public class BattleClock: MonoBehaviour
                 TimeActions.GlobalTimeChanged?.Invoke(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
                 interwallTimer += timerPing;
                 timerPing = 0f;
+                timerPingSecond++;
+                if (timerPingSecond >= 10)
+                {
+                    Debug.Log("trigger second change");
+                    TimeActions.OnSecondChange?.Invoke();
+                    timerPingSecond = 0;
+                }
 
 
 

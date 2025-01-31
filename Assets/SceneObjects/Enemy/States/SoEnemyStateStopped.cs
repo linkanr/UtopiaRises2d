@@ -13,7 +13,10 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
     {
         
     }
+    public override void OnObjectDestroyed()
+    {
 
+    }
     public override void OnStateUpdate()
     {
         if (stateMachine.enemy.targeter.target == null)

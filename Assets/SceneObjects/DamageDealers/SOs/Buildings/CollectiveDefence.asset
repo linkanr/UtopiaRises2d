@@ -15,5 +15,5 @@ MonoBehaviour:
   baseDamage: 0
   reloadTime: 1
   attackRange: 10
-  additionPerObject: 2
+  additionPerObject: 1
   factionBonus: {fileID: 11400000, guid: 67fe37c3678f5a64ca80f0e143713da4, type: 2}
