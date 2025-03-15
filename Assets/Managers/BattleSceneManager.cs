@@ -10,11 +10,11 @@ public class BattleSceneManager : MonoBehaviour
     public PlayerGlobalVariables playerGlobalVariables;
     private void OnEnable()
     {
-        BattleSceneActions.OnEnemyBaseDestroyed += LevelClear;
+        BattleSceneActions.OnEmemyDefeated += LevelClear;
     }
     private void OnDisable()
     {
-        BattleSceneActions.OnEnemyBaseDestroyed -= LevelClear;
+        BattleSceneActions.OnEmemyDefeated -= LevelClear;
     }
     private void LevelClear()
     {

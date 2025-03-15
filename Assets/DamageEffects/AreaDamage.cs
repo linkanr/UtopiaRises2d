@@ -17,6 +17,7 @@ public class AreaDamage : MonoBehaviour
     public static void Create(Vector3 position, float diameter, VisualEffect visualEffect, int damage, float delay, float burnChance = 0f)
     {
         GameObject prefab = Resources.Load("areaDamage") as GameObject;
+        position.z = -0.05f;
         AreaDamage areaDamage = Instantiate(prefab, position, Quaternion.identity).GetComponent<AreaDamage>();
         areaDamage.damage = damage;
         areaDamage.delay = delay;
@@ -53,18 +54,18 @@ public class AreaDamage : MonoBehaviour
     {
         yield return PlayEffect();
 
-        DealDamage(damage);
+       
         Destroy(gameObject);
 
     }
 
     private void AddFire()
     {
-        Debug.Log("adding fire");
+ 
         if (burnChance > 0)
         {
             Debug.Log("adding fire burn chance over zero");
-            Cell[] cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)diameter / 2).ToArray();
+            Cell[] cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)diameter / 2, (int)diameter / 2).ToArray();
             foreach (Cell cell in cells)
             {
                 Debug.Log("Looping over cells");
@@ -87,21 +88,22 @@ public class AreaDamage : MonoBehaviour
         {
             Debug.Log(a.GetStats().GetString(StatsInfoTypeEnum.name));
             IDamageAble damageable = a as IDamageAble;
-            damageable.idamageableComponent.TakeDamage(damage);
+            damageable.iDamageableComponent.TakeDamage(damage);
         }
 
     }
 
     IEnumerator PlayEffect()
     {
-        Debug.Log("playing effect");
+
         effect.Play();
 
-        yield return new WaitForSeconds(.7f);
+        yield return new WaitForSeconds(1f);
         AddFire();
+        DealDamage(damage);
         while (effect.aliveParticleCount > 0)
         {
-            yield return null; // Wait for one frame and check again
+            yield return new WaitForSeconds(.1f);
         }
 
 

@@ -28,10 +28,10 @@ public class CardsInPlayManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        Debug.Log("subbing");
+     //   Debug.Log("subbing");
         BattleSceneActions.OnInitializeScene += InitializeDrawPile;
         BattleSceneActions.OnDrawCard += DrawCards;
-        BattleSceneActions.OnLiveStatsStarting += DiscardAllCards;
+        BattleSceneActions.OnSpawningStarting += DiscardAllCards;
     }
 
 
@@ -40,7 +40,7 @@ public class CardsInPlayManager : MonoBehaviour
 
         BattleSceneActions.OnInitializeScene -= InitializeDrawPile;
         BattleSceneActions.OnDrawCard -= DrawCards;
-        BattleSceneActions.OnLiveStatsStarting -= DiscardAllCards;
+        BattleSceneActions.OnSpawningStarting -= DiscardAllCards;
     }
 
     private void DiscardAllCards()
@@ -80,7 +80,7 @@ public class CardsInPlayManager : MonoBehaviour
         ShuffleDrawPile();
     }
 
-    private void DrawCards(int amount)
+    public void DrawCards(int amount)
     {
         //Debug.Log("drawing " + amount + " cards");
         for (int i = 0; i < amount; i++)
@@ -90,7 +90,7 @@ public class CardsInPlayManager : MonoBehaviour
                // Debug.Log("reshuffle");
                 AddDiscardToDrawPile();
                 ShuffleDrawPile();
-                //Debug.Log("amount after reshuffle " + InDrawPileList.Count);
+          
 
 
             }
@@ -101,6 +101,7 @@ public class CardsInPlayManager : MonoBehaviour
 
         }
     }
+
     public Card DrawCard()
     {
         if (InDrawPileList.Count == 0)

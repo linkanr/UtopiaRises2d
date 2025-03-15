@@ -1,5 +1,4 @@
 using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class DirectDamageEffect : MonoBehaviour
@@ -60,7 +59,7 @@ public class DirectDamageEffect : MonoBehaviour
 
     private void Execute()
     {
-        damageable.idamageableComponent.TakeDamage(amount);
+        damageable.iDamageableComponent.TakeDamage(amount);
         timesleft--;
         timer = 0f;
         if (timesleft < 1)

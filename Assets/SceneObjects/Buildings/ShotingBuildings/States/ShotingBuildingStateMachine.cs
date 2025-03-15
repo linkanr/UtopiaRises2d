@@ -1,9 +1,9 @@
 public class ShotingBuildingStateMachine : BaseStateMachine<ShotingBuildingStateMachine>
 {
-    public ShootingBuilding shootingBuilding;
+    public SceneObjectShootingBuilding shootingBuilding;
 
     protected override void Init()
     {
-        shootingBuilding = GetComponent<ShootingBuilding>();
+        shootingBuilding = GetComponent<SceneObjectShootingBuilding>();
     }
 }

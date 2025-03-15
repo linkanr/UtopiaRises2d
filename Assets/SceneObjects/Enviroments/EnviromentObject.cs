@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using UnityEngine;
 
 public abstract class EnviromentObject : StaticSceneObject
@@ -31,11 +30,12 @@ public abstract class EnviromentObject : StaticSceneObject
     {
 
         _stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.enviromentObject);
+       
     }
 
 
 
-    protected override void OnObjectDestroyed()
+    protected override void OnObjectDestroyedObjectImplementation()
     {
         bounds = c2D.bounds;
         bounds.Expand(.1f);
@@ -45,6 +45,7 @@ public abstract class EnviromentObject : StaticSceneObject
     public override void OnCreated()
     {
         base.OnCreated();
+        c2D = GetComponent<Collider2D>();
         bounds = c2D.bounds;
         bounds.Expand(.1f);
         BattleSceneActions.OnUpdateBounds?.Invoke(bounds);

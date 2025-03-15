@@ -20,7 +20,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     [HideInInspector] public Rigidbody2D rB2D;
 
-
+    public Vector3 sceneObjectPosition;
     /// <summary>
     /// The bounds of the scene object.
     /// </summary>
@@ -75,20 +75,15 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         spriteSorter.SortSprite();
         MouseOverScenObject mouseOverScenObject = gameObject.AddComponent<MouseOverScenObject>();
         mouseOverScenObject.Init(spriteRenderer);
-
-        if (this is IDamageAble)
-        {
-            IDamageAble damageAble = this as IDamageAble;
-            damageAble.idamageableComponent = gameObject.AddComponent<HealthHandler>();
-            damageAble.idamageableComponent.Init(this);
-        }
-
         GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
         GameObject instance = Instantiate(effectSpriteGameObject, transform);
         effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>();
         effectSpriteOrganizer.Init(this.transform);
 
         statsHandler = new SceneObjectStatsHandler(this, effectSpriteOrganizer);
+
+
+
     }
 
     /// <summary>
@@ -96,12 +91,34 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     protected virtual void Start()
     {
-        c2D = GetComponent<Collider2D>();
-        rB2D = gameObject.AddComponent<Rigidbody2D>();
+        //c2D = GetComponent<Collider2D>();
+        //rB2D = gameObject.AddComponent<Rigidbody2D>();
         OnCreated();
-        rB2D.gravityScale = 0;
-        bounds = c2D.bounds;
+        //rB2D.gravityScale = 0;
+        //bounds = c2D.bounds;
         spriteRenderer.sprite = GetStats().sprite;
+        if (this is IDamageAble)
+        {
+            IDamageAble damageAble = this as IDamageAble;
+            if (this is IHasLifeSpan)
+            {
+                IHasLifeSpan hasLifeSpan = this as IHasLifeSpan;
+                damageAble.iDamageableComponent = gameObject.AddComponent<TimeHealthHandler>();
+                damageAble.iDamageableComponent.Init(this);
+                GameObject towerUiGO = Instantiate(Resources.Load("ui"), transform) as GameObject;
+                TowerTimeUiHandle towerUi = towerUiGO.GetComponent<TowerTimeUiHandle>();
+                towerUi.Init(this);
+            }
+            else
+            {
+
+                damageAble.iDamageableComponent = gameObject.AddComponent<PhysicalHealthHandler>();
+                damageAble.iDamageableComponent.Init(this);
+            }
+
+
+        }
+
 
     }
 
@@ -137,25 +154,62 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public virtual void OnCreated()
     {
+        sceneObjectPosition = transform.position;
         BattleSceneActions.OnSceneObejctCreated(this);
+        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(transform.position);
+
+        if (cell == null)
+        {
+            Debug.Log("cell not found");
+
+        }
+        cell.AddSceneObjects(this);
+    }
+
+
+    public void KillSceneObject() 
+    {
+        if (this is IDamageAble)
+        {
+            IDamagableComponent idamagableComponent = (this as IDamageAble).iDamageableComponent;
+            if (idamagableComponent != null)
+            {
+                idamagableComponent.Die();
+            }
+        }
+        else
+        {
+            OnSceneObjectDestroyedBase();
+        }
     }
 
     /// <summary>
-    /// Destroys the scene object.
+    /// CAlled when the scene object is destroyed.
     /// </summary>
-    public void DestroySceneObject()
+    public void OnSceneObjectDestroyedBase()
     {
 
         BattleSceneActions.OnSceneObjectDestroyed(this);
-
-        OnObjectDestroyed();
+        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(transform.position);
+        if (cell != null) 
+        {
+            if (cell.containingSceneObjects.Contains(this))
+            {
+                cell.containingSceneObjects.Remove(this);
+            }
+        }
+        VisualEffectManager.PlayVisualEffect(GetDeathEffect(), transform.position);
+        OnObjectDestroyedObjectImplementation();
     }
 
     /// <summary>
     /// Called when the scene object is destroyed.Only needs to implement specific logic for the scene object.The call to the list is allready done
     /// </summary>
-    protected abstract void OnObjectDestroyed();
-
+    protected abstract void OnObjectDestroyedObjectImplementation();
+    protected virtual visualEffectsEnum GetDeathEffect()
+    {
+        return visualEffectsEnum.death;
+    }
     /// <summary>
     /// Handles pointer click events on the scene object.
     /// </summary>

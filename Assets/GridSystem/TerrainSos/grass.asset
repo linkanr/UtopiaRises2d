@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c5e60c1802b525498505aeed509945b, type: 3}
-  m_Name: grass
+  m_Name: Grass
   m_EditorClassIdentifier: 
-  cellTerrainEnum: 0
-  binaryInList: 0
-  isWalkable: 0
+  cellTerrainEnum: 5
+  binaryInList: 1
   walkPenalty: 1
   damageMulti: 1
-  canHaveTower: 1
+  canHaveTower: 0
+  generateHeat: 0
+  generateHumidity: 0
+  fuel: 1
+  chanceOfCatchingFire: 4
+  heatTransferAmount: 1

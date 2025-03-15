@@ -7,25 +7,36 @@ using System;
 
 public class TilemapManager : SerializedMonoBehaviour
 {
-    public Tilemap baseTilesTileMap;
-    public Tilemap topTilesTileMap;
+    public Tilemap playerTerrainMap;
+    public Tilemap enemySoilTileMAp;
+    public Tilemap enemyGrassTileMap;
+    public Tilemap enemyWaterTileMap;
     public Tilemap cellEffectTileMap;
 
-    private List<TileBase> baseTilesSorted;
-    public List<TileBase> baseTiles;
-    public List<TileBase> topTiles;
-    private List<TileBase> topTilesSorted;
+    private List<TileBase> playerTerrainSorted;
+    public List<TileBase> playerTerrainTiles;
+    public List<TileBase> enemyTerrainSoil;
+    private List<TileBase> enemyTerrainSoilSorted;
+    public List<TileBase> enemyTerraingrass;
+    private List<TileBase> enemyTerraingrassSorted;
     public List<TileBase> cellEffectTiles;
+    public List<TileBase> enemyTerrainWater;
+    private List<TileBase> enemyTerrainWaterSorted;
+
 
 
     private void Awake()
     {
-        baseTilesSorted = new List<TileBase>();
-        topTilesSorted = new List<TileBase>();
+        playerTerrainSorted = new List<TileBase>();
+        enemyTerrainSoilSorted = new List<TileBase>();
+        enemyTerraingrassSorted = new List<TileBase>();
+        enemyTerrainWaterSorted = new List<TileBase>();
 
-        TilemapHelper.SortNewList(baseTiles, baseTilesSorted);
+        TilemapHelper.SortNewList(playerTerrainTiles, playerTerrainSorted);
         //TilemapHelper.SortNewList(baseTilesAlt, baseTilesSorted);
-        TilemapHelper.SortNewList(topTiles, topTilesSorted);
+        TilemapHelper.SortNewList(enemyTerrainSoil, enemyTerrainSoilSorted);
+        TilemapHelper.SortNewList(enemyTerraingrass, enemyTerraingrassSorted);
+        TilemapHelper.SortNewList(enemyTerrainWater, enemyTerrainWaterSorted);
     }
 
     private void OnEnable()
@@ -46,6 +57,7 @@ public class TilemapManager : SerializedMonoBehaviour
     {
         foreach (Cell cell in cells)
         {
+   //         Debug.Log("Updating cell");
             UpdateTile(cell);
         }
     }
@@ -58,11 +70,27 @@ public class TilemapManager : SerializedMonoBehaviour
     private IEnumerator UpdateTileAndTriggerAstar(Cell cell)
     {
         // Run the first two coroutines and wait for them to complete
-        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(cell, baseTilesTileMap, baseTilesSorted, 0));
-       yield return StartCoroutine(TilemapHelper.UpdateTileWithNoise(cell, topTilesTileMap, topTilesSorted, 0.255f));
+       yield return UpdatePlayerTerrain(cell);
+        yield return UpdateEnemyTerrain(cell); 
+
+       
 
         // After the first two coroutines are done, trigger the A* update
 
+    }
+
+    public IEnumerator UpdatePlayerTerrain(Cell _cell)
+    {
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, playerTerrainMap, playerTerrainSorted, CellTerrainEnum.playerTerrain));
+
+      
+    }
+    public IEnumerator UpdateEnemyTerrain(Cell _cell)
+    {
+
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemySoilTileMAp, enemyTerrainSoilSorted, CellTerrainEnum.soil));
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemyGrassTileMap, enemyTerraingrassSorted, CellTerrainEnum.grass));
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemyWaterTileMap, enemyTerrainWaterSorted, CellTerrainEnum.water));
     }
 
     /// <summary>

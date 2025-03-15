@@ -7,6 +7,11 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class StatsMediator
 {
+    public Action onModifierAdded;
+    public StatsMediator(Stats stats) 
+    {
+        onModifierAdded += stats.OnStatsChanged;
+    }
     public readonly LinkedList<StatsModifier> modifiers = new LinkedList<StatsModifier>();
 
     /// <summary>
@@ -28,6 +33,7 @@ public class StatsMediator
     public void AddModifier(StatsModifier modifier)
     {
         modifiers.AddLast(modifier);
+        onModifierAdded?.Invoke();
         queries += modifier.Handle;
         modifier.OnDispose += _ =>
         {

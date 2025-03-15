@@ -9,25 +9,26 @@ public static class WorldSpaceUtils
     public static Vector3 GetMouseWorldPosition()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        Vector3 r = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        r.z = 0;
-        return r;
 
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
+        // Plane at z = 0
+        float t = -ray.origin.z / ray.direction.z;
+
+        return ray.origin + t * ray.direction; // Intersection point with z = 0 plane
     }
     public static Vector3 GetMouseWorldPosition3D()
     {
         if (mainCamera == null) mainCamera = Camera.main;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        
 
-        if (Physics.Raycast(ray, out RaycastHit hitData, GameSceneRef.instance.collisionLayerGrid))
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        float maxDistance = 100f; // Set a reasonable max distance for the raycast
+        Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red, 1f);
+        if (Physics.Raycast(ray, out RaycastHit hitData, maxDistance, GameSceneRef.instance.collisionLayerGrid))
         {
             return hitData.point;
+        }
 
-        }  
-        
-        
         return Vector3.zero;
     }
     public static Vector3 GetRandomDirection()
@@ -71,5 +72,29 @@ public static class WorldSpaceUtils
         }
         return ClickableType.notFound;
  
+    }
+    public static bool CrossedBorder(Vector2 a, Vector2 b)
+    {
+        // Compute min/max bounds for x and y
+        float minX = Mathf.Min(a.x, b.x);
+        float maxX = Mathf.Max(a.x, b.x);
+        float minY = Mathf.Min(a.y, b.y);
+        float maxY = Mathf.Max(a.y, b.y);
+
+        // Check if it crossed a vertical border (x = n + 0.5)
+        for (float x = Mathf.Floor(minX) + 0.5f; x <= maxX; x += 1.0f)
+        {
+            if (x > minX && x <= maxX)
+                return true;
+        }
+
+        // Check if it crossed a horizontal border (y = m + 0.5)
+        for (float y = Mathf.Floor(minY) + 0.5f; y <= maxY; y += 1.0f)
+        {
+            if (y > minY && y <= maxY)
+                return true;
+        }
+
+        return false;
     }
 }

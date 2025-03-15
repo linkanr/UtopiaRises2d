@@ -10,8 +10,26 @@ public class SceneObjectManager : MonoBehaviour
 {
     public static SceneObjectManager Instance;
     public SceneObjectGetter sceneObjectGetter;
-    public List<SceneObject> sceneObjectsInScene; // All idamageable should add themselves to this list
+    private List<SceneObject> allSceneObjectsInScene; // All idamageable should add themselves to this list
+    private Dictionary<SceneObjectTypeEnum, List<SceneObject>> sceneObjectsInSceneByType;
 
+
+    public List<SceneObject> RetriveSceneObjects(SceneObjectTypeEnum sceneObjectTypeEnum)
+
+    {
+        switch (sceneObjectTypeEnum)
+        {
+            case SceneObjectTypeEnum.all:
+                return allSceneObjectsInScene;
+            default:
+                if (!sceneObjectsInSceneByType.ContainsKey(sceneObjectTypeEnum))
+                {
+                    return new List<SceneObject>();
+                }
+                return sceneObjectsInSceneByType[sceneObjectTypeEnum];
+        }
+   
+    }
     private void Awake()
     {
         if (Instance == null)
@@ -23,20 +41,21 @@ public class SceneObjectManager : MonoBehaviour
             Debug.LogError("Duplicate manager detected");
         }
 
-        sceneObjectsInScene = new List<SceneObject>();
+        allSceneObjectsInScene = new List<SceneObject>();
         sceneObjectGetter = new SceneObjectGetter(this);
+        sceneObjectsInSceneByType = new Dictionary<SceneObjectTypeEnum, List<SceneObject>>();
     }
 
     private void OnEnable()
     {
-        BattleSceneActions.OnSceneObjectDestroyed += HandleDamagableDestroyed;
-        BattleSceneActions.OnSceneObejctCreated += HandleDamagableCreated;
+        BattleSceneActions.OnSceneObjectDestroyed += HandleSceneObjectDestroyed;
+        BattleSceneActions.OnSceneObejctCreated += HandleSceneObjectCreated;
     }
 
     private void OnDisable()
     {
-        BattleSceneActions.OnSceneObjectDestroyed -= HandleDamagableDestroyed;
-        BattleSceneActions.OnSceneObejctCreated -= HandleDamagableCreated;
+        BattleSceneActions.OnSceneObjectDestroyed -= HandleSceneObjectDestroyed;
+        BattleSceneActions.OnSceneObejctCreated -= HandleSceneObjectCreated;
     }
 
     private void Update()
@@ -45,7 +64,7 @@ public class SceneObjectManager : MonoBehaviour
         {
             string objInScene = "Scene objects in scene: ";
             //Debug.Log("Amount of scene objects is " + sceneObjectsInScene.Count);
-            foreach (SceneObject sceneObject in sceneObjectsInScene)
+            foreach (SceneObject sceneObject in allSceneObjectsInScene)
             {
                 objInScene += sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " ";
             }
@@ -57,18 +76,48 @@ public class SceneObjectManager : MonoBehaviour
     /// Handles the creation of a damageable scene object.
     /// </summary>
     /// <param name="target">The scene object that was created.</param>
-    private void HandleDamagableCreated(SceneObject target)
+    private void HandleSceneObjectCreated(SceneObject target)
     {
-        //Debug.Log("Added " + target.GetStats().GetString(StatsInfoTypeEnum.name) + " to sceneObjectsInScene");
-        sceneObjectsInScene.Add(target);
+        // Ensure the object is added to the master list
+        allSceneObjectsInScene.Add(target);
+
+        // Get the object's type
+        SceneObjectTypeEnum type = target.GetStats().sceneObjectType;
+
+        // Ensure the dictionary has a list for this type
+        if (!sceneObjectsInSceneByType.ContainsKey(type))
+        {
+            sceneObjectsInSceneByType[type] = new List<SceneObject>();
+        }
+
+        // Add the object to its type-specific list
+        sceneObjectsInSceneByType[type].Add(target);
     }
+
 
     /// <summary>
     /// Handles the destruction of a damageable scene object.
     /// </summary>
     /// <param name="target">The scene object that was destroyed.</param>
-    private void HandleDamagableDestroyed(SceneObject target)
+    private void HandleSceneObjectDestroyed(SceneObject target)
     {
-        sceneObjectsInScene.Remove(target);
+        // Remove from the master list
+        allSceneObjectsInScene.Remove(target);
+
+        // Get the object's type
+        SceneObjectTypeEnum type = target.GetStats().sceneObjectType;
+
+        // Remove from the dictionary if it exists
+        if (sceneObjectsInSceneByType.ContainsKey(type))
+        {
+            sceneObjectsInSceneByType[type].Remove(target);
+
+            // If the list is now empty, remove the key from the dictionary
+            if (sceneObjectsInSceneByType[type].Count == 0)
+            {
+                sceneObjectsInSceneByType.Remove(type);
+            }
+        }
     }
+
 }

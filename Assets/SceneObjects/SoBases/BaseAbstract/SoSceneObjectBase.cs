@@ -11,6 +11,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     public SceneObject prefab;
     public Faction faction;
     public SceneObjectTypeEnum sceneObjectType;
+    public TakesDamageFrom takesDamageFrom;
 
     public Stats GetStats() // this sets the base
     {
@@ -21,6 +22,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
         stats.Add(StatsInfoTypeEnum.sceneObjectType, sceneObjectType);
         stats.Add(StatsInfoTypeEnum.Faction, faction);
         stats.Add(StatsInfoTypeEnum.takesDamageMultiplier, 1f);
+        stats.Add(StatsInfoTypeEnum.takesDamageFrom, takesDamageFrom);
         return GetStatsInernal(stats);
 
     }
@@ -34,6 +36,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
 
         sceneobjectFromCard.SetStats(GetStats());
         ObjectInitialization(sceneobjectFromCard);
+        
         return sceneobjectFromCard;
     }
     /// <summary>

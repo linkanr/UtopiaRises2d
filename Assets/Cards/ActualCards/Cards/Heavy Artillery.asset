@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6a1640e7aba234f92d592d21787303, type: 3}
   m_Name: Heavy Artillery
   m_EditorClassIdentifier: 
-  description: Rain heavy fire on your fow
   title: HEavey artillery
+  description: Rain heavy fire on your fow
+  cardType: 0
   image: {fileID: 21300000, guid: e52c0b28a42a2bf47b0c96c06e668c69, type: 3}
   rarity: 1
   cardCanBePlayedOnEnum: 4
@@ -25,3 +26,4 @@ MonoBehaviour:
   diameter: 10
   visualEffect: {fileID: 5637707959465163233, guid: 43964e1aba874d84182487785f04c692, type: 3}
   clickSprite: {fileID: 21300000, guid: d0f5d7a0d57e30641b29f6506069fdb7, type: 3}
+  burnChance: 0.5

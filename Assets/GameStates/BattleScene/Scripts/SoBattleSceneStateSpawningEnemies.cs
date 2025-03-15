@@ -8,17 +8,27 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
     {
         AstarPath.active.Scan();
         TimeActions.OnPause(false);
-        BattleSceneActions.OnLiveStatsStarting?.Invoke();
+        BattleSceneActions.OnSpawningStarting?.Invoke();
         GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
-        EnemyManager.Instance.SetSpawning(true);
-        BattleSceneActions.OnSpawnInterwallDone += OnSpawningDone;
+        if (EnemyManager.Instance.EnemyCount().enemiesInNextWaves > 0)
+        {
+            Debug.Log("Eneter state: Spawning enemies");
+            EnemyManager.Instance.SetSpawning(true);
+        }
+        else
+        {
+            Debug.Log("Eneter state: NOT Spawning enemies");
+            EnemyManager.Instance.SetSpawning(false);
+        }
+;
+        BattleSceneActions.OnSpawnInterwallDone += OnSpawningWaveDone;
     }
     public override void OnObjectDestroyed()
     {
-        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningDone;
+        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningWaveDone;
     }
 
-    private void OnSpawningDone()
+    private void OnSpawningWaveDone()
     {
         stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
     }
@@ -26,7 +36,7 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
     public override void OnStateExit()
     {
         EnemyManager.Instance.SetSpawning(false);
-        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningDone;
+        BattleSceneActions.OnSpawnInterwallDone -= OnSpawningWaveDone;
         TimeActions.OnPause(true);
     }
 

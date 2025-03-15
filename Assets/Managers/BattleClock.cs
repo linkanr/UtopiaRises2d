@@ -18,6 +18,10 @@ public class BattleClock: MonoBehaviour
     private float timerPing;
     private float interwall = 10f;
 
+    private float quaterTick = 0f;
+    private float quaterTickInterwall = .223f;
+
+
     public float interwallTimer = 0f;
     public float deltaValue;
 
@@ -73,6 +77,7 @@ public class BattleClock: MonoBehaviour
             Value += Time.deltaTime;
             deltaValue = Time.deltaTime;
             timerPing += Time.deltaTime;
+            quaterTick += Time.deltaTime;
             if (timerPing >= timerPingMax)
             {
                 TimeActions.GlobalTimeChanged?.Invoke(new BattleSceneTimeArgs { time = timeValue ,deltaTime= timerPingMax });
@@ -81,8 +86,9 @@ public class BattleClock: MonoBehaviour
                 timerPingSecond++;
                 if (timerPingSecond >= 10)
                 {
-                    Debug.Log("trigger second change");
+                   // Debug.Log("trigger second change");
                     TimeActions.OnSecondChange?.Invoke();
+                    Debug.Log("trigger second change");
                     timerPingSecond = 0;
                 }
 
@@ -96,11 +102,13 @@ public class BattleClock: MonoBehaviour
                 BattleSceneActions.OnSpawnInterwallDone();
                 interwallTimer = 0f;
             }
+            if (quaterTick >= quaterTickInterwall)
+            {
+                TimeActions.OnQuaterTick?.Invoke();
+                quaterTick = 0f;
+            }
         }
-        else
-        {
-            
-        }
+
     }
     
 }

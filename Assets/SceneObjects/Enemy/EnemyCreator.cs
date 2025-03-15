@@ -14,20 +14,15 @@ public class EnemyCreator : MonoBehaviour
 
         // Get the Enemy component and configure it
 
-        SetEnemyHealthSystem(soEnemyInformationPackage, newEnemy);
+
         SetAiPathSeek(soEnemyInformationPackage, newEnemy);
         SetSpriteRenders(soEnemyInformationPackage, newEnemy);
+       
 
         return newEnemy;
     }
 
     #region Enemy Setter Functions
-    private static void SetEnemyHealthSystem(SoEnemyObject soEnemyInformationPackage, Enemy newEnemy)
-    {
-
-        newEnemy.idamageableComponent.healthSystem.SetInitialHealth(soEnemyInformationPackage.health);
-        newEnemy.idamageableComponent.healthSystem.damageEffect = soEnemyInformationPackage.damageEffect;
-    }
 
     private static void SetAiPathSeek(SoEnemyObject soEnemyInformationPackage, Enemy newEnemy)
     {
@@ -38,7 +33,7 @@ public class EnemyCreator : MonoBehaviour
         newEnemy.targeter = _targeter;
         newEnemy.targeter.Initialize(newEnemy, soEnemyInformationPackage.seekSystem, soEnemyInformationPackage.possibleTargetTypes, soEnemyInformationPackage.attackSystem, moverComponent);
         newEnemy.mover.Init(newEnemy.transform.GetComponent<Seeker>(), newEnemy.targeter);
-        newEnemy.targeter.Seek();
+
 
     }
     private static void SetSpriteRenders(SoEnemyObject soEnemyObj, Enemy newEnemy)

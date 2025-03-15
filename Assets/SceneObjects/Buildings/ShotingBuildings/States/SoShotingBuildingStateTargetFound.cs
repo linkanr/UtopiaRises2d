@@ -46,7 +46,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
         {
             if (DebuggerGlobal.instance.drawTargetLines)
             {
-                DebuggerGlobal.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.targeter.target.transform.position);
+                DebuggerGlobal.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.targeter.target.transform.position, color:Color.yellow);
             }
            
            

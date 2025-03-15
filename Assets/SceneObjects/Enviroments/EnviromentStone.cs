@@ -7,7 +7,7 @@ public class EnviromentStone : EnviromentObject
 
     public SceneObjectTypeEnum damageableType => SceneObjectTypeEnum.enviromentObject;
 
-    public IdamagableComponent idamageableComponent { get; set; }
+    public IdamagablePhysicalComponent idamageableComponent { get; set; }
 
 
 

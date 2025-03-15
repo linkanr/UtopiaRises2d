@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,15 @@ public class Stats
     public Stats()
     {
         statsInfoDic = new StatsInfoDic();
-        statsMediator = new StatsMediator();
+        statsMediator = new StatsMediator(this);
+        statsInfoDic.OnStatsChanged += StatsChanged;
     }
 
+    private void StatsChanged()
+    {
+        OnStatsChanged?.Invoke();
+    }
+    public Action OnStatsChanged;
     /// <summary>
     /// Dictionary to store stats information.
     /// </summary>
@@ -43,7 +50,7 @@ public class Stats
     /// <param name="value">The value of the stat.</param>
     public void Add<T>(StatsInfoTypeEnum key, T value)
     {
-        if (key == StatsInfoTypeEnum.damageAmount || key == StatsInfoTypeEnum.reloadTime || key == StatsInfoTypeEnum.maxShotingDistance)
+        if (key == StatsInfoTypeEnum.damageAmount || key == StatsInfoTypeEnum.reloadTime || key == StatsInfoTypeEnum.maxRangeForShotingSpawning)
         {
             Debug.LogError("use the damager class to set the damage amount, reload time or max shooting distance");
         }
@@ -58,13 +65,14 @@ public class Stats
     /// <returns>The value of the stat.</returns>
     public T GetValue<T>(StatsInfoTypeEnum key)
     {
-        if (key == StatsInfoTypeEnum.damageAmount || key == StatsInfoTypeEnum.reloadTime || key == StatsInfoTypeEnum.maxShotingDistance)
+        if (key == StatsInfoTypeEnum.damageAmount || key == StatsInfoTypeEnum.reloadTime || key == StatsInfoTypeEnum.maxRangeForShotingSpawning)
         {
             Debug.LogError("use the damager class to set the damage amount, reload time or max shooting distance");
         }
         return statsInfoDic.GetValue<T>(key);
     }
 
+    #region BaseExtrationTypes
     /// <summary>
     /// Gets the string value of a stat.
     /// </summary>
@@ -94,6 +102,24 @@ public class Stats
     {
         return statsInfoDic.GetValue<int>(statsInfoTypeEnum);
     }
+    #endregion
+    #region BasicSceneobjectProperties
+
+    /// <summary>
+    /// Gets the name of the game object.
+    /// </summary>
+    public string name => statsInfoDic.GetValue<string>(StatsInfoTypeEnum.name);
+
+    /// <summary>
+    /// Gets the description of the game object.
+    /// </summary>
+    public string description => statsInfoDic.GetValue<string>(StatsInfoTypeEnum.description);
+
+    /// <summary>
+    /// Gets the type of the scene object.
+    /// </summary>
+    public SceneObjectTypeEnum sceneObjectType => statsInfoDic.GetValue<SceneObjectTypeEnum>(StatsInfoTypeEnum.sceneObjectType);
+
 
     /// <summary>
     /// Gets the faction of the game object.
@@ -106,90 +132,68 @@ public class Stats
     public Sprite sprite => statsInfoDic.GetValue<Sprite>(StatsInfoTypeEnum.Sprite);
 
     /// <summary>
-    /// Gets the visual effect of the game object.
-    /// </summary>
-    public VisualEffect visualEffect => statsInfoDic.GetValue<VisualEffect>(StatsInfoTypeEnum.FireEffect);
-
-    /// <summary>
     /// Gets the transform of the scene object.
     /// </summary>
     public Transform sceneObjectTransform => statsInfoDic.GetValue<Transform>(StatsInfoTypeEnum.sceneObjectsTransform);
 
+
+    #endregion
+    #region AttackingProperties
     /// <summary>
     /// Gets the list of enemy types the game object can target.
     /// </summary>
     public List<SceneObjectTypeEnum> lookForEnemyType => statsInfoDic.GetValue<List<SceneObjectTypeEnum>>(StatsInfoTypeEnum.canTargetThefollowingSceneObjects);
 
-    /// <summary>
-    /// Gets the type of the scene object.
-    /// </summary>
-    public SceneObjectTypeEnum sceneObjectType => statsInfoDic.GetValue<SceneObjectTypeEnum>(StatsInfoTypeEnum.sceneObjectType);
 
     /// <summary>
-    /// Gets the damager base class of the game object.
+    /// Gets the damager base class of the game object. This is private get since it should use the damage, reload etc
     /// </summary>
-    public DamagerBaseClass damagerBaseClass => statsInfoDic.GetValue<DamagerBaseClass>(StatsInfoTypeEnum.damager);
-
-    /// <summary>
-    /// Gets or sets the reload time of the game object.
-    /// </summary>
-    public float reloadTime
-    {
-        get
-        {
-            float basestat = damagerBaseClass.CalculateReloadTime();
-            return ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.reloadTime);
-        }
-        set {; }
-    }
-
-    /// <summary>
-    /// Gets the maximum shooting distance of the game object.
-    /// </summary>
-    public float maxShootingDistance 
-    {
-        get
-        {
-            float basestat = damagerBaseClass.CalculateAttackRange();
-            return ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.maxShotingDistance);
-        }
-                set { Debug.LogError("trying to set damage directly"); }
-    }
+    private DamagerBaseClass _damagerBaseClass => statsInfoDic.GetValue<DamagerBaseClass>(StatsInfoTypeEnum.damager);
 
 
-    /// <summary>
-    /// Gets or sets the damage amount of the game object.
-    /// </summary>
     public int damageAmount
     {
         get
         {
-            Debug.Log("Getting damage");
-            float basestat = damagerBaseClass.CaclulateDamage();
+            float basestat = _damagerBaseClass.CaclulateDamage();
             return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.damageAmount);
         }
-        set { Debug.LogError("trying to set damage directly"); }
+        set {; }
     }
-
-    /// <summary>
-    /// Gets or sets the health of the game object.
-    /// </summary>
-    public int   health => statsInfoDic.GetValue<int>(StatsInfoTypeEnum.health);
-
-    /// <summary>
-    /// Gets or sets the speed of the game object.
-    /// </summary>
-    public float speed
+    public float reloadTime
     {
         get
         {
-            float basestat = (float)statsInfoDic.GetValue<float>(StatsInfoTypeEnum.speed);
-            return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.speed);
+            float basestat = _damagerBaseClass.CalculateReloadTime();
+            return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.reloadTime);
+        }
+        set {; }
+    }
+    public float maxRange
+    {
+        get
+        {
+            float basestat = _damagerBaseClass.CalculateAttackRange();
+            return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.maxRangeForShotingSpawning);
         }
         set {; }
     }
 
-    public float moveFactor => statsInfoDic.GetValue<float>(StatsInfoTypeEnum.moveFactor);
+
+    /// <summary>
+    /// Gets the visual effect of the game object.
+    /// </summary>
+    public VisualEffect fireEffect => statsInfoDic.TryToGetValue<VisualEffect>(StatsInfoTypeEnum.FireEffect);
+
+
+    #endregion
+    #region TakeDamageProperties
+    /// <summary>
+    /// Gets or sets the health of the game object.
+    /// </summary>
+    public int   health => statsInfoDic.GetValue<int>(StatsInfoTypeEnum.health);
+    public float lifeTime => statsInfoDic.GetValue<float>(StatsInfoTypeEnum.lifeTime);
+    public SoDamageEffect soDamageEffect => statsInfoDic.TryToGetValue<SoDamageEffect>(StatsInfoTypeEnum.SoDamageEffect);
 
 
     /// <summary>
@@ -204,16 +208,51 @@ public class Stats
         }
         set {; }
     }
+    public TakesDamageFrom takesDamageFrom => statsInfoDic.GetValue<TakesDamageFrom>(StatsInfoTypeEnum.takesDamageFrom);
+
+    #endregion
+    #region SpawnerProrties
+    ///<summary>
+    /// Gets spawnable object for sceneObjects that spawn other objects
+    ///</summary>
+    ///
+    public SpawningData spawningData => statsInfoDic.GetValue<SpawningData>(StatsInfoTypeEnum.spawningData);
+
+    #endregion
+    #region moverProperties
+    /// <summary>
+    /// Gets or sets the speed of the game object.
+    /// </summary>
+    public float speed
+    {
+        get
+        {
+            float basestat = (float)statsInfoDic.GetValue<float>(StatsInfoTypeEnum.speed);
+            return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.speed);
+        }
+        set {; }
+    }
+
+    #endregion
+
+    #region env object
 
     /// <summary>
-    /// Gets the name of the game object.
+    /// Movefactor is used for env object to detemine the procentage of the speed that they allow
     /// </summary>
-    public string name => statsInfoDic.GetValue<string>(StatsInfoTypeEnum.name);
+    public float moveFactor => statsInfoDic.GetValue<float>(StatsInfoTypeEnum.moveFactor);
 
     /// <summary>
-    /// Gets the description of the game object.
+    /// It says if a object can catch fire and suply the fire with fuel
     /// </summary>
-    public string description => statsInfoDic.GetValue<string>(StatsInfoTypeEnum.description);
+    public bool addFuelToFire
+    {
+        get => statsInfoDic.GetValue<bool>(StatsInfoTypeEnum.addFuelToFire);
+        set => statsInfoDic.Add(StatsInfoTypeEnum.addFuelToFire, value);
+    }
+
+    #endregion
+
 
     /// <summary>
     /// Applies effects to a base stat.
@@ -248,17 +287,20 @@ public enum StatsInfoTypeEnum
     attackSystem,
     damager,
     reloadTime,
-    maxShotingDistance,
+    maxRangeForShotingSpawning,
     damageAmount,
     takesDamageMultiplier,
-    moveFactor ///for Env objects
+    moveFactor, ///for Env objects
+    addFuelToFire, ///for Env objects
+    spawningData, ///for SpawningBuildings objects
+    takesDamageFrom ///base class for taking damage
 
 
 }
 public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>
 {
     private Dictionary<StatsInfoTypeEnum, object> _dict = new Dictionary<StatsInfoTypeEnum, object>();
-
+    public Action OnStatsChanged;
     public void Add<T>(StatsInfoTypeEnum key, T value)
     {
         if (!_dict.ContainsKey(key))
@@ -269,6 +311,7 @@ public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>
         {
             _dict[key] = value;
         }
+        OnStatsChanged?.Invoke();
     }
 
     public T GetValue<T>(StatsInfoTypeEnum key)
@@ -277,10 +320,19 @@ public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>
         {
             return (T)value;
         }
-        Debug.LogError("key value does not exist of " + key.ToString() );
+        Debug.LogError("key value does not exist of " + key.ToString() + " for scene object" +  GetValue<string>(StatsInfoTypeEnum.name));
         return default;
     }
-    
+    public T TryToGetValue<T>(StatsInfoTypeEnum key)
+    {
+        if (_dict.TryGetValue(key, out var value) && value is T)
+        {
+            return (T)value;
+        }
+
+        return default;
+    }
+
     public IEnumerator<KeyValuePair<StatsInfoTypeEnum, object>> GetEnumerator()
     {
         return _dict.GetEnumerator();

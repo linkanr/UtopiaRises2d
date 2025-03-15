@@ -15,7 +15,7 @@ public class Follower : SceneObject,  IDamageAble
 
     public SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.follower; } }
 
-    public IdamagableComponent idamageableComponent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public IDamagableComponent iDamageableComponent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     protected override void Awake()
     {
@@ -53,12 +53,12 @@ public class Follower : SceneObject,  IDamageAble
         }
         
         isDead = true;
-        DestroySceneObject();
+        OnSceneObjectDestroyedBase();
     }
 
 
 
-    protected override void OnObjectDestroyed()
+    protected override void OnObjectDestroyedObjectImplementation()
     {
         isDead = true;
 
@@ -70,6 +70,6 @@ public class Follower : SceneObject,  IDamageAble
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
     }
 }

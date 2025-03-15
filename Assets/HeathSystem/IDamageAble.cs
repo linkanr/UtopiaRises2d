@@ -1,4 +1,4 @@
 ﻿public interface IDamageAble
 {
-    public IdamagableComponent idamageableComponent {get; set;}
+    IDamagableComponent iDamageableComponent { get; set; }
 }

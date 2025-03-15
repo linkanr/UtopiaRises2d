@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c5e60c1802b525498505aeed509945b, type: 3}
+  m_Name: Soil
+  m_EditorClassIdentifier: 
+  cellTerrainEnum: 1
+  binaryInList: 0
+  walkPenalty: 1
+  damageMulti: 1
+  canHaveTower: 0
+  generateHeat: 0
+  generateHumidity: 0
+  fuel: 0
+  chanceOfCatchingFire: 0.5
+  heatTransferAmount: 1

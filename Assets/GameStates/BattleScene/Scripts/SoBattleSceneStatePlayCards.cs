@@ -26,6 +26,7 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
 
     private void EndTurn()
     {
+
         stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
     
     }

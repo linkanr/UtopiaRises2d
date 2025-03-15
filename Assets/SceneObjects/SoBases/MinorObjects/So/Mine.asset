@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f93b0e70e80894b9b06ebb98bd0e23, type: 3}
+  m_Name: Mine
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  sceneObjectName: Mine
+  description: Kaboom!
+  sprite: {fileID: 21300000, guid: 4355172ed54861c43bfd7bbf50e9504f, type: 3}
+  prefab: {fileID: 7110661318690033839, guid: e4a7494c90ca4cd47bbb68bdc910e4e7, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  sceneObjectType: 8
+  takesDamageFrom:
+    damageFromFire: 1
+    damgaeFromWater: 0
+    destroyedWhenStepedOn: 1
+  health: 1
+  visualEffect: {fileID: 5637707959465163233, guid: 43964e1aba874d84182487785f04c692, type: 3}
+  damage: {fileID: 11400000, guid: 412d5fd459c2357409edba3aa0078ff8, type: 2}

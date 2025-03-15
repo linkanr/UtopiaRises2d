@@ -1,6 +1,6 @@
 
 using UnityEngine;
-using static ShootingBuilding;
+using static SceneObjectShootingBuilding;
 
 public class EnemyLooker
 {
@@ -74,7 +74,7 @@ public class EnemyLooker
         foreach (Enemy enemy in enemyManager.spawnedEnemiesList)
         {
             float newDist = Vector3.Distance(enemy.transform.position, pos);
-            int newHealth = enemy.idamageableComponent.healthSystem.GetHealth();
+            int newHealth = (enemy.iDamageableComponent as IdamagablePhysicalComponent).healthSystem.GetHealth();
             if (newHealth > health && newDist < maxDistance)
             {
                 returnEnemy = enemy;
@@ -90,7 +90,7 @@ public class EnemyLooker
         foreach (Enemy enemy in enemyManager.spawnedEnemiesList)
         {
             float newDist = Vector3.Distance(enemy.transform.position, pos);
-            int newHealth = enemy.idamageableComponent.healthSystem.GetHealth();
+            int newHealth = enemy.GetStats().health;
             if (newHealth < health && newDist < maxDistance)
             {
                 returnEnemy = enemy;

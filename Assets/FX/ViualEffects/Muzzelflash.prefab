@@ -66,7 +66,39 @@ VisualEffect:
     m_AnimationCurve:
       m_Array: []
     m_Gradient:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 766.9961, g: 276.36255, b: 0, a: 0}
+          key1: {r: 0.5523589, g: 0.4808337, b: 0.4403239, a: 1}
+          key2: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 3277
+          ctime1: 21588
+          ctime2: 33731
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 1349
+          atime2: 34888
+          atime3: 57825
+          atime4: 65535
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 3
+          m_NumAlphaKeys: 5
+        m_Name: Muzzel flash grad
+        m_Overridden: 1
     m_NamedObject:
       m_Array: []
     m_Bool:
@@ -109,5 +141,5 @@ VFXRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 322991189
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 100

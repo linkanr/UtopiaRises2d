@@ -1,7 +1,8 @@
 ﻿using System;
+using Unity.VisualScripting;
 
 
-public abstract class Timer
+public abstract class Timer : IDisposable
 {
     protected float initialTime;
     public float Time { get; set; }
@@ -47,6 +48,19 @@ public abstract class Timer
     internal void AddTime(float additionalTime)
     {
         Time += additionalTime;
+    }
+
+    // Implement IDisposable to ensure cleanup
+    public void Dispose()
+    {
+        Stop(); // Ensure event unsubscription
+        GC.SuppressFinalize(this); // Prevents destructor from running
+    }
+
+    // Destructor (finalizer) as a fallback if Dispose isn't called
+    ~Timer()
+    {
+        Stop();
     }
 }
 

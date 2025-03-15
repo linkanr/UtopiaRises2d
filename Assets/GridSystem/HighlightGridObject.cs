@@ -31,21 +31,13 @@ public class HighlightGridObject : MonoBehaviour
 
     foreach (var cell in cells)
     {
-      
-
-        // Calculate UV coordinates
-       // Debug.Log(cell.x);
-       //Debug.Log(cell.y);
-        //Debug.Log(grid.sizeX);
-          //  Debug.Log(grid.sizeY);
-
         float uvX = (float)cell.x / grid.sizeX;
-        float uvY = (float)cell.y / grid.sizeY;
+        float uvY = (float)cell.z / grid.sizeY;
 
         minx = Mathf.Min(minx, uvX);
         miny = Mathf.Min(miny, uvY);
         maxx = Mathf.Max(maxx, (cell.x + 1f) / grid.sizeX);
-        maxy = Mathf.Max(maxy, (cell.y + 1f) / grid.sizeY);
+        maxy = Mathf.Max(maxy, (cell.z + 1f) / grid.sizeY);
     }
 
     // Apply calculated UVs to the material

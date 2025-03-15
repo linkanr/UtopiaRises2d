@@ -11,7 +11,7 @@ public class EnviromentForest : EnviromentObject,IDamageAble
 
     public SceneObjectTypeEnum damageableType => SceneObjectTypeEnum.enviromentObject;
 
-    public IdamagableComponent idamageableComponent{ get; set; }
+    public IDamagableComponent iDamageableComponent{ get; set; }
 
 
 
@@ -25,7 +25,7 @@ public class EnviromentForest : EnviromentObject,IDamageAble
     protected override void AddStatsForClick(Stats _stats)
     {
         base.AddStatsForClick(_stats);
-        _stats.Add(StatsInfoTypeEnum.health,idamageableComponent.healthSystem.health);
+        _stats.Add(StatsInfoTypeEnum.health,(iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
 
     }
 

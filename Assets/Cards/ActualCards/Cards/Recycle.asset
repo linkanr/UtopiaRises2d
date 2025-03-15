@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5406f5818c87d5448721fc06fb613c2, type: 3}
+  m_Name: Recycle
+  m_EditorClassIdentifier: 
+  title: Recycle
+  description: Destroy a building draw 2 cards
+  cardType: 0
+  image: {fileID: -2246939370648850560, guid: 66389fcfda08a0549a5f0db86f1e61e3, type: 3}
+  rarity: 0
+  cardCanBePlayedOnEnum: 3
+  cardPlayTypeEnum: 0
+  influenceCost: 0
+  faction: {fileID: 11400000, guid: def7bf5786e0a1f47b86dd94d8b60a74, type: 2}
+  drawCardAmount: 2

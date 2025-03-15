@@ -12,7 +12,7 @@ public class CardDirectAttack : SoCardBase
     public override bool ActualEffect(Vector3 position, out string failureReason)
     {
         failureReason = "";
-        SceneObject sceneObject = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(position, maxDistance: 2, onlyDamageables:true);
+        SceneObject sceneObject = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(position, maxDistance: 2,amount:1, onlyDamageables: true)[0];
         if (sceneObject == null) 
         {
             failureReason = "No target found";
@@ -29,8 +29,8 @@ public class CardDirectAttack : SoCardBase
             damagaAmount= damageMultiplier.GetExtraDamageAmount(damagaAmount, sceneObject);
             Debug.Log("outgoing damage" + damagaAmount);
         }
-           
-        DirectDamageEffect.Create(SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(position), damagaAmount, delay, amountOfTimes);
+
+        DirectDamageEffect.Create(SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(position, amount: 1,maxDistance:1f)[0], damagaAmount, delay, amountOfTimes);
         return true;
     }
 }

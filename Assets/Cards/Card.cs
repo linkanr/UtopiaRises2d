@@ -12,6 +12,9 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] public TextMeshProUGUI costText;
+    [SerializeField] public TextMeshProUGUI damageText;
+    [SerializeField] public TextMeshProUGUI reachText;
+    [SerializeField] public TextMeshProUGUI lifeText;
     [SerializeField] private Image factionColorImage;
     [SerializeField] private Image backgroundImage;
     [SerializeField] private GameObject outline;
@@ -48,6 +51,32 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
         isSelected = false;
         cardState = mode == CardMode.selectable ? CardStateEnum.inDisplayMenu : CardStateEnum.availible;
 
+        switch (cardBase.cardType)
+        {
+            case CardType.summonTower:
+                SoCardInstanciate soCardInstanciate = (SoCardInstanciate)cardBase;
+                Stats stats = soCardInstanciate.prefab.GetStats();
+                damageText.text = stats.damageAmount.ToString();
+                reachText.text = stats.maxRange.ToString();
+                lifeText.text = stats.lifeTime.ToString();
+                break;
+            case CardType.areaDamage:
+                Debug.Log("CardType.areaDamage" +cardBase.title +" " + cardBase.description);
+                CardDamageArea damageArea = (CardDamageArea)cardBase;
+                damageText.text = damageArea.damage.ToString();
+                reachText.text = damageArea.diameter.ToString();
+
+                break;
+            default:
+                damageText.gameObject.SetActive(false);
+                reachText.gameObject.SetActive(false);
+                lifeText.gameObject.SetActive(false);
+                break;
+        }
+
+
+
+        GetComponentInChildren<CardSetBg>().Init(cardBase.cardType);
         titleText.text = cardBase.title;
         descriptionText.text = cardBase.description;
         costText.text = cardBase.influenceCost.ToString();

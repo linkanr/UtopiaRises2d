@@ -27,4 +27,8 @@ MonoBehaviour:
   prefab: {fileID: 3725115120538833062, guid: 326df3530fb582f45a96839ea1b8dd2b, type: 3}
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 3
+  takesDamageFrom:
+    damageFromFire: 1
+    damgaeFromWater: 0
+    destroyedWhenStepedOn: 0
   health: 50

@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-using UnityEditor.PackageManager;
-using UnityEngine.Diagnostics;
+﻿
 [System.Serializable]
 public struct PoliticalAlignment
 {

@@ -11,29 +11,29 @@ public class Enemy : MovingSceneObject, IDamageAble, IcanAttack
 
     public TargeterBaseClass targeter { get;set; }
     public Mover mover;
-    public IdamagableComponent idamageableComponent { get; set; }
+    public IDamagableComponent iDamageableComponent { get; set; }
     public SceneObject sceneObject { get { return this; } }
-
-    public DamagerBaseClass damageDealer 
-    { 
-        get 
-        { return GetStats().damagerBaseClass;}
-        set {; }
-    }
 
     protected override void Start()
     {
         base.Start();
+        iDamageableComponent = GetComponent<IdamagablePhysicalComponent>();
+        if (iDamageableComponent == null)
+        {
+            Debug.LogError($"Enemy {name} has no IdamagableComponent!");
+        }
+
         EnemyManager.Instance.spawnedEnemiesList.Add(this);
+
     }
-    protected override void OnObjectDestroyed()
+    protected override void OnObjectDestroyedObjectImplementation()
     {
         EnemyManager.Instance.spawnedEnemiesList.Remove(this);
         Destroy(gameObject);
     }
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.GetHealth());
+        stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.GetHealth());
 
 
     }

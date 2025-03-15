@@ -31,7 +31,9 @@ public abstract class StatsModifier : IDisposable
 
     public void Dispose()
     {
+        timer.Dispose();
         OnDispose.Invoke(this);
+
     }
 
     public abstract void Handle(object sender, Query query);

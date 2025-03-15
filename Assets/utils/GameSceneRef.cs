@@ -8,6 +8,7 @@ public class GameSceneRef : MonoBehaviour
     public LayerMask collisionLayerGrid;
     public Transform followerBirthPlace;
     public Transform worldGrid;
+    public Transform constructionBaseParent;
     public RectTransform inHandPile;
     public RectTransform drawPile;
     public RectTransform discardPile;

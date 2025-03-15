@@ -23,8 +23,8 @@ public class SoshotingBuilding : SoBuilding
         base.GetStatsInernal(_statsInforDic);
         _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
         Debug.Log("damagerBaseClass" + damagerBaseClass);
-
-        _statsInforDic.Add(StatsInfoTypeEnum.FireEffect, attackSystem.visualEffect);
+        VisualEffect visualEffect = Instantiate(attackSystem.visualEffect);
+        _statsInforDic.Add(StatsInfoTypeEnum.FireEffect, visualEffect);
         _statsInforDic.Add(StatsInfoTypeEnum.onClickDisplaySprite, attackSystem.displayRangeSprite);
         _statsInforDic.Add(StatsInfoTypeEnum.canTargetThefollowingSceneObjects, possibleTargetTypes);
 
@@ -35,11 +35,13 @@ public class SoshotingBuilding : SoBuilding
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
 
-        ShootingBuilding shootingBuilding = (ShootingBuilding)sceneObject;
+        SceneObjectShootingBuilding shootingBuilding = (SceneObjectShootingBuilding)sceneObject;
         shootingBuilding.targeter = shootingBuilding.AddComponent<TargeterForStaticObjects>();
         
         shootingBuilding.targeter.Initialize(shootingBuilding, seekSystemForBuildings, possibleTargetTypes, attackSystem);
-
+        sceneObject.GetStats().fireEffect.transform.position = (shootingBuilding.shotingPos.position);
+        sceneObject.GetStats().fireEffect.Stop();
+        sceneObject.GetStats().fireEffect.transform.SetParent(shootingBuilding.shotingPos);
     }
 
 

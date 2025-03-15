@@ -22,13 +22,18 @@ public class SpriteChangeByDamage : MonoBehaviour
         damageable = GetComponentInParent<IDamageAble>();
         if (triggerOnDeath) // If its a death effect then it should be disabled from start
         {
+            
             GetComponent<SpriteRenderer>().enabled = false;
-            damageable.idamageableComponent.OnDeath += OnDeathTrigger;
+            damageable.iDamageableComponent.OnDeath += OnDeathTrigger;
         }
         else
         {
-            damageable.idamageableComponent.OnDeath += RemoveGameObject;
-            damageable.idamageableComponent.healthSystem.OnDamaged += OnTriggered;
+            damageable.iDamageableComponent.OnDeath += RemoveGameObject;
+            if (damageable.iDamageableComponent is IdamagablePhysicalComponent)
+            {
+                (damageable.iDamageableComponent as IdamagablePhysicalComponent).healthSystem.OnDamaged += OnTriggered;
+            }
+      
         }
         
         shaderFader = GetComponent<ShaderFaderSSU>();

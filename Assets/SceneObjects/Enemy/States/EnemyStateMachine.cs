@@ -7,7 +7,7 @@ public class EnemyStateMachine: BaseStateMachine<EnemyStateMachine>
     protected override void Init()
     {
         enemy = GetComponent<Enemy>();
-        enemy.idamageableComponent.OnDeath += StopState;
+        enemy.iDamageableComponent.OnDeath += StopState;
         
        
     }
@@ -18,9 +18,9 @@ public class EnemyStateMachine: BaseStateMachine<EnemyStateMachine>
     }
     protected override void OnDestroy()
     {
-        if (enemy != null && enemy.idamageableComponent != null)
+        if (enemy != null && enemy.iDamageableComponent != null)
         {
-            enemy.idamageableComponent.OnDeath -= StopState;
+            enemy.iDamageableComponent.OnDeath -= StopState;
         }
 
         base.OnDestroy();

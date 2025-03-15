@@ -12,14 +12,14 @@ public class PanelRebuildLayout : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleSceneActions.OnCardsBeginDrawn += Rebuild;
-        BattleSceneActions.OnCardsEndDrawn += StopRebuild;
+        BattleSceneActions.OnCardsBeginAnimation += Rebuild;
+        BattleSceneActions.OnCardsEndAnimation += StopRebuild;
     }
 
     private void OnDisable()
     {
-        BattleSceneActions.OnCardsBeginDrawn -= Rebuild;
-        BattleSceneActions.OnCardsEndDrawn -= StopRebuild;
+        BattleSceneActions.OnCardsBeginAnimation -= Rebuild;
+        BattleSceneActions.OnCardsEndAnimation -= StopRebuild;
     }
 
     private void Rebuild()

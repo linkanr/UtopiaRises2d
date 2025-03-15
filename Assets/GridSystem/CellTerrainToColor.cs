@@ -15,6 +15,8 @@ internal class CellTerrainToColor
         float distanceC = Vector3.Distance(color, new Vector3(0f, 1f, 1f));
         float distanceM = Vector3.Distance(color, new Vector3(1f, 0f, 1f));
         float distanceY = Vector3.Distance(color, new Vector3(1f, 1f, 0f));
+        float distaanceBlack = Vector3.Distance(color, new Vector3(0f, 0f, 0f));    
+        float distanceWhite = Vector3.Distance(color, new Vector3(1f, 1f, 1f));
         CellReturnInfoArgs cellReturnInfoArgs = new CellReturnInfoArgs();
         if (distanceR < offset)
 
@@ -25,13 +27,21 @@ internal class CellTerrainToColor
         }
         if (distanceG < offset)
         {
-            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.enemyTerain;
+
+                cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.grass;
+                return cellReturnInfoArgs;
+         
+
+        }
+        if (distanceY < offset)
+        {
+            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.soil;
             return cellReturnInfoArgs;
         }
         if (distanceB < offset)
         {
-            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.enemyTerain;
-            cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.enemyBase;
+            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.water;
+            
             return cellReturnInfoArgs;
         }
         if (distanceC < offset)
@@ -42,9 +52,14 @@ internal class CellTerrainToColor
         }
         if (distanceM < offset)
         {
-            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.enemyTerain;
+            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.soil;
             cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.playerBase;
             return cellReturnInfoArgs;
+        }
+        if (distaanceBlack < offset)
+        {
+            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.soil;
+            cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.enemyBase;
         }
 
 

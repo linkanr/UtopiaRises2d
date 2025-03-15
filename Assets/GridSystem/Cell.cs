@@ -1,34 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-public class Cell
+public class Cell: IDisposable
 {
     
-    public Cell (int x, int y, GridConstrution grid, CellTerrain _cellTerrain )
+    public Cell (int x, int z, GridConstrution grid, CellTerrain _cellTerrain )
     {
         this.x = x;
-        this.y = y;
+        this.z = z;
         gridRef = grid;
         size = grid.cellSize;
-        cellTerrain = _cellTerrain;
+        cellTerrain = GameObject.Instantiate( _cellTerrain);
+        containingSceneObjects = new List<SceneObject>();
 
- 
+
+
 
 
     }
-    
+
+
     public int x;
-    public int y;
+    public int z;
     public float height;
     public GridConstrution gridRef;
     public string information;
     public float size;
     public CellTerrain cellTerrain; 
     public CellEffect cellEffect;
+    public float heat;
+    public float humidity;
+    public List<Cell> neigbours;
+    private bool disposed = false;
+    public bool burning { get {  if (cellEffect == null) { return false; } else return   cellEffect.cellTerrainEnum == CellEffectEnum.Fire; } }
 
-    public SceneObject[] containingSceneObjects { get { return SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(worldPosition, maxDistance: .5f).ToArray(); }  }
-    public SceneObject containingEnvObject { get { return SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(worldPosition, maxDistance: .5f).Find(x => x is EnviromentObject); } }
-    public Vector3 worldPosition { get { return gridRef.GetWorldPostion(x, y); } }
+    public List <SceneObject> containingSceneObjects;
+
+  
+    public SceneObject containingEnvObject { get { return GetSceneObject<EnviromentObject>(); } }
+    public SceneObject contingingMinorObject { get { return GetSceneObject<MinorSceneObjects>(); } }
+
+    public bool CanBurn()
+    {
+        if (cellTerrain.fuel>0 )
+        {
+            return true;
+        }
+        if (containingEnvObject != null)
+        {
+            if (containingEnvObject.GetStats().addFuelToFire)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private SceneObject GetSceneObject<T>() where T: SceneObject
+    {
+        foreach (SceneObject sceneObject in containingSceneObjects)
+        {
+            if (sceneObject is T)
+            {
+                return sceneObject;
+            }
+            
+        }
+        return null;
+    }
+
+    public Vector3 worldPosition { get { return gridRef.GetWorldPosition(x, z); } }
     public void CreateCellEffect(CellEffectEnum _cellEffect)
     {
         if (cellEffect != null)
@@ -39,7 +80,7 @@ public class Cell
         cellEffect = CellEffectCreator.CreateCellEffect(_cellEffect, this);
 
         // Log to confirm effect creation
-        Debug.Log($"Cell Effect Created: {_cellEffect} at {worldPosition}");
+        //Debug.Log($"Cell Effect Created: {_cellEffect} at {worldPosition}");
 
         // The action call triggers the update in the Tilemap
         CellActions.UpdateCellEffect.Invoke(new CellEffectUpdateArgs { cell = this, cellEffect = _cellEffect });
@@ -47,26 +88,29 @@ public class Cell
 
     public void RemoveCellEffect()
     {
+        cellEffect = null;
         
-        CellActions.UpdateCellEffect.Invoke(new CellEffectUpdateArgs { cell = this,cellEffect = CellEffectEnum.None });
     }
 
+    public void AddSceneObjects(SceneObject _sceneObject)
+    {
+        containingSceneObjects.Add(_sceneObject) ;
+    }
+    public void RemoveSceneObject(SceneObject _sceneObject)
+    {
+        containingSceneObjects.Remove(_sceneObject);
+    }
     public bool hasSceneObejct
     {
         get
         {
-            if (SceneObjectManager.Instance.sceneObjectGetter.GetSceneObject(worldPosition, maxDistance:.5f)== null)
-                {
-
-                    return false;
-                }
-                else
-                {
-                
-                    return true;
-                }
+            if (containingSceneObjects.Count > 0)
+            {
+                return true;
             }
+            return false;
 
+        }
     }
     public float GetWalkPenalty()
     {
@@ -108,5 +152,65 @@ public class Cell
            
         }
         return walkPenalty;
+    }
+
+    public void BurnedTerrain()
+    {
+        switch (cellTerrain.cellTerrainEnum)
+        {
+            case CellTerrainEnum.grass:
+                cellTerrain.Dispose();
+                cellTerrain = GameObject.Instantiate( GridCellManager.Instance.GetTerrainFromEneum(CellTerrainEnum.soil));
+                
+                List<Cell> celllist  = new List<Cell>();
+                foreach (Cell neigbour in neigbours)
+                {
+                    celllist.Add(neigbour);
+                }
+                celllist.Add(this);
+                CellActions.UpdateCells.Invoke(neigbours);
+
+                break;
+        }
+    }
+
+  
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed) return;
+
+        if (disposing)
+        {
+            // Dispose managed objects
+            if (cellEffect != null)
+            {
+                cellEffect.Dispose();
+                cellEffect = null;
+            }
+
+            if (cellTerrain != null)
+            {
+
+                cellTerrain = null;
+            }
+
+            neigbours?.Clear();
+            gridRef = null;
+        }
+
+        disposed = true;
+    }
+
+    // Destructor (Finalizer)
+    ~Cell()
+    {
+        Dispose(false);
     }
 }

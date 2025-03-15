@@ -28,7 +28,7 @@ public class OnClickObject : MonoBehaviour
             switch (kvp.Key)
             {
                 case StatsInfoTypeEnum.onClickDisplaySprite:
-                    float size = clickInfo.maxShootingDistance * 2f;
+                    float size = clickInfo.maxRange * 2f;
                     CircleReach.localScale = new Vector3(size, size, size);
                     break;
                 case StatsInfoTypeEnum.damager:
@@ -63,7 +63,7 @@ public class OnClickObject : MonoBehaviour
         rightText = Instantiate(simpleText, rightPanel);
 
         leftText.text = "Attack Range";
-        rightText.text = clickInfo.maxShootingDistance.ToString();
+        rightText.text = clickInfo.maxRange.ToString();
     }
 
     private void GenerateStrings(KeyValuePair<StatsInfoTypeEnum, object> kvp)

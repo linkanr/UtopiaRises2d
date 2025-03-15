@@ -1,8 +1,13 @@
 ﻿public enum CellTerrainEnum
 { 
-    playerTerrain, // grass
-    enemyTerain  // uppassable
-    
-   
+    playerTerrain, 
+    soil,  
+    water,
+    sand,
+    mountain,
+    grass
+
+
+
 
 }

@@ -44,7 +44,11 @@ public class EnemySpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {  
-        if (spawn && !timerReachedSpawn)
+        if (!spawn)
+        {
+            return;
+        }
+        if (!timerReachedSpawn)
         {
             if (timer > timerMax)
             {
@@ -53,7 +57,7 @@ public class EnemySpawner : MonoBehaviour
 
             }
         }
-        if (timerReachedSpawn)
+        if ( timerReachedSpawn)
         {
             if (spawnTimer > spawnTimerMax)
             {
@@ -71,8 +75,9 @@ public class EnemySpawner : MonoBehaviour
     {
         SoEnemyObject soEnemyObject = Instantiate(enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
 
-        Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 1f) * 1f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
-
+        Vector3 position = SpawnPos.position + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 0f) * 1f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
+        position.z = -0.01f;
+        position.x += 1f;
         EnemyCreator.CreateEnemy(soEnemyObject, position);
 
 
@@ -88,10 +93,13 @@ public class EnemySpawner : MonoBehaviour
             
             if (enemyWaves.Count == 1)
             {
+                enemyWaves.RemoveAt(0);
+                Debug.Log("all waves done");
                 AllWavesDone();
             }
             else
             {
+                Debug.Log("current wave done");
                 CurrentWaveDone();
             }
 
@@ -105,10 +113,10 @@ public class EnemySpawner : MonoBehaviour
 
     private void AllWavesDone()
     {
-        timerReachedSpawn = false;
+
+        spawn = false;
 
 
-        
 
     }
 

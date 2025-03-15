@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections;
 using Pathfinding;
-using UnityEditor.Playables;
-using UnityEngine.Diagnostics;
+
 public class WanderingFollower : MonoBehaviour
 {
 

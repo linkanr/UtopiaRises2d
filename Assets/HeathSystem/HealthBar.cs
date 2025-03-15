@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class HealthBar : MonoBehaviour
 {
-    private BasicHealthSystem healthSystem;
+    private BasicPhysicalHealthSystem healthSystem;
     [SerializeField]    private Transform barTransform;
     [SerializeField] private Transform healthBarTransform;
     [SerializeField] private Transform baseTransform;// this is the main subjects transform
@@ -18,7 +18,7 @@ public class HealthBar : MonoBehaviour
         healthBarTransform.gameObject.SetActive(false);
 
         active = false;
-        healthSystem = GetComponentInParent<BasicHealthSystem>();
+        healthSystem = GetComponentInParent<BasicPhysicalHealthSystem>();
         baseTransform = healthSystem.GetTransformPosition();
         healthSystem.OnDamaged += HealthSystem_OnDamaged;
     }

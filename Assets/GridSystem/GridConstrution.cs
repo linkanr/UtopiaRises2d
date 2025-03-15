@@ -20,7 +20,7 @@ public class GridConstrution
     
    
 
-    public GridConstrution(Texture2D texture, List<CellTerrain> _cellTerrainList, float cellSize, Vector3 offset)
+    public GridConstrution(Texture2D texture, float cellSize, Vector3 offset)
     {
         this.sizeX = texture.width;
         this.sizeY = texture.height;
@@ -36,7 +36,7 @@ public class GridConstrution
                 CellReturnInfoArgs cellReturn = CellTerrainToColor.GetTerrain(pixelColor);
                 CellTerrainEnum cellTerrain = cellReturn.cellTerrainEnum;
                 CellContainsEnum cellContains = cellReturn.cEllContainsEnum;
-                CellTerrain cellTerrainObject = _cellTerrainList.Find(x => x.cellTerrainEnum == cellTerrain);
+                CellTerrain cellTerrainObject = GridCellManager.Instance.GetTerrainFromEneum(cellTerrain);
                 if (cellTerrainObject == null)
                 {
                     Debug.LogError("cellTerrainObject is null");
@@ -53,7 +53,7 @@ public class GridConstrution
                             // instanciate enemy base
                             break;
                         case CellContainsEnum.constructionCore:
-                            ConstructionBaseSceneObject constructionBaseSceneObject =  ConstructionBaseSceneObject.Create(new Vector3 (x+ cellSize/2, y+cellSize/2,0f));
+                            SceneObjectConstructionBase constructionBaseSceneObject =  SceneObjectConstructionBase.Create(new Vector3 (x+ cellSize/2, y+cellSize/2,0f));
                             
                             break;
                     }
@@ -63,18 +63,18 @@ public class GridConstrution
         }
     }
 
-    public Vector3 GetWorldPostion(int x, int y)
+    public Vector3 GetWorldPosition(int x, int y)
     {
         return new Vector3(x + cellSize * .5f, y + cellSize * .5f, 0f) * cellSize + new Vector3(offset.x, offset.y, offset.z);
     }
 
     public Vector3 GetCellPositionByPosition(Vector3 _position)
     {
-        if (GetCellByWorldPostion(_position) == null)
+        if (GetCellByWorldPosition(_position) == null)
         {
             return Vector3.zero;
         }
-        Vector3 worldPos = GetWorldPostion(GetCellByWorldPostion(_position).x, GetCellByWorldPostion(_position).y);
+        Vector3 worldPos = GetWorldPosition(GetCellByWorldPosition(_position).x, GetCellByWorldPosition(_position).z);
 
         return worldPos;
     }
@@ -84,13 +84,13 @@ public class GridConstrution
     }
     public Cell GetCurrecntCellByMouse()
     {
-        if (GetCellByWorldPostion(WorldSpaceUtils.GetMouseWorldPosition()) == null)
+        if (GetCellByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition()) == null)
         {
             return null;
         }
-        return GetCellByWorldPostion(WorldSpaceUtils.GetMouseWorldPosition());
+        return GetCellByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition());
     }
-    public Cell GetCellByWorldPostion(Vector3 position)
+    public Cell GetCellByWorldPosition(Vector3 position)
     {
 
         Vector3 offsetPos = position - new Vector3(offset.x, offset.y, offset.z);
@@ -111,8 +111,8 @@ public class GridConstrution
     public List<Cell> GetCellListByWorldPosition(Vector3 position, int size)
     {
         List<Cell> returnList = new List<Cell>();
-        Cell startCell = GetCellByWorldPostion(position);
-        int starty = startCell.y;
+        Cell startCell = GetCellByWorldPosition(position);
+        int starty = startCell.z;
         int startx = startCell.x;
         for (int x = 0; x <= size * 2; x++)
         {
@@ -137,9 +137,9 @@ public class GridConstrution
  
 
         List<Cell> returnList = new List<Cell>();
-        Cell startCell = GetCellByWorldPostion(position);
+        Cell startCell = GetCellByWorldPosition(position);
 
-        int starty = startCell.y;
+        int starty = startCell.z;
         int startx = startCell.x;
 
         // Loop for x dimension
@@ -177,10 +177,10 @@ public class GridConstrution
         Vector3 offset2 = new Vector3(cellSize / 2, cellSize / 2, 0f);
         Vector3 offset3 = new Vector3(-cellSize / 2, -cellSize / 2, 0f);
         Vector3 offset4 = new Vector3(cellSize / 2, -cellSize / 2, 0f);
-        Cell cell1 = GetCellByWorldPostion(postion + offset1);
-        Cell cell2 = GetCellByWorldPostion(postion + offset2);
-        Cell cell3 = GetCellByWorldPostion(postion + offset3);
-        Cell cell4 = GetCellByWorldPostion(postion + offset4);
+        Cell cell1 = GetCellByWorldPosition(postion + offset1);
+        Cell cell2 = GetCellByWorldPosition(postion + offset2);
+        Cell cell3 = GetCellByWorldPosition(postion + offset3);
+        Cell cell4 = GetCellByWorldPosition(postion + offset4);
         returnList.Add(cell1);
         returnList.Add(cell2);
         returnList.Add(cell3);
@@ -230,7 +230,7 @@ public class GridConstrution
         List<Cell> neighbors = new List<Cell>();
 
         int parentX = parent.x;
-        int parentY = parent.y;
+        int parentY = parent.z;
 
         // Check all 8 possible neighbors
         for (int x = -1; x <= 1; x++)

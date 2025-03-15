@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.ShaderGraph.Internal;
+
 using UnityEngine;
-using static ShootingBuilding;
 [RequireComponent(typeof(EnemySpawner))]
 public class EnemyManager : MonoBehaviour
 {
@@ -40,6 +37,14 @@ public class EnemyManager : MonoBehaviour
         
         
     }
+    private void Update()
+    {
+        if(EnemyCount().totalEnemies == 0)
+        {
+            Debug.Log("Level Cleared");
+            BattleSceneActions.OnEmemyDefeated();
+        }
+    }
 
 
     private void OnEnable()
@@ -59,10 +64,7 @@ public class EnemyManager : MonoBehaviour
         EnemyBase.Create(soEnemyLevelList.basePosition, soEnemyLevelList.SoEnemyBase);
     }
 
-    private void RestartSpawning()
-    {
-        spawner.enemyWaves = CreateInstancesOfTheEnemies();
-    }
+
 
     public void SetSpawning(bool onOff)
     {
@@ -79,6 +81,47 @@ public class EnemyManager : MonoBehaviour
         }
         return enemyWaveList;
     }
+    public EnemyCounter EnemyCount()
+    {
+        int spawnedEnemies = spawnedEnemiesList.Count;
+        int enemiesInCurrentWave = 0;
+        if (spawner.enemyWaves.Count > 0)
+        {
+            if (spawner.enemyWaves[0].enemyList.Count > 0)
+            {
+                enemiesInCurrentWave = spawner.enemyWaves[0].enemyList.Count;
+            }
+            else
+            {
+                enemiesInCurrentWave = 0;
+            }
+               
+        }
+        else
+        {
+            enemiesInCurrentWave = 0;
+        }
 
-    
+        int enemiesInNextWaves = 0;
+        for (int i = 0; i < spawner.enemyWaves.Count; i++)
+        {
+            enemiesInNextWaves += spawner.enemyWaves[i].enemyList.Count;
+        }
+        return new EnemyCounter
+        {
+            spawnedEnemies = spawnedEnemies,
+            enemiesInCurrentWave = enemiesInCurrentWave,
+            enemiesInNextWaves = enemiesInNextWaves
+        };
+    }
+
+
+}
+
+public struct EnemyCounter
+{
+    public int spawnedEnemies;
+    public int enemiesInCurrentWave;
+    public int enemiesInNextWaves;
+    public int totalEnemies => spawnedEnemies + enemiesInCurrentWave + enemiesInNextWaves;
 }

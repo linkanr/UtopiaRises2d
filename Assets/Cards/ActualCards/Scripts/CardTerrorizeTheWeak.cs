@@ -25,7 +25,7 @@ public class CardTerrorizeTheWeak : SoCardBase
             if (damageAble != null)
             {
                 Debug.Log("Applying damage to object: " + obj.name);
-                damageAble.idamageableComponent.TakeDamage(damage);
+                damageAble.iDamageableComponent.TakeDamage(damage);
             }
             else
             {

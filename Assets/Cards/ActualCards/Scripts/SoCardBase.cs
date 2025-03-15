@@ -7,9 +7,9 @@ using UnityEngine.UIElements;
 public abstract class SoCardBase:ScriptableObject
 {
 
-    public string description;
-    
     public string title;
+    public string description;
+    public CardType cardType;
     public Sprite image;
     public CardRareEnums rarity;
     public CardCanBePlayedOnEnum cardCanBePlayedOnEnum;
@@ -17,6 +17,7 @@ public abstract class SoCardBase:ScriptableObject
 
     public int influenceCost;
     public Faction faction;
+    
 
     
 
@@ -53,6 +54,72 @@ public abstract class SoCardBase:ScriptableObject
      
     }
     public abstract bool ActualEffect(Vector3 position, out string failuerReason);
+    protected bool CheckIfCardMathesTerrain(Cell cell)
+    {
+        switch (cardCanBePlayedOnEnum)
+        {
+            case CardCanBePlayedOnEnum.playerGround:
+                if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case CardCanBePlayedOnEnum.enemyGround:
+                {
+                    if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.grass)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            case CardCanBePlayedOnEnum.playerOrEnemyGround:
+                {
+                    if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.grass || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            case CardCanBePlayedOnEnum.damagable:
+                {
+                    Debug.LogError("Card can not be played on damagable");
+                    return false;
+
+                }
+            case CardCanBePlayedOnEnum.instantClick:
+                {
+                    Debug.LogError("Card can not be played on instantClick");
+                    return false;
+                }
+            case CardCanBePlayedOnEnum.construtcionBase:
+                {
+                    if (cell.hasSceneObejct)
+                    {
+                        foreach (SceneObject sceneObject in cell.containingSceneObjects)
+                        {
+                            if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
+                            {
+                                return true;
+                            }
+
+                        }
+                    }
+                    return false;
+                }
+            default:
+                Debug.LogError("Unhandled CardCanBePlayedOnEnum value:" + cardCanBePlayedOnEnum);
+                return false;
+        }
+    }
 }
 
 public enum CardCanBePlayedOnEnum
@@ -63,5 +130,15 @@ public enum CardCanBePlayedOnEnum
     instantClick,
     playerOrEnemyGround,
     construtcionBase
+
+}
+public enum CardType
+{
+    skill,
+    summonTower,
+    areaDamage,
+    directDamage,
+    power,
+    summonObjects
 
 }
