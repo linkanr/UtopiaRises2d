@@ -171,13 +171,24 @@ public class CardsInPlayManager : MonoBehaviour
     }
     public void DiscardCardInHand(Card card)
     {
-        //Debug.Log("moving to discard");
+        Debug.Log("moving to discard");
         if (card.cardCostModifier != null)
         {
+            Debug.Log("removing cost modifier");
             if (!card.cardCostModifier.permanent)
             {
+                Debug.Log("not permanent");
+                card.cardCostModifier.Remove();
                 card.cardCostModifier = null;
             }
+            else
+            {
+                Debug.Log("permanent");
+            }
+        }
+        else
+        {
+            Debug.Log("no cost modifier");
         }
 
         InHandList.Remove(card);

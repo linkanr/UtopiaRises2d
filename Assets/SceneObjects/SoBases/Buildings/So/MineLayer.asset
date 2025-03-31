@@ -20,7 +20,22 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: damagerBaseClass
+      Entry: 7
+      Data: 0|SoDamageDealGetDamage, Assembly-CSharp
+    - Name: baseDamage
+      Entry: 3
+      Data: 0
+    - Name: reloadTime
+      Entry: 4
+      Data: 10
+    - Name: attackRange
+      Entry: 4
+      Data: 5
+    - Name: 
+      Entry: 8
+      Data: 
   sceneObjectName: Mine Layer
   description: Layes small mine for kids to step on
   sprite: {fileID: 21300000, guid: eebf586ae5a2b9941a86c44f484f3e05, type: 3}
@@ -31,9 +46,8 @@ MonoBehaviour:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  influenceRadius: 4
   lifeTime: 50
-  health: 50
-  damagerBaseClass: {fileID: 11400000, guid: 743b0ada0ebd2134294a4ba1d20bba9d, type: 2}
   spawningData:
     sceneObjectToSpawn: {fileID: 11400000, guid: 795e2af992228bf4e8a6a0d2a74c5c26, type: 2}
     canInstanceOn: 01000000030000000400000005000000

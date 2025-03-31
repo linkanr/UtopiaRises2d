@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6795215543721261392}
   - component: {fileID: 1851142524277121413}
   - component: {fileID: 6482001185409187499}
-  - component: {fileID: 3780408883445354139}
   m_Layer: 6
   m_Name: PlayerBase
   m_TagString: Untagged
@@ -52,6 +51,7 @@ MonoBehaviour:
   sceneObjectPosition: {x: 0, y: 0, z: 0}
   isDead: 0
   spriteRenderer: {fileID: 6288672609211717219}
+  healthSystem: {fileID: 0}
 --- !u!61 &6482001185409187499
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -97,21 +97,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10.24, y: 10.24}
   m_EdgeRadius: 0
---- !u!114 &3780408883445354139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1115543962823873529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddbefbb70b61dcf459dec1f8cec5a797, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
-  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
 --- !u!1 &7492007470052676523
 GameObject:
   m_ObjectHideFlags: 0

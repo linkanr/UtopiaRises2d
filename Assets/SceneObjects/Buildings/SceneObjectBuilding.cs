@@ -1,46 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Pathfinding;
 using UnityEngine;
-[RequireComponent(typeof(TimeHealthSystem))]
 
-public abstract class SceneObjectBuilding : StaticSceneObject, IDamageAble, IHasLifeSpan
+
+public abstract class SceneObjectBuilding : StaticSceneObject
 {
 
-
-    
-
-   
-
-
-    public IDamagableComponent iDamageableComponent { get ; set ; }
-
-    protected override void Awake()
+    public override void OnCreated()
     {
-        base.Awake();
-        
-    }
-    protected override void Start()
-    {
-        base.Start();
-
-
+        List<Cell> celllist = new List<Cell>();
+        celllist = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, GetStats().influenceRadius, GetStats().influenceRadius);
+        foreach (Cell cell in celllist)
+        {
+            cell.isPlayerInfluenced = true;
+        }
+        CellActions.OnGenerateHeatTexture?.Invoke(GridTypeEnum.influence);
 
     }
-        #region HasLifeSpan
-    public TimeStruct getBirthLifeSpan()
-
-    {
-        
-        return TimeCalc.TimeToTimeStruct(GetStatsHandler().GetStats().GetFloat(StatsInfoTypeEnum.lifeTime));
-    }
-
-
-    public TimeTickerForIHasLifeSpan GetTimeLimiter()
-    {
-        return (iDamageableComponent as IDamagableTimeComponent).healthSystem.timeTicker ;
-    }
-
-
 
     public void OnLifeUp()
     {
@@ -51,10 +28,17 @@ public abstract class SceneObjectBuilding : StaticSceneObject, IDamageAble, IHas
         }
 
     }
-    #endregion
+
     protected override void OnObjectDestroyedObjectImplementation()
     {
-
+        List<Cell> celllist = new List<Cell>();
+        celllist = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, GetStats().influenceRadius, GetStats().influenceRadius);
+        foreach (Cell cell in celllist)
+        {
+            cell.isPlayerInfluenced = false;
+            cell.CheckPlayerInfluence();
+        }
+        CellActions.OnGenerateHeatTexture?.Invoke(GridTypeEnum.influence);
         Destroy(gameObject);
     }
 

@@ -29,15 +29,38 @@ public class Cell: IDisposable
     public float size;
     public CellTerrain cellTerrain; 
     public CellEffect cellEffect;
+    public CellContainsEnum cellStartingObject = CellContainsEnum.none;
     public float heat;
     public float humidity;
     public List<Cell> neigbours;
     private bool disposed = false;
+    private bool isPlayerIfluenced =false;
     public bool burning { get {  if (cellEffect == null) { return false; } else return   cellEffect.cellTerrainEnum == CellEffectEnum.Fire; } }
+    public bool isPlayerInfluenced { 
+        get {
+            if (cellTerrain.cellTerrainEnum != CellTerrainEnum.playerTerrain)
+            {
+                return false;
+            }
+            return isPlayerIfluenced; 
+            }
+        set {
+            if (cellTerrain.cellTerrainEnum !=CellTerrainEnum.playerTerrain)
+            {
+                isPlayerIfluenced = false;
+            }
+            else
+            {
+                isPlayerIfluenced = value;
+            }
+            
+        }
+    }
 
     public List <SceneObject> containingSceneObjects;
 
-  
+    
+
     public SceneObject containingEnvObject { get { return GetSceneObject<EnviromentObject>(); } }
     public SceneObject contingingMinorObject { get { return GetSceneObject<MinorSceneObjects>(); } }
 
@@ -160,7 +183,7 @@ public class Cell: IDisposable
         {
             case CellTerrainEnum.grass:
                 cellTerrain.Dispose();
-                cellTerrain = GameObject.Instantiate( GridCellManager.Instance.GetTerrainFromEneum(CellTerrainEnum.soil));
+                cellTerrain = GameObject.Instantiate( GridCellManager.instance.GetTerrainFromEneum(CellTerrainEnum.soil));
                 
                 List<Cell> celllist  = new List<Cell>();
                 foreach (Cell neigbour in neigbours)
@@ -208,8 +231,29 @@ public class Cell: IDisposable
         disposed = true;
     }
 
-    // Destructor (Finalizer)
-    ~Cell()
+    internal void CheckPlayerInfluence()
+    {
+        List<SceneObjectTypeEnum> list = new List<SceneObjectTypeEnum>();
+        list.Add(SceneObjectTypeEnum.playerbuilding);
+        list.Add(SceneObjectTypeEnum.playerConstructionBase);
+        List<SceneObject> objects = new List<SceneObject>();
+        objects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(worldPosition, sceneObjectTypeEnumsList: list,maxDistance:6f);
+        foreach (SceneObject sceneObject in objects)
+        {
+
+                float distance = Vector3.Distance(worldPosition, sceneObject.transform.position);
+                if (distance*2 < sceneObject.GetStats().influenceRadius)
+                {
+                    isPlayerInfluenced = true;
+                    return;
+                }
+                
+               
+            
+        }
+    }
+        // Destructor (Finalizer)
+        ~Cell()
     {
         Dispose(false);
     }

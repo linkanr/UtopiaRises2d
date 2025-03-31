@@ -109,6 +109,10 @@ public class Stats
     /// Gets the name of the game object.
     /// </summary>
     public string name => statsInfoDic.GetValue<string>(StatsInfoTypeEnum.name);
+    /// <summary>
+    /// Gets the influence radius of the game object.
+    /// </summary>
+    public int influenceRadius => statsInfoDic.GetValue<int>(StatsInfoTypeEnum.influenceRadius);
 
     /// <summary>
     /// Gets the description of the game object.
@@ -191,8 +195,10 @@ public class Stats
     /// <summary>
     /// Gets or sets the health of the game object.
     /// </summary>
-    public int   health => statsInfoDic.GetValue<int>(StatsInfoTypeEnum.health);
-    public float lifeTime => statsInfoDic.GetValue<float>(StatsInfoTypeEnum.lifeTime);
+    public int health => statsInfoDic.TryToGetValue<int>(StatsInfoTypeEnum.health) is int val ? val : -1;
+    public int lifeTime => statsInfoDic.TryToGetValue<int>(StatsInfoTypeEnum.lifeTime) is int val ? val : -1;
+
+
     public SoDamageEffect soDamageEffect => statsInfoDic.TryToGetValue<SoDamageEffect>(StatsInfoTypeEnum.SoDamageEffect);
 
 
@@ -293,7 +299,8 @@ public enum StatsInfoTypeEnum
     moveFactor, ///for Env objects
     addFuelToFire, ///for Env objects
     spawningData, ///for SpawningBuildings objects
-    takesDamageFrom ///base class for taking damage
+    takesDamageFrom, ///base class for taking damage
+    influenceRadius,
 
 
 }

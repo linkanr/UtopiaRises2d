@@ -11,6 +11,7 @@ using DG.Tweening;
 public class TimerGuiController : MonoBehaviour
 {
     public RectTransform timerRect;
+    public TextMeshProUGUI timeTextNextWaveTime;
     public TextMeshProUGUI timerYear;
     public TextMeshProUGUI timerSeason;
     public TextMeshProUGUI timerDay;
@@ -18,23 +19,21 @@ public class TimerGuiController : MonoBehaviour
 
     private void OnEnable()
     {
-        TimeActions.GlobalTimeChanged += UpdateTimers;
-        TimeActions.OnSecondChange += ScaleTimer;
+
+
+        BattleSceneManager.instance.OnTimeCountDown += UpdateTimers;
     }
 
 
     private void OnDisable()
     {
-        TimeActions.GlobalTimeChanged -= UpdateTimers;
-        TimeActions.OnSecondChange -= ScaleTimer;
+
+        BattleSceneManager.instance.OnTimeCountDown -= UpdateTimers;
     }
 
-    private void UpdateTimers(BattleSceneTimeArgs args)
+    private void UpdateTimers()
     {
-        List<string> list = TimeCalc.TimeToString(TimeCalc.TimeToTimeStruct(args.time));
-        timerYear.text = list[0];
-        timerSeason.text = list[1];
-        timerDay.text = list[2];
+        timeTextNextWaveTime.text = BattleSceneManager.instance.GetTimeLeft().ToString();
     }
     private void ScaleTimer()
     {

@@ -10,7 +10,7 @@ public class EnemyLooker
     }
     public EnemyManager enemyManager;
 
-    internal IDamageAble LookForTarget(TargetPriorityEnum lookForEnemyType, Vector3 postion, float maxDistance)
+    internal SceneObject LookForTarget(TargetPriorityEnum lookForEnemyType, Vector3 postion, float maxDistance)
     {
         switch (lookForEnemyType)
         {
@@ -74,7 +74,7 @@ public class EnemyLooker
         foreach (Enemy enemy in enemyManager.spawnedEnemiesList)
         {
             float newDist = Vector3.Distance(enemy.transform.position, pos);
-            int newHealth = (enemy.iDamageableComponent as IdamagablePhysicalComponent).healthSystem.GetHealth();
+            int newHealth = enemy.healthSystem.GetHealth();
             if (newHealth > health && newDist < maxDistance)
             {
                 returnEnemy = enemy;

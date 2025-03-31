@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc7e6405d6082941becd1f6b25962e0, type: 3}
   m_Name: PoisonedWells
   m_EditorClassIdentifier: 
-  description: Whats that smell? Damge:5 Delay:10 Lifetime:60
   title: PoisonWells
+  description: Whats that smell? Damge:5 Delay:10 Lifetime:60
+  cardType: 3
   image: {fileID: 21300000, guid: 76a189e93af634f4584cbf5b5d5d1b1e, type: 3}
   rarity: 1
   cardCanBePlayedOnEnum: 2

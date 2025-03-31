@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBase : StaticSceneObject, IDamageAble
+public class PlayerBase : StaticSceneObject
 
 {
-    public IDamagableComponent iDamageableComponent { get; set; }
+    public override void OnCreated()
+    {
+        
+    }
 
     protected override void AddStatsForClick(Stats _stats)
     {

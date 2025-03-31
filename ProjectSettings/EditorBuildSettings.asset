@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SpoilsScene.unity
     guid: 831c6b0a940ffea4d9eb826f3cc82890
+  - enabled: 1
+    path: Assets/Scenes/Map.unity
+    guid: b7343f94d99474c429c50afcb7604a5b
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 92cdb115201cae64891f401da437c3cf, type: 2}

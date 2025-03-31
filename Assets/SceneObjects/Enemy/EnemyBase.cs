@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
 
-public class EnemyBase : StaticSceneObject, IDamageAble
+public class EnemyBase : StaticSceneObject
 {
-
+    public Action Onkilled;
     public SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.enemyBase; } }
-
-    public IDamagableComponent iDamageableComponent { get; set; }
+    public EnemySpawner spawner;
+    public HealthSystem iDamageableComponent { get; set; }
+    public bool permanent;
 
     public static EnemyBase Create(Vector3 position, SoEnemyBase _soEnemyBase )
     {
@@ -19,12 +20,19 @@ public class EnemyBase : StaticSceneObject, IDamageAble
 
     protected override void OnObjectDestroyedObjectImplementation()
     {
+        Onkilled();
         BattleSceneActions.OnEmemyDefeated?.Invoke();
+        Destroy(gameObject);
     }
 
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health, healthSystem.GetHealth());
+    }
+
+    public override void OnCreated()
+    {
+       
     }
 }

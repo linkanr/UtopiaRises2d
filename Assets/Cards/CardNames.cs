@@ -1,11 +1,13 @@
-﻿public enum CardNames
+﻿using Sirenix.OdinInspector;
+using UnityEngine.Rendering;
+public enum CardNames
 {
     createSniperTower,
     createFollower,
     placeStone,
     lightArtillery,
     heavyArtillery,
-    scarambleDefence,
+    defensiveOutpost,
     longTermDefence,
     poisonWells,
     backstab,
@@ -18,12 +20,16 @@
     negotiations,
     mine,
     mineLayer,
-    sandBags,
+    incence,
     Recycle,
+    offensiveOutpost,
+    lookoutOutpost
 
 
 
 }
+
+
 
 
 

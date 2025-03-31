@@ -24,17 +24,14 @@ public class SceneObjectShootingBuilding : SceneObjectBuilding, IcanAttack
     {
         
     }
-
-
-
-    /// <summary>
-    /// Initializes the shooting building, setting up the state machine and time limiter.
-    /// </summary>
-    protected override void Start()
+    public override void OnCreated()
     {
-        base.Start();
+        base.OnCreated();
         stateMachine = GetComponent<ShotingBuildingStateMachine>();
-      
     }
+
+
+
+
 
 }

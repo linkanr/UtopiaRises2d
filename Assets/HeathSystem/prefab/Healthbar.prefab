@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3347722834310159665}
   - component: {fileID: 2007171448253124681}
   - component: {fileID: 4222568418921299245}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4978089232910252751}
   - component: {fileID: 8880312537059479356}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 504535645117637642}
   - component: {fileID: 77776560138033058}
   - component: {fileID: 2972184595187316042}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: Healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 357043639
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &504535645117637642
@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 2265402313343952539}
   - component: {fileID: 7996812745928874128}
   - component: {fileID: 5557031376641572766}
-  m_Layer: 5
+  m_Layer: 12
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}

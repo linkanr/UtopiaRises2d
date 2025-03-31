@@ -74,7 +74,7 @@ public class CardSelectionHandler
             activateDisplay = false;
         }
          
-        Cell activeCell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+        Cell activeCell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
         if (activeCell == null)
         {
             
@@ -99,49 +99,49 @@ public class CardSelectionHandler
 
     private Color HandleNonEmptyCell(SceneObject[] containingObject, Cell activeCell)
     {
-        Debug.Log("HandleNonEmptyCell");
+       
         switch (card.cardBase.cardCanBePlayedOnEnum)
         {
             case CardCanBePlayedOnEnum.damagable:
                 Debug.Log("damagable");
                 foreach (SceneObject sceneObject in containingObject)
                 {
-                    if (sceneObject is IDamageAble)
+                    if (sceneObject.healthSystem != null)
                     {
-                        Debug.Log("damagable found Color Green");
+                        
                         return AvilibleColor;
                     }
                 }
-                Debug.Log("damagable not found Color Red");
+                
                 return naColor;
                 
-            case CardCanBePlayedOnEnum.construtcionBase:
+            case CardCanBePlayedOnEnum.influencedTerritory:
                 foreach (SceneObject sceneObject in containingObject)
                 {
                     if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
                     {
-                        Debug.Log("construtcionBase found Color Green");
+                    
                         return AvilibleColor;
                     }
                 }
-                Debug.Log("construtcionBase not found Color Red");
+          
                 return naColor;
 
             case CardCanBePlayedOnEnum.enemyGround:
                 if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil || activeCell.cellTerrain.cellTerrainEnum==CellTerrainEnum.grass)
                 {
-                    Debug.Log("enemyGround found Color Green");
+                  
                     return AvilibleColor;
                 }
                 else
                 {
-                    Debug.Log("enemyGround not found Color Red. Found:" + activeCell.cellTerrain.cellTerrainEnum.ToString());
+                   
                     return naColor;
                 }
             case CardCanBePlayedOnEnum.playerGround:
                 if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
                 {
-                    Debug.Log("playerGround found Color Green");
+                
                     return AvilibleColor;
                 }
                 else
@@ -152,7 +152,7 @@ public class CardSelectionHandler
                 {
                     if (activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil || activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain || activeCell.cellTerrain.cellTerrainEnum == CellTerrainEnum.grass)
                     {
-                        Debug.Log("playerOrEnemyGround found Color Green");
+                  
                         return AvilibleColor;
                     }
                     else
@@ -182,9 +182,23 @@ public class CardSelectionHandler
         //Debug.Log("avilibleEnums count: " + avilibleEnums.Count);
         foreach (CardCanBePlayedOnEnum cardCanBePlayedOnEnum in avilibleEnums)
         {
-           if (cardCanBePlayedOnEnum == card.cardBase.cardCanBePlayedOnEnum)
+
+            if (cardCanBePlayedOnEnum == card.cardBase.cardCanBePlayedOnEnum)
             {
-                return AvilibleColor;
+                if (cardCanBePlayedOnEnum == CardCanBePlayedOnEnum.influencedTerritory)
+                {
+                    if (activeCell.isPlayerInfluenced)
+                    {
+                        return AvilibleColor;
+                    }
+                }
+                else
+                {
+                    return AvilibleColor;
+                }
+                
+
+                
             }
            
           
@@ -202,6 +216,7 @@ public class CardSelectionHandler
             case CellTerrainEnum.playerTerrain:
                 returnList.Add(CardCanBePlayedOnEnum.playerGround);
                 returnList.Add(CardCanBePlayedOnEnum.playerOrEnemyGround);
+                returnList.Add(CardCanBePlayedOnEnum.influencedTerritory);
 
                 break;
             case CellTerrainEnum.soil:
@@ -273,7 +288,7 @@ public class CardSelectionHandler
             case CardCanBePlayedOnEnum.playerGround:
                 if (clickableType != ClickableType.card)
                 {
-                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    Cell cell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
                     if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
                     {
                         PlayCard();
@@ -291,7 +306,7 @@ public class CardSelectionHandler
             case CardCanBePlayedOnEnum.enemyGround:
                 if (clickableType != ClickableType.card)
                 {
-                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    Cell cell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
                     if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.grass)
                     {
                         PlayCard();
@@ -309,7 +324,7 @@ public class CardSelectionHandler
             case CardCanBePlayedOnEnum.playerOrEnemyGround:
                 if (clickableType != ClickableType.card)
                 {
-                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
+                    Cell cell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
                     if (cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.soil|| cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.grass || cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
                     {
                         PlayCard();
@@ -324,26 +339,21 @@ public class CardSelectionHandler
                     ResetCardSelection();
                 }
                 break;
-                case CardCanBePlayedOnEnum.construtcionBase:
+                case CardCanBePlayedOnEnum.influencedTerritory:
                 if (clickableType != ClickableType.card)
                 {
-                    Cell cell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
-                    if (!cell.hasSceneObejct)
+                    Cell cell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
+                    if (cell.isPlayerInfluenced && cell.cellTerrain.cellTerrainEnum == CellTerrainEnum.playerTerrain)
+                    {
+                        PlayCard();
+                        break;
+                    }
+                    else
                     {
                         ResetCardSelection();
                         break;
                     }
-                    foreach (SceneObject sceneObject in cell.containingSceneObjects)
-                    {
-                        if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
-                        {
-                            PlayCard();
-                        }
-                    }
-
-                    ResetCardSelection();
-
-
+       
 
                 }
                 else
@@ -399,7 +409,7 @@ public class CardSelectionHandler
     private void FinalizeSuccessfulPlay()
     {
         // Clear cost modifier and reset card state
-        card.cardCostModifier = null;
+
         card.cardState = CardStateEnum.inDiscardPile;
         card.isSelected = false;
 

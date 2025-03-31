@@ -67,7 +67,7 @@ public class CellHeatDebug : MonoBehaviour
     {
         if (grid == null)
         {
-            grid = GridCellManager.Instance.gridConstrution;
+            grid = GridCellManager.instance.gridConstrution;
             CreateHeatTextObjects();
 
         }

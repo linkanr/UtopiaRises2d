@@ -6,6 +6,7 @@ public class EnemyCreator : MonoBehaviour
 {
     public static Enemy CreateEnemy(SoEnemyObject soEnemyInformationPackage, Vector3 pos)
     {
+        Debug.Log("CreateEnemy" + soEnemyInformationPackage.name+ "  speed is " + soEnemyInformationPackage.speed);
         // Initialize the enemy instance
         SceneObject newEnemyInstance = soEnemyInformationPackage.Init(pos);
         Enemy newEnemy = newEnemyInstance as Enemy;
@@ -26,6 +27,7 @@ public class EnemyCreator : MonoBehaviour
 
     private static void SetAiPathSeek(SoEnemyObject soEnemyInformationPackage, Enemy newEnemy)
     {
+
         // Initialize AI Path components
         Mover moverComponent = newEnemy.gameObject.AddComponent<Mover>();
         newEnemy.mover = moverComponent;

@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7061022547367410728}
   - component: {fileID: 7110661318690033839}
-  - component: {fileID: -6880681293149928545}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TriggeredDamageEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,21 +50,7 @@ MonoBehaviour:
   sceneObjectPosition: {x: 0, y: 0, z: 0}
   isDead: 0
   spriteRenderer: {fileID: 5543183214740543020}
---- !u!114 &-6880681293149928545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361188810572944081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a666f653f98bb4d955154fbb3297ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1
-  maxHealth: 1
-  damageEffect: {fileID: 0}
+  healthSystem: {fileID: 0}
 --- !u!1 &8161655518590728904
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,7 +61,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9163930128056302983}
   - component: {fileID: 5543183214740543020}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

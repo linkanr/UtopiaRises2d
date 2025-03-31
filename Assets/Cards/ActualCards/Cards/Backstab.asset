@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc7e6405d6082941becd1f6b25962e0, type: 3}
   m_Name: Backstab
   m_EditorClassIdentifier: 
-  description: Deal 4 damage to a single taget
   title: BackStab
+  description: Deal 4 damage to a single taget
+  cardType: 3
   image: {fileID: 21300000, guid: 7d923c597c0e3c148a85d9c818ee357d, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 2

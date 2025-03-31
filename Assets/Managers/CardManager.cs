@@ -24,7 +24,7 @@ public class CardManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            GetStartingCards();
+            
         }
         else
         {
@@ -32,6 +32,10 @@ public class CardManager : MonoBehaviour
         }
 
         allCards = Resources.Load<SoAllCardsGlobalDic>("cardNames");
+    }
+    public void AddStartingCardsToDeck()
+    {
+        GetStartingCards();
     }
 
     public SoCardBase GetRandomCard()
@@ -66,7 +70,7 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    public void GetStartingCards()
+    private void GetStartingCards()
     {
         AddCard(startingCards);
     }

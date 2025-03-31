@@ -18,8 +18,8 @@ public abstract class SoCardInstanciate : SoCardBase
     public override bool ActualEffect(Vector3 position, out string failureReason)
     {
         failureReason = "";
-        Cell centerCell = GridCellManager.Instance.gridConstrution.GetCurrecntCellByMouse();
-        List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(), sizeX, sizeY);
+        Cell centerCell = GridCellManager.instance.gridConstrution.GetCurrecntCellByMouse();
+        List<Cell> cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(), sizeX, sizeY);
         if (cells.Count < 1)
         {
             failureReason = "NO CELL FOUND";

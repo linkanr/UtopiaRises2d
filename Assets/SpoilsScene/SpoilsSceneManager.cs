@@ -48,7 +48,7 @@ public class SpoilsSceneManager : MonoBehaviour
     private void InitializeCards()
     {
         // Generate random rare card enums
-        List<CardRareEnums> rateEnums = CardOptionsHandler.GetRareEnums(GameManager.instance.soEnemyLevelList.luck, 3);
+        List<CardRareEnums> rateEnums = CardOptionsHandler.GetRareEnums(GameManager.instance.currentLevel.luck, 3);
 
         // Create cards based on rarity
         foreach (CardRareEnums rareEnums in rateEnums)

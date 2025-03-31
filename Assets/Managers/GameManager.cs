@@ -8,21 +8,33 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public int level = 1;
-    private string levelPrefix = "Level";
-    private string levelString { get { return levelPrefix + level.ToString(); } }
-    public SoEnemyLevelList soEnemyLevelList { get { return Resources.Load(levelString) as SoEnemyLevelList; } }
+
+    public LevelBase currentLevel;
     public Action LoadNextBattleScene;
     public Action LoadSpoilsSceneAction;
+    public Action LoadMapSceneAction;
     private void Awake()
     {
-        level = 1;
+
         instance = this;
     }
     private void OnEnable()
     {
         GlobalActions.BattleSceneCompleted += LoadSpoilsScene;
-        GlobalActions.SpoilScenesCompleted += LoadNextLevel;
+        GlobalActions.SpoilScenesCompleted += LoadMapScene;
+        GlobalActions.OnNodeCleared += LoadNextLevel;
 
+    }
+    private void OnDisable()
+    {
+        GlobalActions.BattleSceneCompleted -= LoadSpoilsScene;
+        GlobalActions.SpoilScenesCompleted -= LoadMapScene;
+        GlobalActions.OnNodeCleared -= LoadNextLevel;
+    }
+
+    private void LoadMapScene()
+    {
+        LoadMapSceneAction();
     }
 
     private void LoadSpoilsScene()
@@ -30,9 +42,11 @@ public class GameManager : MonoBehaviour
         LoadSpoilsSceneAction();
     }
 
-    private void LoadNextLevel()
+    private void LoadNextLevel(MapNode mapNode)
     {
-        level++;
+        currentLevel = mapNode.levelBase;
         LoadNextBattleScene();
     }
+
+
 }

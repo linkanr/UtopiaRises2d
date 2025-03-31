@@ -13,8 +13,8 @@ public class SoMinorObject : SoSceneObjectBase
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
-        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(sceneObject.transform.position);
-        cell.AddSceneObjects(sceneObject);
+  
+
         
         sceneObject.transform.SetParent(GameObject.Find("PersistantParent").transform);
     }

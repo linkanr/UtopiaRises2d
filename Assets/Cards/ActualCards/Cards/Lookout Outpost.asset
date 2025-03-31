@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
+  m_Name: Lookout Outpost
+  m_EditorClassIdentifier: 
+  title: Lookout Outpost
+  description: An outpost that expands you terrotory
+  cardType: 5
+  image: {fileID: 21300000, guid: 3c03d4c168b61fe4cb272af7bf90e2bb, type: 3}
+  rarity: 0
+  cardCanBePlayedOnEnum: 5
+  cardPlayTypeEnum: 0
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  prefab: {fileID: 11400000, guid: 62848dcca789139429d00d5b7dbb90bf, type: 2}
+  sizeX: 1
+  sizeY: 1

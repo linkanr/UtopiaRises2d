@@ -4,52 +4,47 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class TriggeredDamageSceneObject : MinorSceneObjects, IDamageAble,IStepable
+public class TriggeredDamageSceneObject : MinorSceneObjects, IStepable
 {
-    private Cell containingCell;
+
     private bool triggered = false;
 
     public SceneObjectTypeEnum damageableType => SceneObjectTypeEnum.minorObject;
 
-    public IDamagableComponent iDamageableComponent { get; set; }
-   
 
-    public void Init(Vector3 pos)
+
+
+    private void OnEnable()
     {
-        containingCell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(pos);
-        containingCell.AddSceneObjects(this);
         TimeActions.GlobalTimeChanged += CheckTrigger;
-
+    }
+    private void OnDisable()
+    {
+        TimeActions.GlobalTimeChanged -= CheckTrigger;
     }
 
     public void CheckTrigger(BattleSceneTimeArgs args)
     {
+    
 
         if (GetStats().takesDamageFrom.destroyedWhenStepedOn && !triggered)
         {
-
-            if (containingCell.containingSceneObjects.Count > 0)
+        
+            List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: 1f);
+            if (sceneObjects.Count > 0)
             {
-
-                foreach (SceneObject sceneObject in containingCell.containingSceneObjects)
+              
+                foreach (SceneObject sceneObject in sceneObjects)
                 {
-                  
                     if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.enemy)
                     {
-      
+                       
                         Trigger();
-                        return;
                     }
                 }
             }
-            else
-            {
-               
-            }
-        }
-        else
-        {
-           
+
+
         }
     }
 
@@ -57,13 +52,13 @@ public class TriggeredDamageSceneObject : MinorSceneObjects, IDamageAble,IStepab
     {
         triggered = true;
 
-        var worldPosition = containingCell.worldPosition;
+
         var attackRange = GetStats().maxRange;
         var fireEffect = GetStats().fireEffect;
         var baseDamage = GetStats().damageAmount;
 
-        AreaDamage.Create(worldPosition, attackRange, fireEffect, baseDamage, 0, burnChance: .5f);
-        iDamageableComponent.TakeDamage((iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
+        AreaDamage.Create(transform.position, attackRange, fireEffect, baseDamage, 0, burnChance: .5f);
+        
     }
     protected override void OnObjectDestroyedObjectImplementation()
     {
@@ -78,7 +73,7 @@ public class TriggeredDamageSceneObject : MinorSceneObjects, IDamageAble,IStepab
     {
         base.AddStatsForClick(_stats);
         _stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.minorObject);
-        _stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
+        _stats.Add(StatsInfoTypeEnum.health,healthSystem.GetHealth());
     }
 
 

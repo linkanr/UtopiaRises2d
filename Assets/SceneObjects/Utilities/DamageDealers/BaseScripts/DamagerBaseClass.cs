@@ -1,19 +1,24 @@
 ﻿using UnityEngine;
-
-public abstract class DamagerBaseClass:ScriptableObject
+[System.Serializable]
+public abstract class DamagerBaseClass
 {
 
     public int baseDamage;
     public float reloadTime;
     public float attackRange;
 
-    public abstract int CaclulateDamage();
+    public int CaclulateDamage()
+    {
+        return CalculateDamageImplementation( PlayerGlobalsManager.instance.playerGlobalVariables.GetDamage(baseDamage));
+    }
 
     public abstract float CalculateReloadTime();
 
     public abstract float CalculateAttackRange();
+    public abstract int CalculateDamageImplementation(int _baseDamage);
 
 
 
-  
+
+
 }

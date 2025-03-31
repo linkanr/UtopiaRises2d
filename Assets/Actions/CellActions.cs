@@ -6,7 +6,9 @@ public static class CellActions
 {
     public static Action<List<Cell>> UpdateCells;
     public static Action<CellEffectUpdateArgs> UpdateCellEffect;
-    public static Action<Texture2D> updatedTexture;
+    public static Action<GridTypeEnum> OnGenerateHeatTexture;
+    public static Action<Texture2D> UpdatedTexture;
+
 }
 
 public class CellEffectUpdateArgs

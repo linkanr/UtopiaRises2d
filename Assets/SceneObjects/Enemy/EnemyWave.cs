@@ -4,7 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class EnemyWave
 {
-    public EnemyWave(List<EnemyNames> enemies, float _timer)
+    public EnemyWave(List<EnemyNames> enemies)
     {
         
         List<EnemyNames> eList = new List<EnemyNames>();
@@ -15,12 +15,23 @@ public class EnemyWave
       
             eList.Add(e);
         }
-        timer = _timer;
+
         enemyList = eList;
     }
     public List<EnemyNames> enemyList;
-    public float timer;
-    
-    
+
+
+    public static List<EnemyWave> CreateWaveList(List<EnemyWave> enemies)
+    {
+        List<EnemyWave> copiedWaves = new List<EnemyWave>();
+        foreach (EnemyWave enemyWave in enemies)
+        {
+            EnemyWave newWave = new EnemyWave(enemyWave.enemyList);
+            copiedWaves.Add(newWave);
+        }
+        return copiedWaves;
+    }
+
     public bool IsListEmepty { get { if (enemyList.Count == 0) return true; else return false; }  }
 }
+

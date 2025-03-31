@@ -4,28 +4,22 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MovingSceneObject, IDamageAble, IcanAttack
+public class Enemy : MovingSceneObject,  IcanAttack
 {
 
     [HideInInspector]
 
     public TargeterBaseClass targeter { get;set; }
+    public AIPathVisualizer aIPathVisualizer;
     public Mover mover;
-    public IDamagableComponent iDamageableComponent { get; set; }
+
     public SceneObject sceneObject { get { return this; } }
 
-    protected override void Start()
+    public override void OnCreated ()
     {
-        base.Start();
-        iDamageableComponent = GetComponent<IdamagablePhysicalComponent>();
-        if (iDamageableComponent == null)
-        {
-            Debug.LogError($"Enemy {name} has no IdamagableComponent!");
-        }
-
         EnemyManager.Instance.spawnedEnemiesList.Add(this);
-
     }
+
     protected override void OnObjectDestroyedObjectImplementation()
     {
         EnemyManager.Instance.spawnedEnemiesList.Remove(this);
@@ -33,7 +27,7 @@ public class Enemy : MovingSceneObject, IDamageAble, IcanAttack
     }
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.GetHealth());
+        stats.Add(StatsInfoTypeEnum.health,healthSystem.GetHealth());
 
 
     }

@@ -22,6 +22,7 @@ public static class WorldSpaceUtils
         if (mainCamera == null) mainCamera = Camera.main;
 
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Debug.Log(ray.origin);
         float maxDistance = 100f; // Set a reasonable max distance for the raycast
         Debug.DrawRay(ray.origin, ray.direction * maxDistance, Color.red, 1f);
         if (Physics.Raycast(ray, out RaycastHit hitData, maxDistance, GameSceneRef.instance.collisionLayerGrid))

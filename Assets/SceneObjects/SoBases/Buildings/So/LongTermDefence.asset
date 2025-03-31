@@ -20,7 +20,22 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: damagerBaseClass
+      Entry: 7
+      Data: 0|SoDamageDealGetDamage, Assembly-CSharp
+    - Name: baseDamage
+      Entry: 3
+      Data: 2
+    - Name: reloadTime
+      Entry: 4
+      Data: 1
+    - Name: attackRange
+      Entry: 4
+      Data: 10
+    - Name: 
+      Entry: 8
+      Data: 
   sceneObjectName: LongTermDefence
   description: A sniper tower
   sprite: {fileID: 21300000, guid: 44b6c29e151433946af3723ce3ec0bd7, type: 3}
@@ -31,9 +46,8 @@ MonoBehaviour:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  influenceRadius: 4
   lifeTime: 70
-  health: 50
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
   seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
   possibleTargetTypes: 02000000
-  damagerBaseClass: {fileID: 11400000, guid: 36ad9623ba259c24183f0f05936646e9, type: 2}

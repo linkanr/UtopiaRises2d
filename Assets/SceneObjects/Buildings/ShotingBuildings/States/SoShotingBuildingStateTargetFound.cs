@@ -42,15 +42,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
 
             stateMachine.shootingBuilding.targeter.attackTimer = 0f;
         }
-        else
-        {
-            if (DebuggerGlobal.instance.drawTargetLines)
-            {
-                DebuggerGlobal.DrawLine(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.targeter.target.transform.position, color:Color.yellow);
-            }
-           
-           
-        }
+
    
       
 

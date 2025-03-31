@@ -38,6 +38,7 @@ public class Mover :MonoBehaviour, IMoverComponent
         aIPath.gravity = new Vector3 (0f,0f,0f);
         sceneObject = _targetsystem.attacker;
         targetSystem = _targetsystem;
+
         aIPath.maxSpeed = sceneObject.GetStats().speed;
         aIPath.canMove = true;
         stateAllowsMovement = true;
@@ -96,7 +97,7 @@ public class Mover :MonoBehaviour, IMoverComponent
             return;
         }
 
-        var gridCell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(sceneObject.transform.position);
+        var gridCell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(sceneObject.transform.position);
         if (gridCell == null)
         {
             Debug.LogError("GridCellManager.Instance.gridConstrution.GetCellByWorldPostion returned null");

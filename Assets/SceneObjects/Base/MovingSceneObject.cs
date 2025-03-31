@@ -5,21 +5,28 @@ using UnityEngine;
 public abstract class MovingSceneObject : SceneObject
 {
     
-
+    private Cell currentCell;
     protected virtual void Update() 
     {
-        if (WorldSpaceUtils.CrossedBorder(transform.position, sceneObjectPosition))
+        Cell newCell =  GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
+        if (newCell == currentCell)
         {
-            
-            Cell oldCell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(sceneObjectPosition);
-            Cell newcell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(transform.position);
-            oldCell.containingSceneObjects.Remove(this);
-            newcell.containingSceneObjects.Add(this);
+            return;
+        }
+        if (currentCell == null)
+        {
+            currentCell = newCell;
+            currentCell.AddSceneObjects(this);
+        }
+        if (currentCell != newCell)
+        {
+            currentCell.containingSceneObjects.Remove(this);
+            newCell.AddSceneObjects(this);  
+            currentCell = newCell;
         }
 
-        
-        sceneObjectPosition = transform.position;
         spriteSorter.SortSprite();
+        sceneObjectPosition = transform.position;
     }
 
 }

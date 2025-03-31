@@ -51,6 +51,8 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     protected SpriteSorter spriteSorter;
 
+    public HealthSystem healthSystem;
+
     /// <summary>
     /// The stats handler for managing the scene object's stats.
     /// </summary>
@@ -89,38 +91,47 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// <summary>
     /// Called when the scene object is created.
     /// </summary>
-    protected virtual void Start()
+    public void InitilizeFromSo()
     {
-        //c2D = GetComponent<Collider2D>();
-        //rB2D = gameObject.AddComponent<Rigidbody2D>();
+        sceneObjectPosition = transform.position;
+        BattleSceneActions.OnSceneObjectCreated(this);
+ 
+        
         OnCreated();
-        //rB2D.gravityScale = 0;
-        //bounds = c2D.bounds;
+
         spriteRenderer.sprite = GetStats().sprite;
-        if (this is IDamageAble)
+        Debug.Log("InitilizeFromSo");
+        Debug.Log(GetStats().sceneObjectType + " is scenobjet" + " health is  " + GetStats().health + " time is " + GetStats().lifeTime);
+
+        if (GetStats().health > 0)
         {
-            IDamageAble damageAble = this as IDamageAble;
-            if (this is IHasLifeSpan)
-            {
-                IHasLifeSpan hasLifeSpan = this as IHasLifeSpan;
-                damageAble.iDamageableComponent = gameObject.AddComponent<TimeHealthHandler>();
-                damageAble.iDamageableComponent.Init(this);
-                GameObject towerUiGO = Instantiate(Resources.Load("ui"), transform) as GameObject;
-                TowerTimeUiHandle towerUi = towerUiGO.GetComponent<TowerTimeUiHandle>();
-                towerUi.Init(this);
-            }
-            else
-            {
-
-                damageAble.iDamageableComponent = gameObject.AddComponent<PhysicalHealthHandler>();
-                damageAble.iDamageableComponent.Init(this);
-            }
-
+            healthSystem =gameObject.AddComponent<PhysicalHealthSystem>();
+            healthSystem.Init(GetStats().health,this);
 
         }
-
-
+        if (GetStats().lifeTime > 0)
+        {
+            healthSystem = gameObject.AddComponent<TimeHealthSystem>();
+            healthSystem.Init( GetStats().lifeTime, this);
+            GameObject towerUiGO = Instantiate(Resources.Load("ui"), transform) as GameObject;
+            TowerTimeUiHandle towerUi = towerUiGO.GetComponent<TowerTimeUiHandle>(); // Should only be added if it has a damager
+            towerUi.Init(this);
+        }
     }
+    public virtual void start()
+    {
+        Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
+
+        if (cell == null)
+        {
+            Debug.Log("cell not found");
+
+        }
+        cell.AddSceneObjects(this);
+    }
+
+
+
 
     /// <summary>
     /// Sets the stats for the scene object.
@@ -150,32 +161,19 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     }
 
     /// <summary>
-    /// Called when the scene object is created.
+    /// Called when the scene object is created. This is the specific implementation of the child. Called from intialized from SO on the base class
     /// </summary>
-    public virtual void OnCreated()
-    {
-        sceneObjectPosition = transform.position;
-        BattleSceneActions.OnSceneObejctCreated(this);
-        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(transform.position);
+    public abstract void OnCreated();
 
-        if (cell == null)
-        {
-            Debug.Log("cell not found");
-
-        }
-        cell.AddSceneObjects(this);
-    }
 
 
     public void KillSceneObject() 
     {
-        if (this is IDamageAble)
+        if (healthSystem != null)
         {
-            IDamagableComponent idamagableComponent = (this as IDamageAble).iDamageableComponent;
-            if (idamagableComponent != null)
-            {
-                idamagableComponent.Die();
-            }
+
+                healthSystem.Die(null);
+           
         }
         else
         {
@@ -190,7 +188,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     {
 
         BattleSceneActions.OnSceneObjectDestroyed(this);
-        Cell cell = GridCellManager.Instance.gridConstrution.GetCellByWorldPosition(transform.position);
+        Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
         if (cell != null) 
         {
             if (cell.containingSceneObjects.Contains(this))

@@ -16,7 +16,7 @@ public class SoAttackSingleTarget : SoAttackSystem
             Transform ammo = Instantiate(prefabForAmmo, attacker.transform);
             ammo.GetComponent<IIsAttackInstanciator>()?.Trigger(icanAttack.targeter, icanAttack.targeter.target);
         }
-        Debug.Log("Attacking and playing visual effect at cords: " + visualEffect.transform.position);
+
         if (attacker.GetStats().fireEffect != null)
         {
             attacker.GetStats().fireEffect.Play();
@@ -24,7 +24,7 @@ public class SoAttackSingleTarget : SoAttackSystem
         }
 
 
-        icanAttack.targeter.target.damagable.iDamageableComponent.TakeDamage(attacker.GetStats().damageAmount);
+        icanAttack.targeter.target.damagable.healthSystem.TakeDamage(attacker.GetStats().damageAmount,attacker);
 
     }
 }

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
   m_Name: Sniper
   m_EditorClassIdentifier: 
-  description: Build i guard tower with a sniper
   title: Sniper
+  description: Build i guard tower with a sniper
+  cardType: 1
   image: {fileID: 21300000, guid: 9175defc0bbc85f4aace41e08fe2aa40, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 5

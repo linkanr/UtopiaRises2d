@@ -13,7 +13,8 @@ public class GridConstrution
     [SerializeField] public int sizeY { get; private set; }
     [SerializeField] public float cellSize { get; private set; }
     [SerializeField] private Vector3 offset;
-
+    private static int idCounter = 0;
+    public int instanceID;
 
     public Cell[,] gridArray;
     
@@ -22,11 +23,13 @@ public class GridConstrution
 
     public GridConstrution(Texture2D texture, float cellSize, Vector3 offset)
     {
+        instanceID = ++idCounter;
+        Debug.Log($"[GridConstrution] Constructor called. ID: {instanceID}");
         this.sizeX = texture.width;
         this.sizeY = texture.height;
-        Debug.Log("sizeX: " + sizeX + " sizeY: " + sizeY);
-        this.cellSize = cellSize;
+
         this.offset = offset;
+        this.cellSize = cellSize;
         gridArray = new Cell[sizeX, sizeY];
         for (int x = 0; x < sizeX; x++)
         {
@@ -36,29 +39,16 @@ public class GridConstrution
                 CellReturnInfoArgs cellReturn = CellTerrainToColor.GetTerrain(pixelColor);
                 CellTerrainEnum cellTerrain = cellReturn.cellTerrainEnum;
                 CellContainsEnum cellContains = cellReturn.cEllContainsEnum;
-                CellTerrain cellTerrainObject = GridCellManager.Instance.GetTerrainFromEneum(cellTerrain);
+
+                CellTerrain cellTerrainObject = GridCellManager.instance.GetTerrainFromEneum(cellTerrain);
                 if (cellTerrainObject == null)
                 {
                     Debug.LogError("cellTerrainObject is null");
                 }
                 gridArray[x, y] = new Cell(x, y, this, cellTerrainObject);
-                if (cellContains != CellContainsEnum.none)
-                {
-                    switch (cellContains)
-                    {
-                        case CellContainsEnum.playerBase:
-                            // Istanciate player base
-                            break;
-                        case CellContainsEnum.enemyBase:
-                            // instanciate enemy base
-                            break;
-                        case CellContainsEnum.constructionCore:
-                            SceneObjectConstructionBase constructionBaseSceneObject =  SceneObjectConstructionBase.Create(new Vector3 (x+ cellSize/2, y+cellSize/2,0f));
-                            
-                            break;
-                    }
-                }
-                //Debug.Log("cellTerrainObject: " + cellTerrainObject.cellTerrainEnum + " at " + x +" "+ y);
+                gridArray[x, y].cellStartingObject = cellContains;
+
+
             }
         }
     }
@@ -70,6 +60,7 @@ public class GridConstrution
 
     public Vector3 GetCellPositionByPosition(Vector3 _position)
     {
+        
         if (GetCellByWorldPosition(_position) == null)
         {
             return Vector3.zero;
@@ -84,30 +75,53 @@ public class GridConstrution
     }
     public Cell GetCurrecntCellByMouse()
     {
+        //Debug.Log("GetCurrecntCellByMouse");
         if (GetCellByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition()) == null)
         {
+            //Debug.Log("found nothing");
             return null;
         }
         return GetCellByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition());
     }
     public Cell GetCellByWorldPosition(Vector3 position)
     {
-
+      
         Vector3 offsetPos = position - new Vector3(offset.x, offset.y, offset.z);
-  
-        if (offsetPos.x >= 0f && offsetPos.y >= 0f && offsetPos.x <= (float)sizeX * cellSize && offsetPos.y <= (float)sizeY * cellSize)
+        //Debug.Log($"[GetCellByWorldPosition] Input Pos: {position}, Offset: {offset}, OffsetPos: {offsetPos}");
+
+        float maxX = sizeX * cellSize;
+        float maxY = sizeY * cellSize;
+
+        if (offsetPos.x >= 0f && offsetPos.y >= 0f && offsetPos.x <= maxX && offsetPos.y <= maxY)
         {
             int x = Mathf.FloorToInt(offsetPos.x / cellSize);
             int y = Mathf.FloorToInt(offsetPos.y / cellSize);
-            //Debug.Log("looking at " + x + "  " + y);
-            return gridArray[x, y];
+
+          //  Debug.Log($"[GetCellByWorldPosition] Within Bounds. Calculated Indices -> x: {x}, y: {y}");
+
+            if (x >= 0 && y >= 0 && x < sizeX && y < sizeY)
+            {
+                var cell = gridArray[x, y];
+                if (cell == null)
+                {
+                 //  Debug.LogWarning($"[GetCellByWorldPosition] Cell at x:{x}, y:{y} is NULL in gridArray.");
+                }
+                return cell;
+            }
+            else
+            {
+                Debug.LogError($"[GetCellByWorldPosition] Index out of gridArray range -> x: {x}, y: {y}, Grid Size: {sizeX}x{sizeY}");
+                return null;
+            }
         }
         else
         {
-            //Debug.Log("found nothing");
+            //Debug.Log("cell size is " + cellSize + "size X is " + sizeX+ "size z is " + sizeY);
+            //Debug.LogWarning($"[GetCellByWorldPosition] Position {position} is OUT OF BOUNDS after offset. Max Bounds: {maxX}, {maxY}");
             return null;
         }
     }
+
     public List<Cell> GetCellListByWorldPosition(Vector3 position, int size)
     {
         List<Cell> returnList = new List<Cell>();
@@ -138,7 +152,15 @@ public class GridConstrution
 
         List<Cell> returnList = new List<Cell>();
         Cell startCell = GetCellByWorldPosition(position);
-
+        if (startCell == null)
+        {
+            Debug.LogWarning("no start cell");
+            if (gridArray == null)
+            {
+                Debug.LogError("gridArray is null");
+            }
+            return null;
+        }
         int starty = startCell.z;
         int startx = startCell.x;
 
@@ -200,7 +222,7 @@ public class GridConstrution
 
     public List<Cell> GetCellList()
     {
-        Debug.Log("GetCellList");
+      
         List<Cell> returnList = new List<Cell>();
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -213,7 +235,7 @@ public class GridConstrution
     }
     public List<Cell> GetCellList(int step)
     {
-        Debug.Log("GetCellList");
+        
         List<Cell> returnList = new List<Cell>();
         for (int x = 0; x < gridArray.GetLength(0); x+= step)
         {
@@ -258,4 +280,5 @@ public class GridConstrution
 
         return null;
     }
+    
 }

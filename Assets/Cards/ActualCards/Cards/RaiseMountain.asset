@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a858cbdb3d23c4eaa5c7fe879171f1, type: 3}
   m_Name: RaiseMountain
   m_EditorClassIdentifier: 
-  description: A stone that stops people
   title: Stone
+  description: A stone that stops people
+  cardType: 5
   image: {fileID: 21300000, guid: dde22bfa11ac75547841d6b6c86b3669, type: 3}
   rarity: 2
   cardCanBePlayedOnEnum: 1

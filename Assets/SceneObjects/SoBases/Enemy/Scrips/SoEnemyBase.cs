@@ -3,6 +3,7 @@
 public class SoEnemyBase : SoSceneObjectBase
 {
     public int health;
+    public bool permanent;
 
     protected override Stats GetStatsInernal(Stats stats)
     {
@@ -12,6 +13,7 @@ public class SoEnemyBase : SoSceneObjectBase
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
-        
+        EnemyBase enemyBase = sceneObject as EnemyBase;
+        enemyBase.permanent = permanent;
     }
 }

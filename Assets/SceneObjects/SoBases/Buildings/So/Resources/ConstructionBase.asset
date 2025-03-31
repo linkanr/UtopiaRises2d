@@ -23,7 +23,12 @@ MonoBehaviour:
     SerializationNodes: []
   sceneObjectName: Construction base
   description: Build Towers here
-  sprite: {fileID: 21300000, guid: c0c96194f26c3ad48894a8f410129020, type: 3}
+  sprite: {fileID: 21300000, guid: 0f41770dbd3791a4f94cf057e6de4271, type: 3}
   prefab: {fileID: -2913379787502178990, guid: 356d240ff787bd34c9362f7b3b7ffbb6, type: 3}
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
   sceneObjectType: 6
+  takesDamageFrom:
+    damageFromFire: 0
+    damgaeFromWater: 0
+    destroyedWhenStepedOn: 0
+  influenceRadius: 8

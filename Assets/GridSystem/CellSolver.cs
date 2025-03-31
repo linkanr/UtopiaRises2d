@@ -6,14 +6,14 @@ using UnityEngine;
 public class CellSolver : MonoBehaviour
 {
     private GridConstrution grid; // Reference to the grid
-    public HeatmapRenderer2D heatmap;
+
     public HeatMapGenerator heatMapGenerator;
     float disipation = .15f;
     public void Init()
     {
-        heatmap = GetComponentInChildren<HeatmapRenderer2D>();
+ 
         heatMapGenerator = GetComponent<HeatMapGenerator>();
-        grid = GridCellManager.Instance.gridConstrution; // Get the GridConstruction instance
+        grid = GridCellManager.instance.gridConstrution; // Get the GridConstruction instance
         foreach (Cell cell in grid.GetCellList())
         {
             cell.neigbours = new List<Cell>();
@@ -75,21 +75,13 @@ public class CellSolver : MonoBehaviour
                 }
             }
         });
-        if (heatmap != null)
-        {
-            heatmap.UpdateHeatmap();
-        }
-        GenerateVirtualTexture();
 
+     
 
        // Debug.Log("Solver finished updating grid cells.");
     }
 
-    private void GenerateVirtualTexture()
-    {
-        heatMapGenerator.GenerateHeatMapTexture(grid);
 
-    }
 
     private void Dissipation(Cell cell)
     {
@@ -133,7 +125,9 @@ public class CellSolver : MonoBehaviour
                 if (random/10f > cell.heat)
                 UnityMainThreadDispatcher.Enqueue(() =>
                 {
-                    cell.cellEffect.RemoveCellEffect(); // Now runs on the main thread
+                    if (cell != null)
+                        if (cell.cellEffect != null)
+                            cell.cellEffect.RemoveCellEffect(); // Now runs on the main thread
                 });
             }
         }

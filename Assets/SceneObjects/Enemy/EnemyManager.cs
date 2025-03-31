@@ -1,16 +1,23 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-[RequireComponent(typeof(EnemySpawner))]
+
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
-    private EnemySpawner spawner;
+    private List<EnemySpawner> spawners;
     public EnemyLooker looker;
+    public Transform enemySpawnerParent;
+    bool initialized = false;
+    List<Vector3> basePositions;
 
-     
-    public SoEnemyLevelList soEnemyLevelList;// this should be set by game manger
+
+
+    public LevelBase currentLevel;// this should be set by game manger
     public List<Enemy> spawnedEnemiesList;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -21,24 +28,65 @@ public class EnemyManager : MonoBehaviour
         {
             Debug.LogError("double trouble");
         }
+        basePositions = new List<Vector3>();
+        for (int i = 0; i < 6; i++)
+        {
+            basePositions.Add(new Vector3(5, 5 + i*5, 0));
+        }
+
     }
-    private void Start()
+    public int CheckSpawnCount()
     {
+        return spawners.Count;
+    }
+    public IEnumerator Init()
+    {
+        if (initialized)
+        {
+            yield return null;
+        }
+        initialized = true;
+        spawners = new List<EnemySpawner>();
+        currentLevel = GameManager.instance.currentLevel;
+        Debug.Log(currentLevel);
 
-        soEnemyLevelList = GameManager.instance.soEnemyLevelList;
-        Debug.Log(soEnemyLevelList);
 
-        spawner = GetComponent<EnemySpawner>();
         looker = new EnemyLooker(this);
+        int i = 0;
+        List<Vector3> actualBasePos = GeneralUtils.GetRandomFromList(basePositions, currentLevel.soEnemyBaseEnemyLists.Count);
         
-        
-        spawner.enemyWaves = CreateInstancesOfTheEnemies(); 
-        spawner.soEnemyBase = soEnemyLevelList.SoEnemyBase;
-        
-        
+        foreach ( SoEnemyBaseInformation soEnemyBaseInformation in GameManager.instance.currentLevel.soEnemyBaseEnemyLists)
+        {
+            GameObject spawnerObject = new GameObject();
+            spawnerObject.transform.parent = enemySpawnerParent;
+            spawnerObject.name = "EnemySpawner" + i;
+            EnemySpawner spawner = spawnerObject.AddComponent<EnemySpawner>();
+            List<EnemyWave> enemyWavesList = EnemyWave.CreateWaveList(soEnemyBaseInformation.enemyWaveList);
+
+            Debug.Log("creating enemy base " + enemyWavesList.Count + " is in enemy list");
+            
+            EnemyBase enemyBase = EnemyBase.Create(actualBasePos[i], soEnemyBaseInformation.SoEnemyBase);
+
+            spawner.enemyBase = enemyBase;
+            enemyBase.spawner = spawner;
+            spawner.Init(enemyWavesList, enemyBase.transform.position, enemyBase);
+            Debug.Log("spawner " + i + " is created and it has " + spawner.GetAllEnemies() + " enemies");
+            spawners.Add(spawner);  
+            i++;
+        }
+        yield return null;
+
+    }
+    public void RemoveSpawener(EnemySpawner enemySpawner)
+    {
+        spawners.Remove(enemySpawner);
     }
     private void Update()
     {
+        if (!initialized)
+        {
+            return;
+        }
         if(EnemyCount().totalEnemies == 0)
         {
             Debug.Log("Level Cleared");
@@ -49,64 +97,92 @@ public class EnemyManager : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleSceneActions.OnInitializeScene += SpawEnemyBase;
-      
+  
+        BattleSceneActions.OnSpawningStarting += RemoveLineViz;
+        BattleSceneActions.OnSpawningInterwallEnding += AddLineViz;
+
+    }
+
+    private void AddLineViz()
+    {
+        foreach (Enemy enemy in spawnedEnemiesList)
+        {
+            enemy.aIPathVisualizer.ActivateLine(true);
+        }
+    }
+
+    private void RemoveLineViz()
+    {
+        foreach (Enemy enemy in spawnedEnemiesList)
+        {
+            enemy.aIPathVisualizer.ActivateLine(false);
+        }
     }
 
     private void OnDisable()
     {
      
-        BattleSceneActions.OnInitializeScene -= SpawEnemyBase;
+ 
+        BattleSceneActions.OnSpawningStarting -= RemoveLineViz;
+        BattleSceneActions.OnSpawningInterwallEnding -= AddLineViz;
     }
 
-    private void SpawEnemyBase()
-    {
-        EnemyBase.Create(soEnemyLevelList.basePosition, soEnemyLevelList.SoEnemyBase);
-    }
+
 
 
 
     public void SetSpawning(bool onOff)
     {
-        spawner.spawn = onOff;
+        foreach (EnemySpawner spawner in spawners)
+        {
+            spawner.spawningEnabledNotPaused = onOff;
+            spawner.currentWaveDone = false;
+            spawner.CaluclateSpawnTime();  
+        }
+           
     }
 
-    public List<EnemyWave> CreateInstancesOfTheEnemies()
-    {
-        List<EnemyWave> enemyWaveList = new List<EnemyWave>();
-        foreach (EnemyWave enemyWave in soEnemyLevelList.enemyWaveList)
-        {
-            EnemyWave newWave = new EnemyWave(enemyWave.enemyList, enemyWave.timer);
-            enemyWaveList.Add(newWave);
-        }
-        return enemyWaveList;
-    }
+
     public EnemyCounter EnemyCount()
     {
         int spawnedEnemies = spawnedEnemiesList.Count;
         int enemiesInCurrentWave = 0;
-        if (spawner.enemyWaves.Count > 0)
+        int enemiesInNextWaves = 0;
+
+        // Check if spawners list exists
+        if (spawners == null || spawners.Count == 0)
         {
-            if (spawner.enemyWaves[0].enemyList.Count > 0)
+
+            return new EnemyCounter
             {
-                enemiesInCurrentWave = spawner.enemyWaves[0].enemyList.Count;
-            }
-            else
-            {
-                enemiesInCurrentWave = 0;
-            }
-               
-        }
-        else
-        {
-            enemiesInCurrentWave = 0;
+                spawnedEnemies = spawnedEnemies,
+                enemiesInCurrentWave = 0,
+                enemiesInNextWaves = 0
+            };
         }
 
-        int enemiesInNextWaves = 0;
-        for (int i = 0; i < spawner.enemyWaves.Count; i++)
+        // Loop through all spawners
+        foreach (EnemySpawner spawner in spawners)
         {
-            enemiesInNextWaves += spawner.enemyWaves[i].enemyList.Count;
+            if (spawner.enemyWaves == null || spawner.enemyWaves.Count == 0)
+                continue; // Skip if spawner has no waves
+
+            // Current wave enemies
+            if (spawner.enemyWaves[0].enemyList != null)
+            {
+                enemiesInCurrentWave += spawner.enemyWaves[0].enemyList.Count;
+            }
+
+            // Enemies in next waves
+            for (int i = 1; i < spawner.enemyWaves.Count; i++)
+            {
+                if (spawner.enemyWaves[i].enemyList != null)
+                {
+                    enemiesInNextWaves += spawner.enemyWaves[i].enemyList.Count;
+                }
+            }
         }
+
         return new EnemyCounter
         {
             spawnedEnemies = spawnedEnemies,
@@ -114,6 +190,7 @@ public class EnemyManager : MonoBehaviour
             enemiesInNextWaves = enemiesInNextWaves
         };
     }
+
 
 
 }

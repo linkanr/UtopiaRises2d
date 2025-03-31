@@ -25,17 +25,18 @@ public abstract class SoCardBase:ScriptableObject
 
     public bool Effect(Vector3 position, out string result, CardCostModifier cardCostModifier = null)
     {
+        int modifiedCost = influenceCost;
         if (cardCostModifier != null)
         {
-            influenceCost = cardCostModifier.modifiedCost;
+            modifiedCost = cardCostModifier.modifiedCost;
         }
-        if (FisicalResources.TryToBuy(influenceCost))
+        if (FisicalResources.TryToBuy(modifiedCost))
         {
             
             if (ActualEffect(position, out result))
             {
                 result = "success";
-                FisicalResources.Buy(influenceCost);
+                FisicalResources.Buy(modifiedCost);
                 return true;
             }
             else
@@ -100,19 +101,13 @@ public abstract class SoCardBase:ScriptableObject
                     Debug.LogError("Card can not be played on instantClick");
                     return false;
                 }
-            case CardCanBePlayedOnEnum.construtcionBase:
+            case CardCanBePlayedOnEnum.influencedTerritory:
                 {
-                    if (cell.hasSceneObejct)
+                    if (cell.isPlayerInfluenced)
                     {
-                        foreach (SceneObject sceneObject in cell.containingSceneObjects)
-                        {
-                            if (sceneObject.GetStats().sceneObjectType == SceneObjectTypeEnum.playerConstructionBase)
-                            {
-                                return true;
-                            }
-
-                        }
+                        return true;
                     }
+
                     return false;
                 }
             default:
@@ -129,7 +124,7 @@ public enum CardCanBePlayedOnEnum
     damagable,
     instantClick,
     playerOrEnemyGround,
-    construtcionBase
+    influencedTerritory
 
 }
 public enum CardType

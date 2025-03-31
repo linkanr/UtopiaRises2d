@@ -14,11 +14,11 @@ public class SoDefensiveStructure : SoBuilding
     protected override Stats GetStatsInernal(Stats stats)
     {
 
-
+        base.GetStatsInernal(stats);
         stats.Add(StatsInfoTypeEnum.lifeTime, lifeTime);
-
-        stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.defensiveStructure);
         stats.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
+        stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.defensiveStructure);
+ 
         return stats;
     }
 

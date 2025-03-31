@@ -49,28 +49,16 @@ public class SceneObjectManager : MonoBehaviour
     private void OnEnable()
     {
         BattleSceneActions.OnSceneObjectDestroyed += HandleSceneObjectDestroyed;
-        BattleSceneActions.OnSceneObejctCreated += HandleSceneObjectCreated;
+        BattleSceneActions.OnSceneObjectCreated += HandleSceneObjectCreated;
     }
 
     private void OnDisable()
     {
         BattleSceneActions.OnSceneObjectDestroyed -= HandleSceneObjectDestroyed;
-        BattleSceneActions.OnSceneObejctCreated -= HandleSceneObjectCreated;
+        BattleSceneActions.OnSceneObjectCreated -= HandleSceneObjectCreated;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            string objInScene = "Scene objects in scene: ";
-            //Debug.Log("Amount of scene objects is " + sceneObjectsInScene.Count);
-            foreach (SceneObject sceneObject in allSceneObjectsInScene)
-            {
-                objInScene += sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " ";
-            }
-           // Debug.Log(objInScene);
-        }
-    }
+
 
     /// <summary>
     /// Handles the creation of a damageable scene object.

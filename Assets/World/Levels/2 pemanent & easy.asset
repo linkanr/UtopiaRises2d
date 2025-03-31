@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d054765ca97eaff429cf4a2ab1a81d4e, type: 3}
+  m_Name: 2 pemanent & easy
+  m_EditorClassIdentifier: 
+  soEnemyBaseEnemyLists:
+  - {fileID: 11400000, guid: e255967a9c13c864bbe5c6e3fdde1742, type: 2}
+  - {fileID: 11400000, guid: f8b8a30b8991c0a45974a739f8480691, type: 2}
+  levelDiffculty: 1
+  map: {fileID: 2800000, guid: 0c4bd4b5e550ad54794c8ffd84308a68, type: 3}
+  luck: 1

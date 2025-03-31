@@ -15,12 +15,34 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: 67fe37c3678f5a64ca80f0e143713da4, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: damagerBaseClass
+      Entry: 7
+      Data: 0|SoDamageDealBasedOnFactionObjects, Assembly-CSharp
+    - Name: baseDamage
+      Entry: 3
+      Data: 0
+    - Name: reloadTime
+      Entry: 4
+      Data: 1
+    - Name: attackRange
+      Entry: 4
+      Data: 10
+    - Name: additionPerObject
+      Entry: 3
+      Data: 1
+    - Name: factionBonus
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
   sceneObjectName: Collective Defence
   description: A collective defence + 5 damage for each Posadist
   sprite: {fileID: 21300000, guid: 560e4467f9acd364ab70d185bdffc829, type: 3}
@@ -31,9 +53,8 @@ MonoBehaviour:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  influenceRadius: 4
   lifeTime: 40
-  health: 50
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
   seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
   possibleTargetTypes: 02000000
-  damagerBaseClass: {fileID: 11400000, guid: 1a068006ab47c1d4bbddb4e9e43c7b9e, type: 2}

@@ -15,7 +15,7 @@ public class CardScapegoating : SoCardBase, IHasClickEffect
 
     public override bool ActualEffect(Vector3 position, out string failureReason)
     {
-        Vector3 pos = GridCellManager.Instance.gridConstrution.GetCellPositionByPosition(position);
+        Vector3 pos = GridCellManager.instance.gridConstrution.GetCellPositionByPosition(position);
         //Debug.Log("Applying slow to all enemies at position " + position);
         List<SceneObject> objects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(pos,objectTypeEnum:SceneObjectTypeEnum.enemy, maxDistance: radius, onlyDamageables: true);
         foreach (SceneObject obj in objects)

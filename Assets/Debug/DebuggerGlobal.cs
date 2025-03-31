@@ -1,20 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DebuggerGlobal : MonoBehaviour
 {
-    public bool drawTargetLines;
-    public bool debugSceneObejcts;
-    public bool drawCellOutlines;
-    public bool enableCellEffects;
+    [HideInInspector]
+    public bool disableEdgeScrolling = false;
+    [HideInInspector]
+    public bool drawTargetLines = false;
+    [HideInInspector]
+    public bool drawCellOutlines = false;
+    [HideInInspector]
     public static DebuggerGlobal instance;
-    public Sprite spriteMouse;
-    public bool clickVToGetSceneObjectsInCell;
-    public bool EnemyCreation;
-    public SoEnemyObject enemyObject;
-    public bool displayHeatMap;  // Toggle for enabling/disabling heat text
-    public bool dontLoadSystems;
+    [HideInInspector]
+    public bool effectInstancing;
+    [HideInInspector]
+    public bool drawCellInfluence;
+    public Action EnabblePanel;
+    [SerializeField]
+    private SpriteRenderer heatmapSpriteRender;
 
     private GridConstrution grid;
 
@@ -22,53 +27,93 @@ public class DebuggerGlobal : MonoBehaviour
     {
         instance = this;
     }
+    private void OnEnable()
+    {
+
+        TimeActions.OnSecondChange += SecondUpdate;
+    }
+
+
+    private void OnDisable()
+    {
+
+        TimeActions.OnSecondChange -= SecondUpdate;
+    }
+    public void ForcedUpdate()
+    {
+        SecondUpdate();
+    }
+    private void SecondUpdate()
+    {
+      //  Debug.Log("Second Update");
+        if (drawCellInfluence)
+        {
+        //    Debug.Log("Cell Info Toggle is on");
+            heatmapSpriteRender.enabled = true;
+            if (DebuggPanelUi.instance.cellInfoDropdown.value == 0)
+            {
+          //      Debug.Log("Heatmap is on");
+                CellActions.OnGenerateHeatTexture(GridTypeEnum.heat);
+            }
+            else if (DebuggPanelUi.instance.cellInfoDropdown.value == 1)
+            {
+            //    Debug.Log("Influence map is on");
+                CellActions.OnGenerateHeatTexture(GridTypeEnum.influence);
+            }
+
+   
+
+        }
+        else
+        {
+            heatmapSpriteRender.enabled = false;
+        }
+    }
 
     private void Start()
     {
-        grid = GridCellManager.Instance.gridConstrution;
+
+        SecondUpdate();
     }
 
     private void Update()
     {
-        if (clickVToGetSceneObjectsInCell)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (Input.GetKeyDown(KeyCode.V))
-            {
-                SceneObject[] sceneObjects = grid.GetCurrecntCellByMouse().containingSceneObjects.ToArray();
-                foreach (SceneObject s in sceneObjects)
-                {
-                    Debug.Log(s.GetStats().name + " is in cell");
-                }
-                if (sceneObjects.Length == 0)
-                {
-                    Debug.Log("No scene objects in cell");
-                }
-            }
-
-            if (drawCellOutlines)
-            {
-                DrawGridOutlines();
-            }
-
-            if (enableCellEffects)
-            {
-                HandleCellEffects();
-            }
-
-            if (EnemyCreation)
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    EnemyCreator.CreateEnemy(enemyObject, WorldSpaceUtils.GetMouseWorldPosition());
-                }
-            }
+            EnableUiPanel();
         }
+
+        if (drawCellOutlines)
+        {
+            DrawGridOutlines();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F) && effectInstancing)
+        {
+            Debug.Log("keydown F");
+
+            HandleCellEffects();
+        }
+
+
+
+
+
+
     }
 
+
+    public void EnableUiPanel()
+    {
+        EnabblePanel?.Invoke();
+    }
     private void DrawGridOutlines()
     {
-        if (grid == null) return;
 
+        if (grid == null)
+        {
+            grid = GridCellManager.instance.gridConstrution;
+        }
         for (int x = 0; x < grid.sizeX; x++)
         {
             for (int y = 0; y < grid.sizeY; y++)
@@ -84,38 +129,59 @@ public class DebuggerGlobal : MonoBehaviour
 
     private void DrawCellOutline(Cell cell)
     {
+        Vector3 offset = new Vector3(0.5f, 0.5f, 0f);
+
+        // Original corners
         Vector3 bottomLeft = cell.worldPosition + new Vector3(-cell.size / 2, -cell.size / 2, 0);
         Vector3 bottomRight = cell.worldPosition + new Vector3(cell.size / 2, -cell.size / 2, 0);
         Vector3 topLeft = cell.worldPosition + new Vector3(-cell.size / 2, cell.size / 2, 0);
         Vector3 topRight = cell.worldPosition + new Vector3(cell.size / 2, cell.size / 2, 0);
 
+        // Draw original green outline
         DrawLine(bottomLeft, bottomRight, Color.green);
         DrawLine(bottomRight, topRight, Color.green);
         DrawLine(topRight, topLeft, Color.green);
         DrawLine(topLeft, bottomLeft, Color.green);
+
+        // Offset corners
+        Vector3 offsetBottomLeft = bottomLeft + offset;
+        Vector3 offsetBottomRight = bottomRight + offset;
+        Vector3 offsetTopLeft = topLeft + offset;
+        Vector3 offsetTopRight = topRight + offset;
+
+        // Draw offset blue outline
+        DrawLine(offsetBottomLeft, offsetBottomRight, Color.blue);
+        DrawLine(offsetBottomRight, offsetTopRight, Color.blue);
+        DrawLine(offsetTopRight, offsetTopLeft, Color.blue);
+        DrawLine(offsetTopLeft, offsetBottomLeft, Color.blue);
     }
+
 
     private void HandleCellEffects()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+            if (grid == null)
         {
-            Cell currentCell = grid.GetCurrecntCellByMouse();
-            if (currentCell != null)
-            {
-                currentCell.CreateCellEffect(CellEffectEnum.Fire);
-                Debug.Log($"Applied Fire effect to cell at {currentCell.x}, {currentCell.z}");
-            }
+            grid = GridCellManager.instance.gridConstrution;
         }
 
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Cell currentCell = grid.GetCurrecntCellByMouse();
+        Cell currentCell = grid.GetCurrecntCellByMouse();
+            Debug.Log("Current cell: " + currentCell);
             if (currentCell != null)
             {
-                currentCell.CreateCellEffect(CellEffectEnum.Gas);
-                Debug.Log($"Applied Gas effect to cell at {currentCell.x}, {currentCell.z}");
+                if (DebuggPanelUi.instance.effectType.value == 0)
+                {
+                    currentCell.CreateCellEffect(CellEffectEnum.Fire);
+                }
+                    
+                else if (DebuggPanelUi.instance.effectType.value == 1)
+                {
+                    currentCell.CreateCellEffect(CellEffectEnum.Gas);
+                }
+                    
             }
-        }
+        
+
+
     }
 
     public static void DrawLine(Vector3 start, Vector3 end, Color color)

@@ -13,30 +13,29 @@ public class TilemapManager : SerializedMonoBehaviour
     public Tilemap enemyWaterTileMap;
     public Tilemap cellEffectTileMap;
 
-    private List<TileBase> playerTerrainSorted;
-    public List<TileBase> playerTerrainTiles;
+    private List<TileBase> UvTileRerrain;
+    public List<TileBase> UvTilesSorted;
     public List<TileBase> enemyTerrainSoil;
     private List<TileBase> enemyTerrainSoilSorted;
     public List<TileBase> enemyTerraingrass;
     private List<TileBase> enemyTerraingrassSorted;
     public List<TileBase> cellEffectTiles;
-    public List<TileBase> enemyTerrainWater;
-    private List<TileBase> enemyTerrainWaterSorted;
+
 
 
 
     private void Awake()
     {
-        playerTerrainSorted = new List<TileBase>();
+        UvTileRerrain = new List<TileBase>();
         enemyTerrainSoilSorted = new List<TileBase>();
         enemyTerraingrassSorted = new List<TileBase>();
-        enemyTerrainWaterSorted = new List<TileBase>();
 
-        TilemapHelper.SortNewList(playerTerrainTiles, playerTerrainSorted);
+
+        TilemapHelper.SortNewList(UvTilesSorted, UvTileRerrain);
         //TilemapHelper.SortNewList(baseTilesAlt, baseTilesSorted);
         TilemapHelper.SortNewList(enemyTerrainSoil, enemyTerrainSoilSorted);
         TilemapHelper.SortNewList(enemyTerraingrass, enemyTerraingrassSorted);
-        TilemapHelper.SortNewList(enemyTerrainWater, enemyTerrainWaterSorted);
+    
     }
 
     private void OnEnable()
@@ -81,7 +80,7 @@ public class TilemapManager : SerializedMonoBehaviour
 
     public IEnumerator UpdatePlayerTerrain(Cell _cell)
     {
-        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, playerTerrainMap, playerTerrainSorted, CellTerrainEnum.playerTerrain));
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, playerTerrainMap, UvTileRerrain, CellTerrainEnum.playerTerrain));
 
       
     }
@@ -90,7 +89,7 @@ public class TilemapManager : SerializedMonoBehaviour
 
         yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemySoilTileMAp, enemyTerrainSoilSorted, CellTerrainEnum.soil));
         yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemyGrassTileMap, enemyTerraingrassSorted, CellTerrainEnum.grass));
-        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemyWaterTileMap, enemyTerrainWaterSorted, CellTerrainEnum.water));
+        yield return StartCoroutine(TilemapHelper.UpdateTileCoroutine(_cell, enemyWaterTileMap, UvTileRerrain, CellTerrainEnum.water));
     }
 
     /// <summary>

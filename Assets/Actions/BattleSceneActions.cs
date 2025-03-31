@@ -13,8 +13,10 @@ public static class BattleSceneActions
     /// <summary>
     /// Called when a scene object takes damage.
     /// </summary>
-    public static Action<SceneObject> OnSceneObjectTakesPhysicalDamage;
-
+    public static Action<OnDamageArgs> OnSceneObjectTakesDamage;
+    public static Action<SceneObject> OnSceneObjectDestroyed;// This is alawys called when a scene object is destroyed
+    public static Action<OnSceneObjectDestroyedArgs> OnSceneObjectKilled; // this is called when a scene object is killed
+    public static Action OnIntializationComplete;
 
     public static Action<Card> OnNewCardAdded;
     /// <summary>
@@ -32,7 +34,7 @@ public static class BattleSceneActions
     /// <summary>
     /// Called by the clock on a fixed interval.
     /// </summary>
-    public static Action OnSpawnInterwallDone;
+    public static Action OnSpawningInterwallEnding;
     /// <summary>
         
     /// Gets called when the spawing state is entered
@@ -44,12 +46,17 @@ public static class BattleSceneActions
 
 
 
-    public static Action<SceneObject> OnSceneObejctCreated;
+    public static Action<SceneObject> OnSceneObjectCreated;
     public static Action<int> OnBaseDamaged;
-    public static Action<SceneObject> OnSceneObjectDestroyed;
+
     public static Action<Bounds> OnUpdateBounds;
     public static Action<int> OnFollowerCountChanged;
     public static Action<int> setInfluence; // this is used to directly set the influence
     public static Action <int> OnInfluenceChanged;
 }
 
+public class OnSceneObjectDestroyedArgs
+{
+    public SceneObject victim;
+    public SceneObject killer;
+}

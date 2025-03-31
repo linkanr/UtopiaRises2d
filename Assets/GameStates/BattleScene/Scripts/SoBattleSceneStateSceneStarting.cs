@@ -7,7 +7,8 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
     {
 
         BattleSceneActions.OnInitializeScene();
-        stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
+        AstarPath.active.Scan();
+        stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
     }
     public override void OnObjectDestroyed()
     {
@@ -16,7 +17,7 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
 
     public override void OnStateExit()
     {
-        
+        BattleSceneActions.OnIntializationComplete();
     }
 
     public override void OnStateUpdate()

@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
   m_Name: LongTermDefence
   m_EditorClassIdentifier: 
-  description: Plan ahead with long term defence
   title: Long term defence
+  description: Plan ahead with long term defence
+  cardType: 1
   image: {fileID: 21300000, guid: 9dceef12e4c58ad409024eee9cc225c5, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 5

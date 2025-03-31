@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
+
 
 public class DefensiveStructure : SceneObjectBuilding
 {
 
-    protected override void Start()
-    {
-        base.Start();
-        TimeActions.OnQuaterTick += OnGlobalTimeChanged;
 
-    }
     private void OnDisable()
     {
         TimeActions.OnQuaterTick-= OnGlobalTimeChanged;
@@ -17,9 +14,12 @@ public class DefensiveStructure : SceneObjectBuilding
 
     private void OnGlobalTimeChanged()
     {
+        Debug.Log("OnGlobalTimeChanged");
+        Debug.Log("reach " + GetStats().maxRange);
         List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: GetStats().maxRange);
         foreach (Enemy enemy in sceneObjects)
         {
+            Debug.Log("enemy " + enemy.GetStats().name);
             TargeterBaseClass targeter = enemy.targeter;
             if (targeter != null)
             {
@@ -37,5 +37,10 @@ public class DefensiveStructure : SceneObjectBuilding
     protected override void AddStatsForClick(Stats _stats)
     {
        
+    }
+
+    public override void OnCreated()
+    {
+        TimeActions.OnQuaterTick += OnGlobalTimeChanged;
     }
 }

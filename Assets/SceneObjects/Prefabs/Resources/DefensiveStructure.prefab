@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 4545265545419910558}
   - component: {fileID: 8834005772732321646}
   - component: {fileID: 2631731884391825269}
-  - component: {fileID: 5799490287320501720}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: DefensiveStructure
   m_TagString: Terrain
   m_Icon: {fileID: 0}
@@ -98,21 +97,7 @@ MonoBehaviour:
   sceneObjectPosition: {x: 0, y: 0, z: 0}
   isDead: 0
   spriteRenderer: {fileID: 2706900235400779674}
---- !u!114 &5799490287320501720
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504123089536249266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48d2a7d426a3e3343857551287972330, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToLive: 0
-  maxTimeToLive: 0
-  timeTicker: {fileID: 0}
+  healthSystem: {fileID: 0}
 --- !u!1 &6481578798517497940
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 542718530998443507}
   - component: {fileID: 2706900235400779674}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 897869513892713496}
   - component: {fileID: 4527868258343296942}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: spriteSorterPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class GridCellManager : SerializedMonoBehaviour
 {
-    public static GridCellManager Instance;
+    public static GridCellManager instance;
     public GridConstrution gridConstrution;
-    public Texture2D texture;
+
     public float gridSize;
     public Dictionary<CellTerrainEnum, CellTerrain > cellTerrainDic;
     public Transform BG;
@@ -17,29 +17,38 @@ public class GridCellManager : SerializedMonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        GenereateGrid();
-        cellSolver = gameObject.AddComponent<CellSolver>();
+        instance = this;
+        
+        
         
 
     }
-    private void Start()
+    private void Update()
     {
-        
+
+
+    }
+    public IEnumerator InitCellSolver()
+    {
+        cellSolver = gameObject.AddComponent<CellSolver>();
         cellSolver.Init();
+        yield return null;
+
     }
 
-    private void GenereateGrid()
+    public IEnumerator GenerateGrid()
     {
         //gridConstrution = new GridConstrution(gridAmountX, gridAmountY, gridSize, new Vector3(0f, 0f, 0f), cellTerrainList,xmulti,ymulti);
         
-        gridConstrution = new GridConstrution(texture, gridSize,new Vector3(0f,0f,0f));
-        Vector3 offset = new Vector3(gridConstrution.sizeX * gridSize / 2 , gridConstrution.sizeY * gridSize / 2, 0);
+        gridConstrution = new GridConstrution(GameManager.instance.currentLevel.map, gridSize,new Vector3(0f,0f,0f));
+        Vector3 offset = new Vector3(gridConstrution.sizeX * gridSize / 2 , gridConstrution.sizeY * gridSize / 2, 0.01f);
         BG.position = offset;
 
 
-        CellActions.UpdateCells(gridConstrution.GetCellList(2));
 
+        CellActions.UpdateCells(gridConstrution.GetCellList(2));
+        Debug.Log("Grid Generated");
+        yield return null;
 
     }
     public CellTerrain GetTerrainFromEneum(CellTerrainEnum cellTerrainEnum)

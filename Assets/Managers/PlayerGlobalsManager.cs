@@ -60,5 +60,11 @@ public class PlayerGlobalVariables
     public int gasDamageMulti = 1;
     public int fireDamageMulti = 1;
     public int gasLifeTimeMulit = 1;
+    public int damageModifier = 0;
+
+    public int GetDamage(int baseDamage)
+    {
+        return baseDamage;
+    }
 
 }

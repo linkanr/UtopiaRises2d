@@ -5,8 +5,7 @@ using UnityEngine;
 public class BattleClock: MonoBehaviour
 {
     public static BattleClock Instance;
-    private float monthValue = 30f;
-    private float quaterValue = 90f;
+
     private float Value = 0;
     public Action<bool> OnClockRunning;
 
@@ -86,22 +85,16 @@ public class BattleClock: MonoBehaviour
                 timerPingSecond++;
                 if (timerPingSecond >= 10)
                 {
-                   // Debug.Log("trigger second change");
+                 
                     TimeActions.OnSecondChange?.Invoke();
-                    Debug.Log("trigger second change");
+               
                     timerPingSecond = 0;
                 }
 
 
 
             }
-            if (interwallTimer > interwall)
-            {
-                Debug.Log("trigger interwall Timer. Interwall timer is " + interwallTimer );
 
-                BattleSceneActions.OnSpawnInterwallDone();
-                interwallTimer = 0f;
-            }
             if (quaterTick >= quaterTickInterwall)
             {
                 TimeActions.OnQuaterTick?.Invoke();

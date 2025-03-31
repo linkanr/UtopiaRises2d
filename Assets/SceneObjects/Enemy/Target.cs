@@ -13,28 +13,28 @@ public class Target
     /// </summary>
     /// <param name="the target, a scene object with idamageable"></param>
     /// <param name="attacker"></param>
-    public Target(IDamageAble _damageable, TargeterBaseClass attacker)
+    public Target(SceneObject _damageable, TargeterBaseClass attacker)
     {
         if (_damageable == null)
         {
             Debug.LogError("Target constructor received a null IDamageAble!");
             return;
         }
-        if (_damageable.iDamageableComponent == null)
+        if (_damageable.healthSystem == null)
         {
             Debug.LogError("IDamageAble's idamageableComponent is null!");
             return;
         }
 
         damagable = _damageable;
-        transform = damagable.iDamageableComponent.GetTransform();
+        transform = damagable.transform;
 
         if (damagable != null && attacker != null)
         {
-            damagable.iDamageableComponent.OnDeath += HandleDeath;
+            damagable.healthSystem.OnKilled += HandleDeath;
         }
 
-        void HandleDeath(object sender, IdamageAbleArgs e)
+        void HandleDeath(object sender,  OnSceneObjectDestroyedArgs onSceneObjectDestroyedArgs)
         {
             if (attacker != null && attacker.target != null)  // Prevent duplicate calls
             {
@@ -42,9 +42,9 @@ public class Target
             }
 
             // Unsubscribe immediately to prevent multiple calls
-            if (damagable?.iDamageableComponent != null)
+            if (damagable?.healthSystem != null)
             {
-                damagable.iDamageableComponent.OnDeath -= HandleDeath;
+                damagable.healthSystem.OnKilled -= HandleDeath;
             }
         }
     }
@@ -54,9 +54,13 @@ public class Target
 
 
 
-    public IDamageAble damagable { get; set; } 
-    public Transform transform { get { return damagable.iDamageableComponent.GetTransform(); } private set { } }
-    public bool isDead { get { return damagable.iDamageableComponent.sceneObject.isDead;} }
+    public SceneObject damagable { get; set; }
+    public Transform transform
+    {
+        get { return damagable != null ? damagable.transform : null; }
+        private set { }
+    }
+    public bool isDead { get { return damagable.isDead;} }
     /// <summary>
     /// IsValid checks if it both have a transform and life above zero
     /// </summary>
@@ -68,14 +72,14 @@ public class Target
             Debug.Log("transform is null");
             return false;
         }
-        if (!isDead)
+        if (isDead)
         {
-            return true;
+            Debug.Log("target dead");
+            return false;
         }
-        Debug.Log("target dead");
-        return false;
+        return true;
     }
-    public void Set(IDamageAble _damageable, Transform _transform)
+    public void Set(SceneObject _damageable, Transform _transform)
     {
         damagable = _damageable;
         transform = _transform;

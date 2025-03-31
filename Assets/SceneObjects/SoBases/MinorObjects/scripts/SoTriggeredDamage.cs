@@ -18,9 +18,5 @@ public class SoTriggeredDamage : SoMinorObject
         return stats;
     }
 
-    protected override void ObjectInitialization(SceneObject sceneObject)
-    {
-       
-        base.ObjectInitialization(sceneObject);
-    }
+
 }

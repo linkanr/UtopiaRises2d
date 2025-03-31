@@ -11,7 +11,7 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
 
     public override void OnStateEnter()
     {
-        
+        Seek();
     }
 
     public override void OnStateExit()
@@ -29,18 +29,21 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
 
     private void Seek()
     {
+        Debug.Log("Seeking");
         if (stateMachine.enemy.targeter.target == null)
         {
-            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.iDamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,moverComponent:stateMachine.enemy.mover);
+            Debug.Log("No target");
+            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.transform.position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,moverComponent:stateMachine.enemy.mover);
         }
         else if (!stateMachine.enemy.targeter.target.IsValid())
         {
-
-            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.iDamageableComponent.GetTransform().position, stateMachine.enemy.targeter.possibleTargetTypes, stateMachine.enemy.targeter);
+            Debug.Log("No valid taget target");
+            stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.transform.position, stateMachine.enemy.targeter.possibleTargetTypes, stateMachine.enemy.targeter);
 
         }
         else
         {
+            Debug.Log("valid taget target Movings");
             stateMachine.SetState(typeof(SoEnemeyStateMoving));
         }
     }

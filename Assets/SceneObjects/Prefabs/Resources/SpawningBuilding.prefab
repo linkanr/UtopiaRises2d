@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1195073629818187683}
   - component: {fileID: 6357214278624572135}
   - component: {fileID: 6019945155340530211}
-  - component: {fileID: 2814206911101363560}
   m_Layer: 13
   m_Name: SpawningBuilding
   m_TagString: Untagged
@@ -116,22 +115,8 @@ MonoBehaviour:
   sceneObjectPosition: {x: 0, y: 0, z: 0}
   isDead: 0
   spriteRenderer: {fileID: 2344670718170311620}
+  healthSystem: {fileID: 0}
   stateMachine: {fileID: 6357214278624572135}
---- !u!114 &2814206911101363560
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 945884874119771362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48d2a7d426a3e3343857551287972330, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeToLive: 0
-  maxTimeToLive: 0
-  timeTicker: {fileID: 0}
 --- !u!1 &2674569892846215178
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3139887145799855837}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: building sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 954794620624930241}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: shoting pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1921463367210036366}
   - component: {fileID: 2344670718170311620}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6215277510097993075}
   - component: {fileID: 6242325150793433577}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Circle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

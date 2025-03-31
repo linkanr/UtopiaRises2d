@@ -8,7 +8,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/SoBuildnings/SoBuildingConstructionBase")]
 public class SoBuildingConstructionBase : SoSceneObjectBase
 {
-
+    public int influenceRadius =5;
 
 
 
@@ -18,6 +18,7 @@ public class SoBuildingConstructionBase : SoSceneObjectBase
 
 
         stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.playerConstructionBase);
+        stats.Add(StatsInfoTypeEnum.influenceRadius, influenceRadius);
         return stats;
     }
 

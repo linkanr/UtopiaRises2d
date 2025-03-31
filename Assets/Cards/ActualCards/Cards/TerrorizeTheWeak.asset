@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4675a14ee6483d24681102b9f13a27d5, type: 3}
   m_Name: TerrorizeTheWeak
   m_EditorClassIdentifier: 
-  description: Deal damage against all weak targets
   title: Terrrize the weak
+  description: Deal damage against all weak targets
+  cardType: 0
   image: {fileID: -7685871446693566262, guid: 654e7050ef43f2f47be006094d581c3a, type: 3}
   rarity: 1
   cardCanBePlayedOnEnum: 4

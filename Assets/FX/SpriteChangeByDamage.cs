@@ -6,7 +6,7 @@ using DG.Tweening;
 using SpriteShadersUltimate;
 public class SpriteChangeByDamage : MonoBehaviour
 {
-    private IDamageAble damageable;
+
         
 
     private ShaderFaderSSU shaderFader;
@@ -19,20 +19,19 @@ public class SpriteChangeByDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damageable = GetComponentInParent<IDamageAble>();
+        HealthSystem healthSystem = GetComponentInParent <HealthSystem>();
         if (triggerOnDeath) // If its a death effect then it should be disabled from start
         {
             
             GetComponent<SpriteRenderer>().enabled = false;
-            damageable.iDamageableComponent.OnDeath += OnDeathTrigger;
+            healthSystem.OnKilled += OnDeathTrigger;
         }
         else
         {
-            damageable.iDamageableComponent.OnDeath += RemoveGameObject;
-            if (damageable.iDamageableComponent is IdamagablePhysicalComponent)
-            {
-                (damageable.iDamageableComponent as IdamagablePhysicalComponent).healthSystem.OnDamaged += OnTriggered;
-            }
+            healthSystem.OnKilled += RemoveGameObject;
+            if (healthSystem is PhysicalHealthSystem)
+                healthSystem.OnDamaged += OnTriggered;
+            
       
         }
         
@@ -41,19 +40,19 @@ public class SpriteChangeByDamage : MonoBehaviour
 
     }
 
-    private void OnDeathTrigger(object sender, IdamageAbleArgs e)
+    private void OnDeathTrigger(object sender, OnSceneObjectDestroyedArgs e)
     {
         transform.SetParent(null);
         GetComponent<SpriteRenderer>().enabled = true;
         shaderFader.isFaded = true;
     }
 
-    private void RemoveGameObject(object sender, IdamageAbleArgs e) // This triggers for normal effects when dying
+    private void RemoveGameObject(object sender, OnSceneObjectDestroyedArgs e) // This triggers for normal effects when dying
     {
         GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    private void OnTriggered(object sender, EventArgs e) // Triggers each time it takes damage, sender is healthsystem
+    private void OnTriggered(object sender, OnDamageArgs e) // Triggers each time it takes damage, sender is healthsystem
     {
 
         

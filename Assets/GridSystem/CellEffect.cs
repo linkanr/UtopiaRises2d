@@ -33,7 +33,7 @@ public class CellEffect : IDisposable
     {
         
         SceneObject[] sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(parent.worldPosition, maxDistance: 1.1f).ToArray();
-        Debug.Log($"SceneObjects: {sceneObjects.Length}" + "at world position" + parent.worldPosition);
+        //Debug.Log($"SceneObjects: {sceneObjects.Length}" + "at world position" + parent.worldPosition);
        
         int burnDamage = 0;
         if (parent.burning)
@@ -50,14 +50,14 @@ public class CellEffect : IDisposable
 
             int firedamage = sceneObject.GetStats().takesDamageFrom.damageFromFire;
 
-            if (sceneObject is IDamageAble damageAble && firedamage > 0)
+            if (sceneObject.healthSystem != null && firedamage > 0)
             {
                 int totalDamage = (Mathf.FloorToInt(parent.heat * 10f) + burnDamage) * firedamage;
                 if (totalDamage > 0)
                 {
                     if (sceneObject?.transform != null)
                     {
-                        damageAble.iDamageableComponent.TakeDamage(totalDamage);
+                        sceneObject.healthSystem.TakeDamage(totalDamage, null);
                         Debug.Log("SceneObject is not null");
                     }
                     

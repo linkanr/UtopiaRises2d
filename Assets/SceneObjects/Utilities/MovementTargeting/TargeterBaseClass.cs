@@ -28,10 +28,10 @@ public abstract class TargeterBaseClass : MonoBehaviour
             return;
         }
 
-        if (target.damagable?.iDamageableComponent != null)
+        if (target.damagable?.healthSystem != null)
         {
-            Debug.Log($"Removing target: {target.damagable.iDamageableComponent.sceneObject.GetStats().name}");
-            target.damagable.iDamageableComponent.OnDeath -= (sender, e) => RemoveTarget();
+            Debug.Log($"Removing target: {target.damagable.GetStats().name}");
+            target.damagable.healthSystem.OnKilled -= (sender, e) => RemoveTarget();
         }
 
         target.RemoveTarget();
@@ -49,14 +49,9 @@ public abstract class TargeterBaseClass : MonoBehaviour
             return;
         }
 
-        IDamageAble damageableTarget = _iDamageable as IDamageAble;
-        if (damageableTarget == null)
-        {
-            Debug.LogError($"SetNewTarget failed: {_iDamageable.name} is not an IDamageAble!");
-            return;
-        }
 
-        target = new Target(damageableTarget, this);
+
+        target = new Target(_iDamageable, this);
         OnTargetChanged?.Invoke(target);
     }
 

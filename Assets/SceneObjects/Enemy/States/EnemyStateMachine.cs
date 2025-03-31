@@ -7,20 +7,20 @@ public class EnemyStateMachine: BaseStateMachine<EnemyStateMachine>
     protected override void Init()
     {
         enemy = GetComponent<Enemy>();
-        enemy.iDamageableComponent.OnDeath += StopState;
+        enemy.healthSystem.OnKilled += StopState;
         
        
     }
 
-    private void StopState(object sender, IdamageAbleArgs e)
+    private void StopState(object sender, OnSceneObjectDestroyedArgs e)
     {
         Stopp();
     }
     protected override void OnDestroy()
     {
-        if (enemy != null && enemy.iDamageableComponent != null)
+        if (enemy != null && enemy.healthSystem != null)
         {
-            enemy.iDamageableComponent.OnDeath -= StopState;
+            enemy.healthSystem.OnKilled -= StopState;
         }
 
         base.OnDestroy();

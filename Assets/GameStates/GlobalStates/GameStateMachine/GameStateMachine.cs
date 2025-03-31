@@ -7,15 +7,23 @@ public class GameStateMachine : BaseStateMachine<GameStateMachine>
 {
     protected override void Init()
     {
-        GameManager.instance.LoadNextBattleScene += LoadNextScene;
+        GameManager.instance.LoadNextBattleScene += LoadBattleScene;
         GameManager.instance.LoadSpoilsSceneAction += LoadSpoilsScene;
+        GameManager.instance.LoadMapSceneAction += LoadMapScene;
     }
+
     private void OnDisable()
     {
-        GameManager.instance.LoadNextBattleScene -= LoadNextScene;
+        GameManager.instance.LoadNextBattleScene -= LoadBattleScene;
         GameManager.instance.LoadSpoilsSceneAction -= LoadSpoilsScene;
+        GameManager.instance.LoadMapSceneAction -= LoadMapScene;
     }
-    private void LoadNextScene()
+    private void LoadMapScene()
+    {
+        SetState(typeof(SoLoadMapScene));
+    }
+
+    private void LoadBattleScene()
     {
         SetState(typeof(SoLoadBattleScene));
     }

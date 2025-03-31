@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ba339f814b634543af4e14721a3cfea, type: 3}
   m_Name: MineLayer
   m_EditorClassIdentifier: 
-  description: Lays out small antipersonal Mines
   title: Mine LAyer
+  description: Lays out small antipersonal Mines
+  cardType: 1
   image: {fileID: 21300000, guid: b7f7159c181c787408fdb05fc500aa82, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 5

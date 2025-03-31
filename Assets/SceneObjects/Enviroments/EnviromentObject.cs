@@ -44,7 +44,7 @@ public abstract class EnviromentObject : StaticSceneObject
     }
     public override void OnCreated()
     {
-        base.OnCreated();
+  
         c2D = GetComponent<Collider2D>();
         bounds = c2D.bounds;
         bounds.Expand(.1f);

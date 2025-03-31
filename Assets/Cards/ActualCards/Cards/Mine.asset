@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6064b6d499f284e90aba64933fa2c7, type: 3}
   m_Name: Mine
   m_EditorClassIdentifier: 
-  description: 5 damage when step on or in contact with fire
   title: Mine
+  description: 5 damage when step on or in contact with fire
+  cardType: 5
   image: {fileID: 21300000, guid: 7d923c597c0e3c148a85d9c818ee357d, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 1

@@ -61,7 +61,7 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
                 lifeText.text = stats.lifeTime.ToString();
                 break;
             case CardType.areaDamage:
-                Debug.Log("CardType.areaDamage" +cardBase.title +" " + cardBase.description);
+                
                 CardDamageArea damageArea = (CardDamageArea)cardBase;
                 damageText.text = damageArea.damage.ToString();
                 reachText.text = damageArea.diameter.ToString();
@@ -91,7 +91,12 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
         if (cardState == CardStateEnum.lockedForSelection)
         {
             selectionHandler.HandleSelectionUpdate();
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
+            {
+                selectionHandler.ResetCardSelection();
+            }
         }
+
     }
 
     public void OnPointerClick(PointerEventData eventData)

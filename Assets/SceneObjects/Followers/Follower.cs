@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Follower : SceneObject,  IDamageAble
+public class Follower : SceneObject
 {
 
 
@@ -15,19 +15,11 @@ public class Follower : SceneObject,  IDamageAble
 
     public SceneObjectTypeEnum damageableType { get { return SceneObjectTypeEnum.follower; } }
 
-    public IDamagableComponent iDamageableComponent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 
     protected override void Awake()
     {
         base.Awake();
-
-
-    }
-    protected override void Start()
-    {
-        base.Start();
-        
- 
 
 
     }
@@ -62,7 +54,7 @@ public class Follower : SceneObject,  IDamageAble
     {
         isDead = true;
 
-        BattleSceneActions.OnSceneObjectDestroyed(this);
+       
 
         Destroy(gameObject);
     }
@@ -70,6 +62,11 @@ public class Follower : SceneObject,  IDamageAble
 
     protected override void AddStatsForClick(Stats stats)
     {
-        stats.Add(StatsInfoTypeEnum.health, (iDamageableComponent as IdamagablePhysicalComponent).healthSystem.health);
+        stats.Add(StatsInfoTypeEnum.health, healthSystem.GetHealth());
+    }
+
+    public override void OnCreated()
+    {
+      
     }
 }

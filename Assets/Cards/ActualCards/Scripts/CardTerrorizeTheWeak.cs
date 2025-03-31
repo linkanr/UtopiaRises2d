@@ -21,11 +21,11 @@ public class CardTerrorizeTheWeak : SoCardBase
         Debug.Log("Filtered " + weak.Count + " weak objects.");
         foreach (SceneObject obj in weak)
         {
-            IDamageAble damageAble = obj as IDamageAble;
-            if (damageAble != null)
+            
+            if (obj != null)
             {
                 Debug.Log("Applying damage to object: " + obj.name);
-                damageAble.iDamageableComponent.TakeDamage(damage);
+                obj.healthSystem.TakeDamage(damage, null);
             }
             else
             {

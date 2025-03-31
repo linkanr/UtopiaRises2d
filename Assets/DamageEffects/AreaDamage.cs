@@ -65,7 +65,7 @@ public class AreaDamage : MonoBehaviour
         if (burnChance > 0)
         {
             Debug.Log("adding fire burn chance over zero");
-            Cell[] cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)diameter / 2, (int)diameter / 2).ToArray();
+            Cell[] cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)diameter / 2, (int)diameter / 2).ToArray();
             foreach (Cell cell in cells)
             {
                 Debug.Log("Looping over cells");
@@ -87,8 +87,8 @@ public class AreaDamage : MonoBehaviour
         foreach (SceneObject a in list)
         {
             Debug.Log(a.GetStats().GetString(StatsInfoTypeEnum.name));
-            IDamageAble damageable = a as IDamageAble;
-            damageable.iDamageableComponent.TakeDamage(damage);
+            
+            a.healthSystem.TakeDamage(damage, null);
         }
 
     }

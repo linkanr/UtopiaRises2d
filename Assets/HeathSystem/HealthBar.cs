@@ -1,33 +1,45 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 
 
 public class HealthBar : MonoBehaviour
 {
-    private BasicPhysicalHealthSystem healthSystem;
+    private HealthSystem healthSystem;
     [SerializeField]    private Transform barTransform;
     [SerializeField] private Transform healthBarTransform;
     [SerializeField] private Transform baseTransform;// this is the main subjects transform
-    private bool active;
+    [SerializeField] private bool active = false;
+    [SerializeField] private bool showNumbers =false;
+    [SerializeField] private TextMeshProUGUI healthText;
 
-    private void OnEnable()
+
+
+    protected virtual void OnEnable()
     {
-        healthBarTransform.gameObject.SetActive(false);
+        if (active)
+        {
+            healthBarTransform.gameObject.SetActive(true);
+        }
+        else
+        {
+            healthBarTransform.gameObject.SetActive(false);
+        }
+          
 
-        active = false;
-        healthSystem = GetComponentInParent<BasicPhysicalHealthSystem>();
-        baseTransform = healthSystem.GetTransformPosition();
-        healthSystem.OnDamaged += HealthSystem_OnDamaged;
+        
+
+
     }
     private void OnDisable()
     {
  
         healthSystem.OnDamaged -= HealthSystem_OnDamaged;
     }
-    private void HealthSystem_OnDamaged(object sender, EventArgs e)
+    private void HealthSystem_OnDamaged(object sender, OnDamageArgs e)
     {
         if (!active)
         {
@@ -40,11 +52,31 @@ public class HealthBar : MonoBehaviour
 
     private void UpdateBar()
     {
+        if (showNumbers)
+        {
+            healthText.text = healthSystem.GetHealth().ToString();
+        }
         barTransform.localScale = new Vector3(healthSystem.GetHealthAmountNormalized(), 1f, 1f);
     }
     private void Update()
     {
-        transform.position = baseTransform.position + new Vector3(0,1,0);
-        transform.localRotation = Quaternion.Inverse(baseTransform.rotation);
+        if (healthSystem == null)//initializs
+        {
+            healthSystem = GetComponentInParent<HealthSystem>();
+            baseTransform = healthSystem.gameObject.transform;
+            healthSystem.OnDamaged += HealthSystem_OnDamaged;
+            if (showNumbers)
+            {
+                healthText.text = healthSystem.GetHealth().ToString();
+            }
+
+        }
+        else
+        {
+            transform.position = baseTransform.position + new Vector3(0, 1, 0);
+            transform.localRotation = Quaternion.Inverse(baseTransform.rotation);
+        }
+
     }
+
 }

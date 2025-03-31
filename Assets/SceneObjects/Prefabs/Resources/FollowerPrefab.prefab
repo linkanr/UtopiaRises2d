@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 7242784040638695267}
   - component: {fileID: 7534513178700637068}
   - component: {fileID: 3697971156322016380}
-  - component: {fileID: -1284018133663689401}
   m_Layer: 14
   m_Name: FollowerPrefab
   m_TagString: Untagged
@@ -141,7 +140,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   c2D: {fileID: 0}
   rB2D: {fileID: 0}
+  sceneObjectPosition: {x: 0, y: 0, z: 0}
+  isDead: 0
   spriteRenderer: {fileID: 3908769779722658192}
+  healthSystem: {fileID: 0}
 --- !u!61 &3697971156322016380
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -187,21 +189,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &-1284018133663689401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4612098067060581742}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2a666f653f98bb4d955154fbb3297ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1
-  maxHealth: 1
-  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
 --- !u!1 &4775151657835092831
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,7 +262,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 322991189
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
   m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}

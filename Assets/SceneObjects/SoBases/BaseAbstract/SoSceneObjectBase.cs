@@ -15,6 +15,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
 
     public Stats GetStats() // this sets the base
     {
+        Debug.Log("SoSceneObjectBase adding stats intial");
         var stats = new Stats();
         stats.Add(StatsInfoTypeEnum.name, sceneObjectName);
         stats.Add(StatsInfoTypeEnum.description, description);
@@ -32,11 +33,13 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     /// <param name="position"></param>
     public SceneObject Init(Vector3 position)
     {
-        SceneObject sceneobjectFromCard = Instantiate(prefab, position, Quaternion.identity);
+        Quaternion rotation = Quaternion.Euler(-0f,0f,0f);
+        SceneObject sceneobjectFromCard = Instantiate(prefab, position, rotation);
 
         sceneobjectFromCard.SetStats(GetStats());
         ObjectInitialization(sceneobjectFromCard);
-        
+        sceneobjectFromCard.InitilizeFromSo();
+
         return sceneobjectFromCard;
     }
     /// <summary>

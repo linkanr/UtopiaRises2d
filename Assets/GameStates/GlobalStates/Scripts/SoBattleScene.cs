@@ -7,7 +7,7 @@ public class SoBattleScene : BaseState<GameStateMachine>
 {
     public override void OnStateEnter()
     {
-        GlobalActions.OnBattleSceneLoaded();
+        stateMachine.StartCoroutine(BattleSceneLoaded());
     }
 
     public override void OnStateExit()
@@ -22,6 +22,12 @@ public class SoBattleScene : BaseState<GameStateMachine>
     public override void OnObjectDestroyed()
     {
 
+    }
+    public IEnumerator BattleSceneLoaded()
+    {
+        
+        yield return null;
+        GlobalActions.OnBattleSceneLoaded();
     }
 
 }

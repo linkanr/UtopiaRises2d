@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class SpawningBuilding : SceneObjectBuilding, IcanSpawn
 {
     public SpawningBuildingStateMachine stateMachine;
-    public SoDamageDealSpawner damageDealerSpawner { get ; set; }
+    public SoDamageDealNoDamage damageDealerSpawner { get ; set; }
 
     public void Spawn()
     {
@@ -18,7 +18,7 @@ public abstract class SpawningBuilding : SceneObjectBuilding, IcanSpawn
 
                 SoTriggeredDamage soTriggeredDamage = GetStats().spawningData.sceneObjectToSpawn as SoTriggeredDamage;
                 TriggeredDamageSceneObject sceneObject = soTriggeredDamage.Init(cell.worldPosition) as TriggeredDamageSceneObject;
-                sceneObject.Init(cell.worldPosition);
+              
 
                 break;
             }
@@ -27,14 +27,14 @@ public abstract class SpawningBuilding : SceneObjectBuilding, IcanSpawn
 
     protected List<Cell> GetCells()
     {
-        List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)GetStats().maxRange, (int)GetStats().maxRange);
+        List<Cell> cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)GetStats().maxRange, (int)GetStats().maxRange);
         GeneralUtils.ShuffleList(cells);
         return cells;
     }
-    protected override void Start()
+    public override void OnCreated()
     {
-        base.Start();
+        base.OnCreated();
         stateMachine = GetComponent<SpawningBuildingStateMachine>();
-       
     }
+
 }

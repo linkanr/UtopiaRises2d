@@ -20,7 +20,7 @@ public class HighlightGridObject : MonoBehaviour
 
     if (grid == null)
         {
-            grid = GridCellManager.Instance.gridConstrution;
+            grid = GridCellManager.instance.gridConstrution;
             transform.localScale = new Vector3(grid.sizeX*100, grid.sizeY*100, 1);
         }
     gridMaterial.SetColor("_DisplayColor", MouseDisplayManager.instance.displayColor);
@@ -66,8 +66,13 @@ public class HighlightGridObject : MonoBehaviour
         {
             //Debug.Log("Displaying cell");
 
-            List<Cell> cells = GridCellManager.Instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(),MouseDisplayManager.instance.displaySizeX,MouseDisplayManager.instance.displaySizeY);
+            List<Cell> cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(WorldSpaceUtils.GetMouseWorldPosition(),MouseDisplayManager.instance.displaySizeX,MouseDisplayManager.instance.displaySizeY);
+            if (cells == null)
+            {
+                return;
+            }
             if (cells.Count > 0)
+
             {
                 SetHightligt(cells);
        

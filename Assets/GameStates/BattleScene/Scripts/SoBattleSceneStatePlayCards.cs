@@ -11,6 +11,7 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
 
     public override void OnStateEnter()
     {
+        BattleSceneActions.OnSpawningInterwallEnding();
         //Show end state button
         //Debug.Log("Entering play cards state");
         GameSceneRef.instance.inHandPile.gameObject.SetActive(true);//Change to a simple 
@@ -19,16 +20,16 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
         TimeActions.OnPause(true);
         Action unityAction = new Action(() => { EndTurn(); });
         ButtonWithDelegate.CreateThis(unityAction, GameSceneRef.instance.endTurnParent, "End Turn");
-
-
+        EnemyManager.Instance.SetSpawning(false);
+        
 
     }
 
     private void EndTurn()
     {
-
+        BattleSceneActions.OnSpawningStarting();
         stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
-    
+        AstarPath.active.Scan();
     }
 
     public override void OnStateExit()

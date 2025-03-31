@@ -15,18 +15,16 @@ public class SceneObjectGetter
 
     public List<SceneObject> GetSceneObjects(Vector3 position, int amount = -1, SceneObjectTypeEnum objectTypeEnum = SceneObjectTypeEnum.all, List<SceneObjectTypeEnum> sceneObjectTypeEnumsList = null, float maxDistance = float.PositiveInfinity, bool onlyDamageables = false)
     {
-        if (DebuggerGlobal.instance.debugSceneObejcts)
-            Debug.Log("looking for" + objectTypeEnum.ToString() + " at " + position.ToString());
+        position.z = 0;
         List<ListPostition> listPoss = new List<ListPostition>();
 
         List<SceneObject> sceneObjects = sceneObjectManager.RetriveSceneObjects(objectTypeEnum);
         for (int i=0; i < sceneObjects.Count; i++)
         {
             SceneObject sceneObject = sceneObjects[i];
-            if (sceneObject is not IDamageAble && onlyDamageables)
+            if (sceneObject.healthSystem == null && onlyDamageables)
             {
-                if (DebuggerGlobal.instance.debugSceneObejcts)
-                    Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because its not damagable");
+              
                
                 continue;
             }
@@ -34,8 +32,7 @@ public class SceneObjectGetter
             {
                 if (objectTypeEnum != sceneObject.GetStats().sceneObjectType)
                 {
-                    if (DebuggerGlobal.instance.debugSceneObejcts)
-                        Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because its not " + objectTypeEnum.ToString());
+                 
                     
                     continue;
                 }
@@ -45,8 +42,7 @@ public class SceneObjectGetter
             {
                 if (!sceneObjectTypeEnumsList.Contains(sceneObject.GetStats().sceneObjectType) || sceneObjectTypeEnumsList.Contains(SceneObjectTypeEnum.all))
                 {
-                    if (DebuggerGlobal.instance.debugSceneObejcts)
-                        Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " not added because " + objectTypeEnum.ToString() + " is not in list");
+                 
                     
                     continue;
                 }
@@ -57,11 +53,7 @@ public class SceneObjectGetter
             ListPostition listPostition = new ListPostition(i, newDist);
             if (newDist < maxDistance)
             {
-                if (DebuggerGlobal.instance.debugSceneObejcts)
-                {
-                    Debug.Log("found " + sceneObject.GetStats().GetString(StatsInfoTypeEnum.name) + " at " + sceneObject.transform.position.ToString() + " added to the list at position " + i);
-                    DebuggerGlobal.DrawLine(objPos, position, Color.red);
-                }
+
 
                 listPoss.Add(listPostition);
 
@@ -82,8 +74,7 @@ public class SceneObjectGetter
         }
         for (int j = 0; j < amount; j++) // Loop for the amount and then add it using created list
         {
-            if (DebuggerGlobal.instance.debugSceneObejcts)
-                Debug.Log("added " + sceneObjectManager.RetriveSceneObjects(objectTypeEnum)[listPoss[j].i].GetStats().GetString(StatsInfoTypeEnum.name));
+
             list.Add(sceneObjectManager.RetriveSceneObjects(objectTypeEnum)[listPoss[j].i]);
         }
         return list;
@@ -110,14 +101,10 @@ public class SceneObjectGetter
         {
             foreach (StatsModifier statsModifier in obj.GetStats().statsMediator.modifiers)
             {
-                if (DebuggerGlobal.instance.debugSceneObejcts)
-                    Debug.Log("Checking object: " + obj.GetStats().GetString(StatsInfoTypeEnum.name) + " for modifier: " + pickupTypes.ToString() + " it has the following modifer " + statsModifier.pickupTypes.ToString());
-
+            
                 if (statsModifier.pickupTypes == pickupTypes)
                 {
-                    if (DebuggerGlobal.instance.debugSceneObejcts)
-                        Debug.Log("Adding object: " + obj.GetStats().GetString(StatsInfoTypeEnum.name) + " with matching modifier: " + statsModifier.pickupTypes.ToString());
-
+     
                     newList.Add(obj);
                     break;
                 }

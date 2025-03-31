@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886b1bbabc8119d49ad937dba9b2d366, type: 3}
   m_Name: GrowForest
   m_EditorClassIdentifier: 
-  description: A small sappling. Grows to forest in 1 year
   title: Small fforest
+  description: A small sappling. Grows to forest in 1 year
+  cardType: 5
   image: {fileID: 21300000, guid: 0711211474d8f85488e64dbb06e645d3, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 1

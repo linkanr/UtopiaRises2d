@@ -7,7 +7,7 @@ public class EnviromentStone : EnviromentObject
 
     public SceneObjectTypeEnum damageableType => SceneObjectTypeEnum.enviromentObject;
 
-    public IdamagablePhysicalComponent idamageableComponent { get; set; }
+    public HealthSystem healthsystem { get; set; }
 
 
 
@@ -21,7 +21,7 @@ public class EnviromentStone : EnviromentObject
     protected override void AddStatsForClick(Stats _stats)
     {
         base.AddStatsForClick(_stats);
-        _stats.Add(StatsInfoTypeEnum.health, idamageableComponent.healthSystem.health);
+        _stats.Add(StatsInfoTypeEnum.health, healthSystem.GetHealth());
 
     }
 

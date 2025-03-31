@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SceneObjectConstructionBase : StaticSceneObject
@@ -10,13 +12,7 @@ public class SceneObjectConstructionBase : StaticSceneObject
         return constructionBaseSceneObject;
 
     }
-    protected override void Start()
-    {
-       // Debug.Log("ConstructionBaseSceneObject Start");
-        base.Start();
 
-        transform.SetParent(GameSceneRef.instance.constructionBaseParent);
-    }
     protected override void AddStatsForClick(Stats _stats)
     {
       
@@ -25,5 +21,17 @@ public class SceneObjectConstructionBase : StaticSceneObject
     protected override void OnObjectDestroyedObjectImplementation()
     {
         
+    }
+
+    public override void OnCreated()
+    {
+
+        transform.SetParent(GameSceneRef.instance.constructionBaseParent);
+        List<Cell> celllist = new List<Cell>();
+        celllist = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, GetStats().influenceRadius, GetStats().influenceRadius);
+        foreach (Cell cell in celllist)
+        {
+            cell.isPlayerInfluenced = true;
+        }
     }
 }   

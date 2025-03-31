@@ -17,13 +17,15 @@ public class SoStartScreen : BaseState<GameStateMachine>
     }
     public override void OnObjectDestroyed()
     {
+
         GlobalActions.OnClickStartGame-= StartGame;
     }
 
     private void StartGame()
     {
-        stateMachine.SetState(typeof(SoLoadBattleScene));
+        stateMachine.SetState(typeof(SoLoadMapScene));
     }
+
 
     public override void OnStateExit()
     {
@@ -40,4 +42,5 @@ public class SoStartScreen : BaseState<GameStateMachine>
         yield return new WaitForEndOfFrame();
         stateMachine.SetState(typeof(SoBattleScene));
     }
+
 }

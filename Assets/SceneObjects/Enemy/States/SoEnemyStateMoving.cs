@@ -22,13 +22,12 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
     {
         if (stateMachine.enemy.targeter.target == null)
         {
-            Debug.Log("no target");
+           
             stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
             return;
         }
         if (!stateMachine.enemy.targeter.target.IsValid())
         {
-            Debug.Log("no valid target");
             stateMachine.SetState(typeof(SoEnemyStateLookingForTarget));
             return;
         }

@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc7e6405d6082941becd1f6b25962e0, type: 3}
   m_Name: StrikeBack
   m_EditorClassIdentifier: 
+  title: Strike back
   description: Deal 10 damage against a single targe. Does double damage against
     the enemy base
-  title: Strike back
+  cardType: 3
   image: {fileID: 21300000, guid: 0eb99959b517f164790fd1e9cea62451, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 1

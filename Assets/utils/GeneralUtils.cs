@@ -61,6 +61,39 @@ public static class GeneralUtils
             inputList[rand] = temp;
         }
     }
+    public static List<T> GetRandomFromList<T>(List<T> inputList,int amount)
+    {
+        List<T> tempInputList = new List<T>();
+        tempInputList.AddRange(inputList);
+        List<T> outputList = new List<T>();
+        if (amount > tempInputList.Count)
+        {
+            Debug.LogError("Amount is bigger than the list");
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            ShuffleList(tempInputList);
+            outputList.Add(tempInputList[0]);
+            tempInputList.RemoveAt(0);
+        }
+        return outputList;
+    }
+    public static List<T> AddListToList<T>(List<T> inputList, List<T> addList)
+    {
+        List<T> outputList = new List<T>();
+        foreach (var item in inputList)
+        {
+            outputList.Add(item);
+        }
+        foreach (var item in addList)
+        {
+            outputList.Add(item);
+        }
+        return outputList;
+    }
+
+
+
     public static T GetRandomEnum<T>()
     {
         System.Array A = System.Enum.GetValues(typeof(T));

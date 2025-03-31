@@ -8,7 +8,7 @@ public class CardNegotiations : SoCardBase
         Card newCard = CardsInPlayManager.instance.DrawCard();
         if (newCard.cardBase.faction.politicalAlignment.ideolgicalAlignment == IdeolgicalAlignment.Centrist)
         {
-            newCard.cardCostModifier = new CardCostModifier(newCard, (originalCost) => 0, true);
+            newCard.cardCostModifier = new CardCostModifier(newCard, (originalCost) => 0, false);
         }
         else
         {

@@ -25,9 +25,13 @@ public class SoAttackAndDie : SoAttackSystem
             return;
         }
 
-        icanAttack.targeter.target.damagable.iDamageableComponent.TakeDamage(attacker.GetStats().damageAmount);
-        IDamageAble damageAble =  icanAttack.targeter.attacker as IDamageAble;
-        damageAble.iDamageableComponent.Die();
+        icanAttack.targeter.target.damagable.healthSystem.TakeDamage(attacker.GetStats().damageAmount, attacker);
+        if (attacker.healthSystem == null)
+        {
+            Debug.LogError("Attacker health system is null");
+            return;
+        }
+            attacker.healthSystem.Die(attacker);
 
     }
 }
