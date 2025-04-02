@@ -8,6 +8,7 @@ public abstract class HealthSystem:MonoBehaviour
     public int maxHealth;
     protected SceneObject sceneObject;
 
+
     public event EventHandler<OnDamageArgs> OnDamaged;
     public event EventHandler<OnSceneObjectDestroyedArgs> OnKilled;
     public abstract bool HandleDamage(float damage);
@@ -30,10 +31,11 @@ public abstract class HealthSystem:MonoBehaviour
             Debug.LogError("[HealthSystem.Init] sceneObject passed in was null!");
             return;
         }
-
+   
         maxHealth = _maxHealth;
         health = maxHealth;
         sceneObject = _sceneObject;
+
     }
     public virtual bool TakeDamage(int damageAmount, SceneObject attacker)
     {

@@ -33,7 +33,7 @@ public class SoEnemeyStateMoving : BaseState<EnemyStateMachine>
         }
         if (stateMachine.enemy.targeter.target.IsValid())
         {
-            if (Vector3.Distance(stateMachine.enemy.targeter.target.transform.position, stateMachine.enemy.transform.position) < .5f)
+            if (Vector3.Distance(stateMachine.enemy.targeter.target.targetTransform.position, stateMachine.enemy.transform.position) < .5f)
             {
                 stateMachine.enemy.targeter.soAttackSystem.Attack(stateMachine.enemy);
             }

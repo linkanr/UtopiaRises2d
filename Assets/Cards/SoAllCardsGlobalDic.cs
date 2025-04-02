@@ -1,18 +1,18 @@
+// SoAllCardsGlobalDic.cs
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "ScriptableObjects/DataResources/CardNames")]
+[CreateAssetMenu(menuName = "ScriptableObjects/DataResources/CardDatabase")]
 public class SoAllCardsGlobalDic : SerializedScriptableObject, IEnumerable<SoCardBase>
 {
-    public Dictionary<CardNames, SoCardBase> cardEnumsToCards;
+    [ReadOnly]
+    public Dictionary<CardNames, SoCardBase> cardEnumsToCards = new();
+
     public int length => cardEnumsToCards.Count;
 
-    /// <summary>
-    /// Get a card by its index in the dictionary.
-    /// </summary>
     public SoCardBase GetCard(int index)
     {
         if (index < 0 || index >= cardEnumsToCards.Count)
@@ -23,9 +23,6 @@ public class SoAllCardsGlobalDic : SerializedScriptableObject, IEnumerable<SoCar
         return cardEnumsToCards.ElementAt(index).Value;
     }
 
-    /// <summary>
-    /// Get a card by its CardNames key.
-    /// </summary>
     public SoCardBase GetCard(CardNames cardName)
     {
         if (cardEnumsToCards.TryGetValue(cardName, out SoCardBase card))
@@ -36,17 +33,11 @@ public class SoAllCardsGlobalDic : SerializedScriptableObject, IEnumerable<SoCar
         return null;
     }
 
-    /// <summary>
-    /// Get all cards with the specified rarity.
-    /// </summary>
     public List<SoCardBase> GetCardsByRarity(CardRareEnums rarity)
     {
         return cardEnumsToCards.Values.Where(card => card.rarity == rarity).ToList();
     }
 
-    /// <summary>
-    /// Get an enumerator for iterating over the cards.
-    /// </summary>
     public IEnumerator<SoCardBase> GetEnumerator()
     {
         foreach (var keyValuePair in cardEnumsToCards)
@@ -59,4 +50,41 @@ public class SoAllCardsGlobalDic : SerializedScriptableObject, IEnumerable<SoCar
     {
         return GetEnumerator();
     }
+
+#if UNITY_EDITOR
+    public void ClearAndAddAllCards(List<SoCardBase> allCards)
+    {
+        cardEnumsToCards.Clear();
+
+        foreach (var card in allCards)
+        {
+            string enumName = new string(card.name.Where(char.IsLetterOrDigit).ToArray());
+            if (string.IsNullOrWhiteSpace(enumName))
+            {
+                Debug.LogWarning($"Skipping unnamed or invalid card asset: {card.name}");
+                continue;
+            }
+            if (char.IsDigit(enumName.First()))
+                enumName = "_" + enumName;
+
+            if (!System.Enum.TryParse(enumName, ignoreCase: true, out CardNames parsedEnum))
+            {
+                Debug.LogWarning($"Card '{card.name}' could not be matched to enum '{enumName}'");
+                continue;
+            }
+
+            if (!cardEnumsToCards.ContainsKey(parsedEnum))
+            {
+                cardEnumsToCards.Add(parsedEnum, card);
+            }
+            else
+            {
+                Debug.LogWarning($"Duplicate card enum '{parsedEnum}' – skipping.");
+            }
+        }
+
+        UnityEditor.EditorUtility.SetDirty(this);
+        UnityEditor.AssetDatabase.SaveAssets();
+    }
+#endif
 }

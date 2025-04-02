@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using UnityEngine;
+
 /// <summary>
 /// Target Has a damagable and a transform . Its constructior set the ICanAttack so that it looses its target when the damagagable dies
 /// IsValid is used for null and alive check. 
@@ -27,7 +28,7 @@ public class Target
         }
 
         damagable = _damageable;
-        transform = damagable.transform;
+        targetTransform = damagable.transform;
 
         if (damagable != null && attacker != null)
         {
@@ -55,7 +56,7 @@ public class Target
 
 
     public SceneObject damagable { get; set; }
-    public Transform transform
+    public Transform targetTransform
     {
         get { return damagable != null ? damagable.transform : null; }
         private set { }
@@ -67,28 +68,40 @@ public class Target
     /// <returns></returns>
     public bool IsValid()
     {
-        if (transform == null)
+
+        if (targetTransform == null || targetTransform.Equals(null))
         {
-            Debug.Log("transform is null");
+            Debug.Log("❌ transform is missing or destroyed");
             return false;
         }
+
         if (isDead)
         {
-            Debug.Log("target dead");
+            Debug.Log("⚠️ target is dead");
             return false;
         }
+
+        if (damagable == null)
+        {
+            Debug.Log("⚠️ damagable is missing");
+            return false;
+        }
+
         return true;
     }
+
+
+
     public void Set(SceneObject _damageable, Transform _transform)
     {
         damagable = _damageable;
-        transform = _transform;
+        targetTransform = _transform;
         
     }
     public void RemoveTarget()
     {
         damagable = null;
-        transform=null;
+        targetTransform=null;
        
     }
 

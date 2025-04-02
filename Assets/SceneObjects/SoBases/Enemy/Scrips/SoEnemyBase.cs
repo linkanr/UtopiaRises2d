@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/EnemyTypes/SoEnemyBase")]
 public class SoEnemyBase : SoSceneObjectBase
 {
     public int health;
     public bool permanent;
-
+    public SoDamageEffect soDamageEffect;
     protected override Stats GetStatsInernal(Stats stats)
     {
         stats.Add(StatsInfoTypeEnum.health, health);
@@ -15,5 +16,12 @@ public class SoEnemyBase : SoSceneObjectBase
     {
         EnemyBase enemyBase = sceneObject as EnemyBase;
         enemyBase.permanent = permanent;
+        if (soDamageEffect != null)
+        {
+            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
+            damageEffectInstansiator.Init(soDamageEffect);
+        }
+
+
     }
 }

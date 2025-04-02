@@ -37,6 +37,6 @@ MonoBehaviour:
   health: 15
   attackSystem: {fileID: 11400000, guid: 7c07eb4814b6f6644b97b192e8e8ccc0, type: 2}
   seekSystem: {fileID: 11400000, guid: 261ab555c268a4f4da0238b97782426a, type: 2}
-  damageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}
   possibleTargetTypes: 04000000
   speed: 0
+  soDamageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}

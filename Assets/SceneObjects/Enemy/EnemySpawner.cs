@@ -1,210 +1,126 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
-
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 public class EnemySpawner : MonoBehaviour
 {
     public Action OnEnemySpawned;
-    public Action OnSpawnerTimeChange;
     public List<EnemyWave> enemyWaves;
     public List<EnemyWave> origWaves;
     public EnemyBase enemyBase;
     public Vector3 spawnPos;
-    private float timeToNextSpawnTimer;
-    private float spawnTimerMax;
-    private bool allSpawned = false;
-    public bool currentWaveDone = false;
-    private bool isLockedForSpawning = false;
-    public bool spawningEnabledNotPaused = false;
 
     EnemyEnumToGO enemyEnumToGameObjectList;
 
+
     private void OnEnable()
     {
-        TimeActions.GlobalTimeChanged += ChangeTimer;
+        BattleSceneActions.OnSpawningStarting += SpawnNextWave;
     }
 
-    private void ChangeTimer(BattleSceneTimeArgs args)
+    private void OnDisable()
     {
-        if (!spawningEnabledNotPaused)
-        {
-            return;
-        }
-        timeToNextSpawnTimer += args.deltaTime;
-
-
-
+        BattleSceneActions.OnSpawningStarting -= SpawnNextWave;
     }
 
     private void Start()
     {
         enemyEnumToGameObjectList = Resources.Load("EnemyGo") as EnemyEnumToGO;
-    
-        
-
     }
-    public void Init(List<EnemyWave> _enemyWaves, Vector3 pos, EnemyBase enemyBase)
-    {
-        enemyWaves = new List<EnemyWave>();
-        Debug.Log("init spawner enemy waves count " + _enemyWaves.Count);
-        enemyWaves.AddRange(_enemyWaves);
 
+    public void Init(List<EnemyWave> _enemyWaves, Vector3 pos, EnemyBase _enemyBase)
+    {
+        enemyWaves = EnemyWave.CreateWaveList(_enemyWaves);
         origWaves = EnemyWave.CreateWaveList(_enemyWaves);
         spawnPos = pos;
-        enemyBase.Onkilled += DestroySpawner;
+        enemyBase = _enemyBase;
+        enemyBase.Onkilled += StartDestruction;
     }
-    private void DestroySpawner()
+    private void StartDestruction()
     {
-        StartCoroutine(Destroy());
+        StartCoroutine(DestroySpawner());
     }
-    public IEnumerator Destroy()
+    private void SpawnNextWave()
     {
-        if (isLockedForSpawning)
+        if (enemyWaves.Count == 0)
+            return;
+        Debug.Log("Spawning wave");
+        StartCoroutine(SpawnWaveCoroutine(enemyWaves[0]));
+    }
+
+    private IEnumerator SpawnWaveCoroutine(EnemyWave wave)
+    {
+        foreach (EnemyNames enemyName in wave.enemyList)
         {
-            yield return new WaitForEndOfFrame();
+            SoEnemyObject enemySO = Instantiate(enemyEnumToGameObjectList.EnemyEnumToName[enemyName]);
+            Vector3 position = spawnPos + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 0f);
+            position.z = 0f;
+            EnemyCreator.CreateEnemy(enemySO, position);
+            
+
+            yield return new WaitForSeconds(0.3f); // <-- adjustable spawn interval
         }
-        enemyWaves.Clear();
+
+        enemyWaves.RemoveAt(0);
+        OnEnemySpawned?.Invoke();
+
+        if (enemyWaves.Count == 0)
+        {
+            if (enemyBase.permanent)
+            {
+                enemyWaves = EnemyWave.CreateWaveList(origWaves);
+            }
+            else
+            {
+                enemyBase.healthSystem.Die(null);
+                StartCoroutine(DestroySpawner());
+            }
+        }
+    }
+
+    private IEnumerator DestroySpawner()
+    {
+        yield return new WaitForEndOfFrame();
         EnemyManager.Instance.RemoveSpawener(this);
         Destroy(gameObject);
     }
-    public int GetTimeLeft()
+
+    // -------------------
+    // Info Methods Below
+    // -------------------
+
+    public Dictionary<Sprite, int> GetEnemieInNextWave()
     {
-        return BattleSceneManager.instance.GetTimeLeft();
-    }
-    // Update is called once per frame
-    void Update()
-    {  
-        if (allSpawned)
-        {
-            return;
-        }
-        if (currentWaveDone)
-        {
-            return;
-        }
-
-        if (!spawningEnabledNotPaused)
-        {
-            return;
-        }
-
-            if (timeToNextSpawnTimer > spawnTimerMax)
-            {
-                isLockedForSpawning = true;
-                timeToNextSpawnTimer = 0;
-                SpawnEnemy();
-                OnEnemySpawned?.Invoke();
-            }
-           
-        
-
-
-
-    }
-
-    private float CaluculateNextWaveAmount()
-    {
-        Dictionary<Sprite, int> enemyAmount = GetEnemieInNextWave();
-        int amount = 0;
-        if (enemyAmount.Count == 0)
-        {
-            return 0;
-        }
-        foreach (KeyValuePair<Sprite, int> enemy in enemyAmount)
-        {
-            amount += enemy.Value;
-        }
-        return amount;
-    }
-
-    private void SpawnEnemy()
-    {
-        SoEnemyObject soEnemyObject = Instantiate(enemyEnumToGameObjectList.EnemyEnumToName[enemyWaves[0].enemyList[0]]);
-
-        Vector3 position = spawnPos + WorldSpaceUtils.GetRandomDirection(.5f, 2f, 0f) * 1f * Mathf.Pow(UnityEngine.Random.Range(0f, 1f), .3f);
-        position.z = 0f;
-        position.x += 1f;
-        EnemyCreator.CreateEnemy(soEnemyObject, position);
-
-
-        ReduceList();
-        isLockedForSpawning = false;
-    }
-
-    private void ReduceList()
-    {
-        
-        if (enemyWaves[0].enemyList.Count == 1)
-        {
-          
-
-            if (enemyWaves.Count == 1)
-            {
-                enemyWaves.RemoveAt(0);
-                if (enemyBase.permanent)
-                {
-                    enemyWaves.Clear();
-                    
-                    enemyWaves.AddRange(EnemyWave.CreateWaveList(origWaves));
-                }
-                else
-                {
-
-                    allSpawned = true;
-                    enemyBase.healthSystem.Die(null);
-                }
-
-
-            }
-            else
-            {
-                
-                CurrentWaveDone();
-                
-            }
-
-
-        }
-        else
-        {
-            enemyWaves[0].enemyList.RemoveAt(0);
-        }
-    }
-
-
-    private void CurrentWaveDone()
-    {
-        currentWaveDone = true;
-        Debug.Log("end of list");
-        enemyWaves.RemoveAt(0);
-    }
-
-    internal Dictionary<Sprite,int> GetEnemieInNextWave()
-    {
-        if (enemyWaves.Count == 0)
+        EnemyWave enemyWave;
+        if (enemyWaves.Count == 0 && !enemyBase.permanent)
         {
             return new Dictionary<Sprite, int>();
         }
-        EnemyWave enemyWave = enemyWaves[0];
+        if (enemyWaves.Count == 0 && enemyBase.permanent)
+        {
+            enemyWave = origWaves[0];
+        }
+        else
+        {
+            enemyWave = enemyWaves[0];
+        }
+
         Dictionary<Sprite, int> enemyList = new Dictionary<Sprite, int>();
+
         foreach (EnemyNames enemyName in enemyWave.enemyList)
         {
-            if (enemyList.ContainsKey(enemyEnumToGameObjectList.EnemyEnumToName[enemyName].sprite))
-            {
-                enemyList[enemyEnumToGameObjectList.EnemyEnumToName[enemyName].sprite]++;
-            }
+            var sprite = enemyEnumToGameObjectList.EnemyEnumToName[enemyName].sprite;
+
+            if (enemyList.ContainsKey(sprite))
+                enemyList[sprite]++;
             else
-            {
-                enemyList.Add(enemyEnumToGameObjectList.EnemyEnumToName[enemyName].sprite, 1);
-            }
+                enemyList.Add(sprite, 1);
         }
+
         return enemyList;
     }
+
     public List<EnemyNames> GetAllEnemies()
     {
         List<EnemyNames> enemies = new List<EnemyNames>();
@@ -215,8 +131,5 @@ public class EnemySpawner : MonoBehaviour
         return enemies;
     }
 
-    internal void CaluclateSpawnTime()
-    {
-        spawnTimerMax = 1f/ CaluculateNextWaveAmount();
-    }
+
 }

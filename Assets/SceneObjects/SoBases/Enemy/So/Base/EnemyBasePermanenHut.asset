@@ -33,3 +33,4 @@ MonoBehaviour:
     destroyedWhenStepedOn: 0
   health: 50
   permanent: 1
+  soDamageEffect: {fileID: 11400000, guid: 2913ce5486bb9d645b8a59f4c3b6cc15, type: 2}

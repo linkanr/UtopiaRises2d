@@ -10,7 +10,7 @@ public class SoSeekSytemForEnemies : SoSeekSystemBase//Goes straigt to damagable
 
     public override SceneObject Seek(Vector3 position, List<SceneObjectTypeEnum> sceneObjectTypeEnums, TargeterBaseClass attackerComponent, IMoverComponent moverComponent = null)
     {
-        Debug.Log("Seek method called with position: " + position);
+      //  Debug.Log("Seek method called with position: " + position);
         position.z = 0;
         TargeterForEnemies movingTargeter = attackerComponent as TargeterForEnemies;
 
@@ -66,7 +66,7 @@ public class SoSeekSytemForEnemies : SoSeekSystemBase//Goes straigt to damagable
             return null;
         }
 
-        Debug.Log("Calling StartMultiTargetPath with " + positions.Length + " positions.");
+  //      Debug.Log("Calling StartMultiTargetPath with " + positions.Length + " positions.");
 
         moverComponent.seeker.StartMultiTargetPath(position, positions, false, movingTargeter.SetNewTarget);
 

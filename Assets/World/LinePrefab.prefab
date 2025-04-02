@@ -200,7 +200,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3855862487504671318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 253d9443615b1894bb24ec1e223f46b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 159f8865186b81f4880ce693f4179052, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lineRenderer: {fileID: 0}
+  startNode: {fileID: 0}
+  endNode: {fileID: 0}

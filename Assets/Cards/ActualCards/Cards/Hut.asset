@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66a0bfdc716e76e458024f4b29f2a5b0, type: 3}
+  m_Name: Hut
+  m_EditorClassIdentifier: 
+  title: Hut
+  description: A small hut
+  cardType: 5
+  image: {fileID: 21300000, guid: e39da869fa8cc3b4cb1dbd4549daa8c9, type: 3}
+  rarity: 0
+  cardCanBePlayedOnEnum: 0
+  cardPlayTypeEnum: 0
+  influenceCost: 1
+  faction: {fileID: 11400000, guid: def7bf5786e0a1f47b86dd94d8b60a74, type: 2}
+  prefab: {fileID: 11400000, guid: ca1e7780224775f44bd10d2b834e2941, type: 2}
+  sizeX: 1
+  sizeY: 1

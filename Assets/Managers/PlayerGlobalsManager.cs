@@ -61,6 +61,23 @@ public class PlayerGlobalVariables
     public int fireDamageMulti = 1;
     public int gasLifeTimeMulit = 1;
     public int damageModifier = 0;
+    public PolicalCompassOrientation politicalCompasOrientation;
+    public PoliticalCompasDemonation politicalCompasDemonation 
+    { get
+        {
+            return new PoliticalCompasDemonation(politicalCompasOrientation.galTan, politicalCompasOrientation.leftRigt);
+        } 
+        
+    }
+
+    public PoliticalAlignment politicalAlignment
+    {
+        get
+        {
+            return new PoliticalAlignment(politicalCompasDemonation.galTan, politicalCompasDemonation.leftRigt);
+        }
+    }
+
 
     public int GetDamage(int baseDamage)
     {

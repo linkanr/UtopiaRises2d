@@ -20,14 +20,14 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
         TimeActions.OnPause(true);
         Action unityAction = new Action(() => { EndTurn(); });
         ButtonWithDelegate.CreateThis(unityAction, GameSceneRef.instance.endTurnParent, "End Turn");
-        EnemyManager.Instance.SetSpawning(false);
+
         
 
     }
 
     private void EndTurn()
     {
-        BattleSceneActions.OnSpawningStarting();
+
         stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
         AstarPath.active.Scan();
     }

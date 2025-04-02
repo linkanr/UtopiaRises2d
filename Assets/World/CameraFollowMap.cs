@@ -10,7 +10,7 @@ public class CameraFollowMap : MonoBehaviour
 
     [Header("Vertical Clamping")]
     public float minY =0f;
-    public float maxY = 26f;
+    public float maxY = 32f;
 
     [Header("DoTween Settings")]
 
@@ -18,21 +18,44 @@ public class CameraFollowMap : MonoBehaviour
 
     private float screenHeight;
     private bool canMove = false;
+    private void OnEnable()
+    {
+        MapSceneManager.mapSceneLoaded += AnimateCamera;
+    }
+    private void OnDisable()
+    {
+        MapSceneManager.mapSceneLoaded -= AnimateCamera;
+    }
 
-    void Start()
+    private void AnimateCamera()
     {
         screenHeight = Screen.height;
-
-        // Start from above
-        Vector3 startPos = transform.position;
-        startPos.y = maxY;
-        transform.position = startPos;
-
-        // Tween to original position
-        transform.DOMoveY(minY, tweenDuration).SetEase(Ease.InOutSine).OnComplete(() =>
+        MapNode mapNode = MapManager.instance.GetHighestUnlockedNode();
+        if (mapNode == null)
         {
-            canMove = true;
-        });
+            Debug.LogError("No map node found");
+            return;
+        }
+        if (mapNode.level>1)//not level 1
+        {
+            Vector3 startPos = transform.position;
+            startPos.y = mapNode.transform.position.y;
+            transform.position = startPos;
+            return;
+        }
+        else // start of game
+        {
+            Vector3 startPos = transform.position;
+            startPos.y = maxY;
+            transform.position = startPos;
+
+            
+            transform.DOMoveY(minY, tweenDuration).SetEase(Ease.InOutSine).OnComplete(() =>
+            {
+                canMove = true;
+            });
+        }
+
     }
 
     void Update()

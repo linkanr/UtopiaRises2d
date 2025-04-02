@@ -137,15 +137,14 @@ public class Cell: IDisposable
     }
     public float GetWalkPenalty()
     {
-        float walkPenalty =1f; 
-        if (!hasSceneObejct)
-        {
-            walkPenalty = cellTerrain.walkPenalty;
-        }
-        else
+        float walkPenalty =1f;
+        walkPenalty = cellTerrain.walkPenalty;
+        if (hasSceneObejct)
         {
             walkPenalty = HandleSceneObjectWalkPenalty(walkPenalty);
+            
         }
+
         return walkPenalty;
 
     }

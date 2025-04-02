@@ -199,7 +199,7 @@ public class Stats
     public int lifeTime => statsInfoDic.TryToGetValue<int>(StatsInfoTypeEnum.lifeTime) is int val ? val : -1;
 
 
-    public SoDamageEffect soDamageEffect => statsInfoDic.TryToGetValue<SoDamageEffect>(StatsInfoTypeEnum.SoDamageEffect);
+
 
 
     /// <summary>

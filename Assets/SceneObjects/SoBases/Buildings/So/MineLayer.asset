@@ -48,6 +48,7 @@ MonoBehaviour:
     destroyedWhenStepedOn: 0
   influenceRadius: 4
   lifeTime: 50
+  soDamageEffect: {fileID: 11400000, guid: 8e15afa3cab3b134e89eb7f921e3d54e, type: 2}
   spawningData:
     sceneObjectToSpawn: {fileID: 11400000, guid: 795e2af992228bf4e8a6a0d2a74c5c26, type: 2}
     canInstanceOn: 01000000030000000400000005000000

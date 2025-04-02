@@ -89,19 +89,18 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     }
 
     /// <summary>
-    /// Called when the scene object is created.
+    /// This initializes the scene object and adds health system if needed
     /// </summary>
     public void InitilizeFromSo()
     {
         sceneObjectPosition = transform.position;
         BattleSceneActions.OnSceneObjectCreated(this);
- 
+        
         
         OnCreated();
 
         spriteRenderer.sprite = GetStats().sprite;
-        Debug.Log("InitilizeFromSo");
-        Debug.Log(GetStats().sceneObjectType + " is scenobjet" + " health is  " + GetStats().health + " time is " + GetStats().lifeTime);
+
 
         if (GetStats().health > 0)
         {
@@ -186,7 +185,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public void OnSceneObjectDestroyedBase()
     {
-
+        Debug.Log("Scene object destroyed implenention");
         BattleSceneActions.OnSceneObjectDestroyed(this);
         Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
         if (cell != null) 

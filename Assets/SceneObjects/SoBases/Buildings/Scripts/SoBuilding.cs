@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.VFX;
@@ -11,7 +12,7 @@ public abstract class SoBuilding : SoSceneObjectBase
 {
     public int influenceRadius = 3;
     public int lifeTime;
-
+    public SoDamageEffect soDamageEffect;
 
     protected override Stats GetStatsInernal(Stats stats)
     {
@@ -24,10 +25,15 @@ public abstract class SoBuilding : SoSceneObjectBase
     }
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
+        if (soDamageEffect != null)
+        {
+            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
+            damageEffectInstansiator.Init(soDamageEffect);
+        }
 
-           
-           
-       
+
+
+
     }
 
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4388634474122444036}
   - component: {fileID: 5781317596053280070}
   m_Layer: 0
-  m_Name: Minor
+  m_Name: Regular shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

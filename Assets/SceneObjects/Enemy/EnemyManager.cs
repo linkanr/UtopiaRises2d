@@ -107,6 +107,10 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Enemy enemy in spawnedEnemiesList)
         {
+            if (enemy.aIPathVisualizer == null)///Not intialized yet
+            {
+                continue;
+            }
             enemy.aIPathVisualizer.ActivateLine(true);
         }
     }
@@ -115,6 +119,10 @@ public class EnemyManager : MonoBehaviour
     {
         foreach (Enemy enemy in spawnedEnemiesList)
         {
+            if (enemy.aIPathVisualizer == null)///Not intialized yet
+            {
+                continue;
+            }
             enemy.aIPathVisualizer.ActivateLine(false);
         }
     }
@@ -131,16 +139,7 @@ public class EnemyManager : MonoBehaviour
 
 
 
-    public void SetSpawning(bool onOff)
-    {
-        foreach (EnemySpawner spawner in spawners)
-        {
-            spawner.spawningEnabledNotPaused = onOff;
-            spawner.currentWaveDone = false;
-            spawner.CaluclateSpawnTime();  
-        }
-           
-    }
+
 
 
     public EnemyCounter EnemyCount()

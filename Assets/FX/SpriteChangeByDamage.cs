@@ -54,8 +54,13 @@ public class SpriteChangeByDamage : MonoBehaviour
 
     private void OnTriggered(object sender, OnDamageArgs e) // Triggers each time it takes damage, sender is healthsystem
     {
-
+        StartCoroutine("ShadeFaderDelay" ); 
         
+    }
+    private IEnumerator ShadeFaderDelay()
+    {
+        yield return new WaitForSeconds(0.3f);
+
         shaderFader.isFaded = true;
     }
     private void Update()

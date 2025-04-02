@@ -34,7 +34,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         timer = 0f;
         
         start = canAttack.attacker.transform.position;
-        end = idamageable.transform.position;
+        end = idamageable.targetTransform.position;
         float dist = Vector3.Distance(start, end);
         float multi = GeneralUtils.fit(dist, .5f, 10f, .3f, 1f);
         timerMax *= multi;
@@ -47,7 +47,7 @@ public class TriggerLineRender : MonoBehaviour, IIsAttackInstanciator
         DOTween.To(() => currentEnd, x => currentEnd = x,end, timerMax/2f);
 
         lineRenderer.SetPosition(0, canAttack.attacker.transform.position);
-        lineRenderer.SetPosition(1, idamageable.transform.position);
+        lineRenderer.SetPosition(1, idamageable.targetTransform.position);
 
     }
     private void Update()

@@ -12,7 +12,6 @@ using UnityEngine.VFX;
 public class SoshotingBuilding : SoBuilding
 {
 
-
     public SoAttackSystem attackSystem;
     public SoSeekSystemForBuildings seekSystemForBuildings;
     public List<SceneObjectTypeEnum> possibleTargetTypes;
@@ -23,10 +22,7 @@ public class SoshotingBuilding : SoBuilding
         base.GetStatsInernal(_statsInforDic);
         _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
 
-        if (attackSystem.visualEffect!= null)
-        {
-            _statsInforDic.Add(StatsInfoTypeEnum.FireEffect, attackSystem.visualEffect);
-        }
+
 
         _statsInforDic.Add(StatsInfoTypeEnum.onClickDisplaySprite, attackSystem.displayRangeSprite);
         _statsInforDic.Add(StatsInfoTypeEnum.canTargetThefollowingSceneObjects, possibleTargetTypes);
@@ -42,12 +38,7 @@ public class SoshotingBuilding : SoBuilding
         shootingBuilding.targeter = shootingBuilding.AddComponent<TargeterForStaticObjects>();
         
         shootingBuilding.targeter.Initialize(shootingBuilding, seekSystemForBuildings, possibleTargetTypes, attackSystem);
-        if (attackSystem.visualEffect != null)
-        {
-            sceneObject.GetStats().fireEffect.transform.position = (shootingBuilding.shotingPos.position);
-            sceneObject.GetStats().fireEffect.Stop();
-            sceneObject.GetStats().fireEffect.transform.SetParent(shootingBuilding.shotingPos);
-        }
+
    
 
 

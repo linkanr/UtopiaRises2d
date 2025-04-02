@@ -37,8 +37,9 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
         SceneObject sceneobjectFromCard = Instantiate(prefab, position, rotation);
 
         sceneobjectFromCard.SetStats(GetStats());
-        ObjectInitialization(sceneobjectFromCard);
+
         sceneobjectFromCard.InitilizeFromSo();
+        ObjectInitialization(sceneobjectFromCard);
 
         return sceneobjectFromCard;
     }

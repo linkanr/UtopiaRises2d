@@ -10,7 +10,7 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
         TimeActions.OnPause(false);
         BattleSceneActions.OnSpawningStarting?.Invoke();
         GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
-        EnemyManager.Instance.SetSpawning(true);
+
 
 
 ;
@@ -25,7 +25,7 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
 
     public override void OnStateExit()
     {
-        EnemyManager.Instance.SetSpawning(false);
+    
 
 
     }

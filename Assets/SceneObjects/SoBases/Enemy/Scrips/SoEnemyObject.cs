@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/EnemyTypes/SoEnemyType")]
 [System.Serializable]
@@ -9,11 +10,12 @@ public class SoEnemyObject:SoSceneObjectBase
     public SoAttackSystem attackSystem;
     public SoSeekSytemForEnemies seekSystem;
     public DamagerBaseClass damagerBaseClass;
-    public SoDamageEffect damageEffect;
+
     public List<SceneObjectTypeEnum> possibleTargetTypes;
     public float speed;
+    public SoDamageEffect soDamageEffect;
 
-    
+
 
     protected override Stats GetStatsInernal(Stats _statsInforDic)
     {
@@ -21,7 +23,7 @@ public class SoEnemyObject:SoSceneObjectBase
         _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
         _statsInforDic.Add(StatsInfoTypeEnum.speed, speed);
         _statsInforDic.Add(StatsInfoTypeEnum.Sprite, sprite);
-        _statsInforDic.Add(StatsInfoTypeEnum.SoDamageEffect, damageEffect);
+
         _statsInforDic.Add(StatsInfoTypeEnum.seekSystem, seekSystem);
         _statsInforDic.Add(StatsInfoTypeEnum.attackSystem, attackSystem);
         _statsInforDic.Add(StatsInfoTypeEnum.onClickDisplaySprite, attackSystem.displayRangeSprite);
@@ -31,6 +33,10 @@ public class SoEnemyObject:SoSceneObjectBase
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
-       
+        if (soDamageEffect != null)
+        {
+            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
+            damageEffectInstansiator.Init(soDamageEffect);
+        }
     }
 }

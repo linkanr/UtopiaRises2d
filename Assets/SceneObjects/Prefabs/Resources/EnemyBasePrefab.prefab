@@ -546,7 +546,7 @@ GameObject:
   - component: {fileID: 4610881726596588356}
   - component: {fileID: 4149859833349796814}
   - component: {fileID: 3725115120538833062}
-  - component: {fileID: 8900025217135197496}
+  - component: {fileID: 990505038974588393}
   m_Layer: 12
   m_Name: EnemyBasePrefab
   m_TagString: Untagged
@@ -637,7 +637,7 @@ MonoBehaviour:
   healthSystem: {fileID: 0}
   spawner: {fileID: 0}
   permanent: 0
---- !u!114 &8900025217135197496
+--- !u!114 &990505038974588393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -646,7 +646,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4883937342173230902}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8ed9ecbef5a8b04688f838d011e2263, type: 3}
+  m_Script: {fileID: 11500000, guid: a16ad5b9f5af0eb4598f56a2c3559d4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemySprites: []

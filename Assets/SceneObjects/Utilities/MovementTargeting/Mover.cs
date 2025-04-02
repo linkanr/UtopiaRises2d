@@ -64,7 +64,7 @@ public class Mover :MonoBehaviour, IMoverComponent
     private void OnTargetChanged(Target e)
     {
 
-        destinationSetter.target= e.transform;
+        destinationSetter.target= e.targetTransform;
     }
 
     private void HandlePause(bool obj)
@@ -97,7 +97,7 @@ public class Mover :MonoBehaviour, IMoverComponent
             return;
         }
 
-        var gridCell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(sceneObject.transform.position);
+        var gridCell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(sceneObject.sceneObjectPosition);
         if (gridCell == null)
         {
             Debug.LogError("GridCellManager.Instance.gridConstrution.GetCellByWorldPostion returned null");

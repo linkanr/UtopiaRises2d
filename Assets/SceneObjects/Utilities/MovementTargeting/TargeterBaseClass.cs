@@ -24,13 +24,13 @@ public abstract class TargeterBaseClass : MonoBehaviour
     {
         if (target == null)
         {
-            Debug.Log("RemoveTarget() called, but target is already null. Skipping.");
+        //    Debug.Log("RemoveTarget() called, but target is already null. Skipping.");
             return;
         }
 
         if (target.damagable?.healthSystem != null)
         {
-            Debug.Log($"Removing target: {target.damagable.GetStats().name}");
+           // Debug.Log($"Removing target: {target.damagable.GetStats().name}");
             target.damagable.healthSystem.OnKilled -= (sender, e) => RemoveTarget();
         }
 
@@ -45,7 +45,7 @@ public abstract class TargeterBaseClass : MonoBehaviour
     {
         if (_iDamageable == null)
         {
-            Debug.LogError("SetNewTarget was called with a null SceneObject!");
+      //      Debug.LogError("SetNewTarget was called with a null SceneObject!");
             return;
         }
 

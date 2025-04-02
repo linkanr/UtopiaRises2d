@@ -25,12 +25,15 @@ public class VisualEffectManager : SerializedMonoBehaviour
      
     public static void PlayVisualEffect(visualEffectsEnum visualEffectsEnum, Vector3 position)
     {
+        Debug.Log("Playing VFX");
         Instance.PlayVisualEffectInternal(visualEffectsEnum, position);
     }
     private void PlayVisualEffectInternal(visualEffectsEnum visualEffectsEnum, Vector3 position)
     {
+        Debug.Log("Playing VFX internal" + visualEffectsEnum);
         if (visualEffects.ContainsKey(visualEffectsEnum))
         {
+            Debug.Log("VFX found");
             VisualEffect visualEffect = Instantiate(visualEffects[visualEffectsEnum]); 
              
             visualEffect.transform.position = position;
@@ -44,6 +47,7 @@ public class VisualEffectManager : SerializedMonoBehaviour
     }
     private IEnumerator WaitForVFXToEnd(VisualEffect vfx)
     {
+        yield return new WaitForSeconds(1f);
         // Wait until all particles are dead
         while (vfx.aliveParticleCount > 0)
         {
