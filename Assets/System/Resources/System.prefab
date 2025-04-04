@@ -121,6 +121,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5e71fa4cc575d45449b3a1a62d4dfa3b, type: 2}
   - {fileID: 11400000, guid: e35a66158d1db6b4cb8a15c744e6984a, type: 2}
   - {fileID: 11400000, guid: b042e0acd56412a49b0f088fd7cd520a, type: 2}
+  - {fileID: 11400000, guid: ff8702c4cd9c1c34c934a53a875d0ff3, type: 2}
+  - {fileID: 11400000, guid: dddd1819d83f101458b473887a9d727c, type: 2}
   instanciatedStates: []
   activeState: {fileID: 0}
 --- !u!1 &3383810039785074784
@@ -221,14 +223,6 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  levels:
-  - {fileID: 11400000, guid: 41d345c0ac1960546a9318d36a2ff6ab, type: 2}
-  - {fileID: 11400000, guid: 2955460d44954b244bf8e96c1229e13a, type: 2}
-  - {fileID: 11400000, guid: a1be5418486fe00448497b59f9c22f53, type: 2}
-  - {fileID: 11400000, guid: 42083d9d733dbff418896ffad8aa9578, type: 2}
-  - {fileID: 11400000, guid: 1e46515c3b41bf646b7f1905fbb5bc6c, type: 2}
-  - {fileID: 11400000, guid: b1a30e53466300243a1703c392945077, type: 2}
-  - {fileID: 11400000, guid: 7310a3ffc05d651498b2c6915d3c84d4, type: 2}
 --- !u!1 &6351167194180295219
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,4 +401,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ownedCards: []
+  intialized: 0
   startingCards: {fileID: 11400000, guid: f5d71e9b9dd3c0e42b7452c92b6d0ef7, type: 2}

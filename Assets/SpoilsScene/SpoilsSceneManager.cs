@@ -53,7 +53,7 @@ public class SpoilsSceneManager : MonoBehaviour
         // Create cards based on rarity
         foreach (CardRareEnums rareEnums in rateEnums)
         {
-            SoCardBase soCardBase = CardManager.Instance.GetRandomCard(rareEnums);
+            SoCardBase soCardBase = CardManager.instance.GetRandomCard(rareEnums);
             CardFactory.Create(soCardBase, Card.CardMode.selectable, spoilsUiPanel.cardParent);
         }
     }
@@ -81,7 +81,7 @@ public class SpoilsSceneManager : MonoBehaviour
 
             // Add the selected card to the deck and trigger global actions
             GlobalActions.OnNewCardAddedToDeck(soCardBase);
-            GlobalActions.SpoilScenesCompleted();
+            GlobalActions.GoBackToMap();
         }
         else
         {

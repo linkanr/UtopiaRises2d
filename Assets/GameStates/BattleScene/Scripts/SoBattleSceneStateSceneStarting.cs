@@ -5,9 +5,16 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
 {
     public override void OnStateEnter()
     {
+        Debug.Log("Entering scene SoBattleSceneStateSceneStarting  state");
+        if (!CardManager.instance.intialized)
+        {
+            CardManager.instance.AddStartingCardsToDeck();
+         
+        }
 
         BattleSceneActions.OnInitializeScene();
         AstarPath.active.Scan();
+
         stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
     }
     public override void OnObjectDestroyed()

@@ -72,7 +72,8 @@ public class CardsInPlayManager : MonoBehaviour
 
     private void InitializeDrawPile()
     {
-        foreach (SoCardBase card in CardManager.Instance.ownedCards)
+        Debug.Log("initializing draw pile");
+        foreach (SoCardBase card in CardManager.instance.ownedCards)
         {
             Card newCard = CardFactory.Create(card,Card.CardMode.playable,GameSceneRef.instance.drawPile);
             InDrawPileList.Add(newCard);

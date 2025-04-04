@@ -7,4 +7,5 @@ public class LevelBase:ScriptableObject
     public int levelDiffculty;
     public Texture2D map;
     public int luck;
+    public string levelName;
 }

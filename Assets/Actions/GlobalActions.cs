@@ -11,12 +11,14 @@ public static class GlobalActions
     public static Action OnPostBattle;
     public static Action OnBattleSceneLoaded; 
     public static Action BattleSceneCompleted; //triggers when All enemies are dead 
-    public static Action SpoilScenesCompleted; //triggers when all spoils scenes are completed
+    public static Action GoBackToMap; //triggers when all spoils scenes are completed
+    public static Action OnEventSceneLoaded;
     public static Action<SoCardBase> OnNewCardAddedToDeck;
     public static Action OnMapSceneEntered;
     public static Action OnMapSceneExited;
-    public static Action<MapNode> OnNodeCleared;
+    public static Action<MapNode> OnNodeClicked;
     public static Action OnDebugCreateMap;
+
 }
 
 public class ToolTipArgs

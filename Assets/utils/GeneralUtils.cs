@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class GeneralUtils
@@ -93,6 +94,35 @@ public static class GeneralUtils
     }
 
 
+    public static int GetWeightedRandom(params object[] args)
+    {
+        if (args.Length % 2 != 0)
+            throw new System.ArgumentException("Arguments must be in pairs of (int returnValue, float weight)");
+
+        List<(int value, float weight)> entries = new List<(int, float)>();
+
+        for (int i = 0; i < args.Length; i += 2)
+        {
+            if (!(args[i] is int) || !(args[i + 1] is float))
+                throw new System.ArgumentException("Each pair must be (int returnValue, float weight)");
+
+            entries.Add(((int)args[i], (float)args[i + 1]));
+        }
+
+        float totalWeight = entries.Sum(e => e.weight);
+        float randomValue = UnityEngine.Random.value * totalWeight;
+
+        float cumulative = 0f;
+        foreach (var entry in entries)
+        {
+            cumulative += entry.weight;
+            if (randomValue < cumulative)
+                return entry.value;
+        }
+
+        // Fallback - should not hit if weights are valid
+        return entries[entries.Count - 1].value;
+    }
 
     public static T GetRandomEnum<T>()
     {

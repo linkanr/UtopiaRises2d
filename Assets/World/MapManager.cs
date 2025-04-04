@@ -8,47 +8,54 @@ using UnityEngine;
 public class MapManager : MonoBehaviour
 {
     public static MapManager instance;
-    public List<MapNode> mapNodes;
-    public int startingNodesCount;
-    public int nodesLevelCount;
-    public int leftRightCount = 4;
-    public float chanceOfRandomLine = 0.2f;
+
+    [Header("Prefabs")]
     public GameObject prefabNode;
     public GameObject prefabLine;
 
-    public static int nodeCount;
-    public List<GameObject> lines;
-    public float noiseFreq;
-    public float noiseAmp;
-    public float noiseAmpRand;
-    public float noiseFreq2;
-    public float noiseAmp2;
+    [Header("Structure")]
     public Transform mapHolder;
+
+    [Header("Generated Data")]
+    public List<MapNode> mapNodes;
+    public List<GameObject> lines;
+    public static int nodeCount;
+
     private List<int> possibleLeftRightPos;
     private MapNode bossNode;
     private bool intialized = false;
     public bool Intialized => intialized;
-    private int finalLevel => nodesLevelCount + 1;
+
+    private MapSettings settings;
+    private int finalLevel => settings.nodesLevelCount + 1;
 
     private void Awake()
     {
-        if (instance == null) { instance = this; }
-        else { Debug.LogError("double mapmanger"); }
+        if (instance == null) instance = this;
+        else { Debug.LogError("Multiple MapManager instances"); Destroy(this); }
+
+        settings = Resources.Load<MapSettings>("Settings/MapSettings");
+        if (settings == null)
+        {
+            Debug.LogError("MapSettings not found in Resources/Settings/MapSettings");
+        }
+
         mapHolder.gameObject.SetActive(false);
     }
+
     private void OnEnable()
     {
         GlobalActions.OnDebugCreateMap += Generate;
         GlobalActions.OnMapSceneEntered += EnterMapScene;
         GlobalActions.OnMapSceneExited += ExitMapScene;
-        GlobalActions.OnNodeCleared += OnNodeDone;
+        GlobalActions.OnNodeClicked += OnNodeDone;
     }
     private void OnDisable()
     {
         GlobalActions.OnDebugCreateMap -= Generate;
         GlobalActions.OnMapSceneEntered -= EnterMapScene;
         GlobalActions.OnMapSceneExited -= ExitMapScene;
-        GlobalActions.OnNodeCleared -= OnNodeDone;
+        GlobalActions.OnNodeClicked -= OnNodeDone;
     }
 
     private void EnterMapScene()
@@ -80,13 +87,14 @@ public class MapManager : MonoBehaviour
 
     public void Clear()
     {
-        foreach (var node in mapNodes)
+        for (int i = mapNodes.Count - 1; i >= 0; i--)
         {
-            Destroy(node.gameObject);
+            Destroy(mapNodes[i].gameObject);
         }
-        foreach (var line in lines)
+
+        for (int i = lines.Count - 1; i >= 0; i--)
         {
-            Destroy(line);
+            Destroy(lines[i]);
         }
         lines.Clear();
         mapNodes.Clear();
@@ -101,6 +109,8 @@ public class MapManager : MonoBehaviour
         PositionAllNodes();
         SetNodeTypes();
         GenerateLines();
+        mapHolder.gameObject.SetActive(true);
+        intialized = true;
     }
 
     private void GenerateNodes()
@@ -111,7 +121,7 @@ public class MapManager : MonoBehaviour
         mapNodes = SetStartingNodes();
         List<MapNode> prevLevel = new List<MapNode>(mapNodes);
 
-        for (int i = 0; i < nodesLevelCount; i++)
+        for (int i = 0; i < settings.nodesLevelCount; i++)
         {
             int currentLevel = i + 1;
             List<MapNode> newMapNodes = CreateMapNodes(prevLevel, currentLevel);
@@ -122,7 +132,7 @@ public class MapManager : MonoBehaviour
         }
 
         // Add final boss node
-        int mid = leftRightCount / 2;
+        int mid = settings.leftRightCount / 2;
         bossNode = CreateMapNode(finalLevel, mid);
         mapNodes.Add(bossNode);
     }
@@ -179,7 +189,7 @@ public class MapManager : MonoBehaviour
                                     }
                                     GameObject line = node.outgoingLines.Find(l => l.GetComponent<MapLineConnection>().endNode == nextNode);
                                     node.outgoingLines.Remove(line);
-                                    Destroy(line);
+                                    DestroyLine(line);
                                 }
 
 
@@ -204,7 +214,7 @@ public class MapManager : MonoBehaviour
 
                     foreach (var nextNode in nodesByLevel[level.Key + 1])
                     {
-                        float rand = chanceOfRandomLine;
+                        float rand = settings.chanceOfRandomLine;
                         if (!node.outgoingConnections.Contains(nextNode) && Mathf.Abs(nextNode.leftRight - node.leftRight) == 1)
                         {
                             if (UnityEngine.Random.Range(0f, 1f) < rand)
@@ -369,9 +379,9 @@ public class MapManager : MonoBehaviour
             Vector3 tangent = point2 - point;
             Vector3 cross = Vector3.Cross(tangent, Vector3.forward);
 
-            float offsetStrength = GeneralUtils.fit01(Mathf.PerlinNoise(point.x * noiseFreq, point.y * noiseFreq), -noiseAmpRand, noiseAmpRand);
-            float offsetStrength2 = GeneralUtils.fit01(Mathf.PerlinNoise((point.x + 1515.88f) * noiseFreq, (point.y - 5154.55f) * noiseFreq), -noiseAmp, noiseAmp);
-            float offsetStrength3 = GeneralUtils.fit01(Mathf.PerlinNoise((point.x + 15215.818f) * noiseFreq2, (point.y - 51154.554f) * noiseFreq2), -noiseAmp2, noiseAmp2);
+            float offsetStrength = GeneralUtils.fit01(Mathf.PerlinNoise(point.x * settings.noiseFreq, point.y * settings.noiseFreq), -settings.noiseAmpRand, settings.noiseAmpRand);
+            float offsetStrength2 = GeneralUtils.fit01(Mathf.PerlinNoise((point.x + 1515.88f) * settings.noiseFreq, (point.y - 5154.55f) * settings.noiseFreq), -settings.noiseAmp, settings.noiseAmp);
+            float offsetStrength3 = GeneralUtils.fit01(Mathf.PerlinNoise((point.x + 15215.818f) * settings.noiseFreq2, (point.y - 51154.554f) * settings.noiseFreq2), -settings.noiseAmp2, settings.noiseAmp2);
             Vector3 offsetRand2 = new Vector3(cross.x * offsetStrength2, cross.y * offsetStrength2, 0f);
             Vector3 offsetRand3 = new Vector3(cross.x * offsetStrength3, cross.y * offsetStrength3, 0f);
 
@@ -407,7 +417,8 @@ public class MapManager : MonoBehaviour
     private List<MapNode> SetStartingNodes()
     {
         List<MapNode> startingNodes = new List<MapNode>();
-        List<int> leftRightPositions = GetRandomLeftRightPositions(startingNodesCount);
+        int startingnodesCount = Mathf.Clamp(UnityEngine.Random.Range(settings.startingNodesMinCount, settings.startingNodesMaxCount),2,5);
+        List<int> leftRightPositions = GetRandomLeftRightPositions(startingnodesCount);
 
         foreach (int lr in leftRightPositions)
         {
@@ -422,16 +433,10 @@ public class MapManager : MonoBehaviour
         List<MapNode> newNodes = new List<MapNode>();
         List<int> prevPositions = GetLeftRightPositions(prevLevel);
 
-        int rand = UnityEngine.Random.Range(2, 4);
-        if (rand == 1 || rand == 5)
-        {
-            //Debug.LogError("Random number is out of bounds");
-        }
+        int rand = GeneralUtils.GetWeightedRandom(2, settings.chanceOfTwoNodes, 3, settings.chanceOfThreeNodes, 4, settings.chanceOfFourNodes);
+
         List<int> leftRightPositions = GetRandomLeftRightPositions(rand);
-        if (leftRightPositions.Count == 1 || leftRightPositions.Count == 5)
-        {
-            // Debug.LogError("left right positions out of bounds");
-        }
+
 
         foreach (int lr in leftRightPositions)
         {
@@ -565,92 +570,89 @@ public class MapManager : MonoBehaviour
 
     private void SetNodeTypes()
     {
+        if (settings == null) return;
 
+        int elite = GetRandomInRange(settings.eliteMin, settings.eliteMax);
+        int shop = GetRandomInRange(settings.shopMin, settings.shopMax);
+        int rest = GetRandomInRange(settings.restMin, settings.restMax);
+        int randevent = GetRandomInRange(settings.eventMin, settings.eventMax);
 
-        int elite = Random.Range(4, 6);
-        int shop = Random.Range(2, 4);
-        int rest = Random.Range(2, 4);
-        int randevent = Random.Range(5, 7);
-        if (elite + shop + rest + randevent > mapNodes.Count)
+        int totalSpecial = elite + shop + rest + randevent;
+        if (totalSpecial > mapNodes.Count)
         {
-            Debug.LogError("Too many special nodes");
+            Debug.LogError("Too many special nodes for available map nodes.");
             return;
         }
 
-        foreach (MapNode mapNode in mapNodes)
+        foreach (var mapNode in mapNodes)
         {
             mapNode.nodeTypeEnum = MapNodeTypeEnum.Battle;
         }
 
-        for (int i = 0; i < elite; i++)
-        {
-            MapNode node = mapNodes[Random.Range(0, mapNodes.Count)];
-            if (node.nodeTypeEnum == MapNodeTypeEnum.Battle)
-            {
-                node.nodeTypeEnum = MapNodeTypeEnum.elite;
-            }
-            else
-            {
-                i--;
-            }
-        }
-        for (int i = 0; i < shop; i++)
-        {
-            MapNode node = mapNodes[Random.Range(0, mapNodes.Count)];
-            if (node.nodeTypeEnum == MapNodeTypeEnum.Battle)
-            {
-                node.nodeTypeEnum = MapNodeTypeEnum.Shop;
-            }
-            else
-            {
-                i--;
-            }
-        }
-
-        for (int i = 0; i < rest; i++)
-        {
-            MapNode node = mapNodes[Random.Range(0, mapNodes.Count)];
-            if (node.nodeTypeEnum == MapNodeTypeEnum.Battle)
-            {
-                node.nodeTypeEnum = MapNodeTypeEnum.Rest;
-            }
-            else
-            {
-                i--;
-            }
-        }
-        for (int i = 0; i < randevent; i++)
-        {
-            MapNode node = mapNodes[Random.Range(0, mapNodes.Count)];
-            if (node.nodeTypeEnum == MapNodeTypeEnum.Battle)
-            {
-                node.nodeTypeEnum = MapNodeTypeEnum.randomEvent;
-            }
-            else
-            {
-                i--;
-            }
-        }
-
+        TryAssignSpecialType(elite, MapNodeTypeEnum.elite);
+        TryAssignSpecialType(shop, MapNodeTypeEnum.Shop);
+        TryAssignSpecialType(rest, MapNodeTypeEnum.Rest);
+        TryAssignSpecialType(randevent, MapNodeTypeEnum.randomEvent);
 
         foreach (var node in mapNodes)
         {
             if (node.level == 0)
-            {
                 node.nodeTypeEnum = MapNodeTypeEnum.Battle;
-                continue;
-            }
-            if (node.level == finalLevel)
-            {
+            else if (node.level == finalLevel)
                 node.nodeTypeEnum = MapNodeTypeEnum.Boss;
-                continue;
-            }
-            float rand = Random.Range(0f, 1f);
+
             node.InitSpriteAndType();
-
-
         }
     }
+    private void TryAssignSpecialType(int count, MapNodeTypeEnum typeToAssign)
+    {
+        int tries = 0;
+        int assigned = 0;
+        int maxTries = 1000;
+
+        while (assigned < count && tries < maxTries)
+        {
+            tries++;
+            MapNode candidate = mapNodes[Random.Range(0, mapNodes.Count)];
+
+            if (candidate.nodeTypeEnum != MapNodeTypeEnum.Battle) continue;
+
+            bool conflict = false;
+
+            foreach (var conn in candidate.incomingConnections)
+            {
+                if (conn.nodeTypeEnum == typeToAssign)
+                {
+                    conflict = true;
+                    break;
+                }
+            }
+
+            if (!conflict)
+            {
+                foreach (var conn in candidate.outgoingConnections)
+                {
+                    if (conn.nodeTypeEnum == typeToAssign)
+                    {
+                        conflict = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!conflict)
+            {
+                candidate.nodeTypeEnum = typeToAssign;
+                assigned++;
+            }
+        }
+
+        if (assigned < count)
+        {
+            Debug.LogWarning($"Could only assign {assigned}/{count} nodes for type {typeToAssign}. Consider reducing amount or increasing map size.");
+        }
+    }
+
     private List<int> GetRandomLeftRightPositions(int count)
     {
         List<int> available = new List<int>(possibleLeftRightPos);
@@ -666,7 +668,7 @@ public class MapManager : MonoBehaviour
     private void FillListWithPositions(List<int> list)
     {
         list.Clear();
-        for (int i = 0; i < leftRightCount; i++)
+        for (int i = 0; i < settings.leftRightCount; i++)
             list.Add(i);
     }
     public MapNode GetHighestUnlockedNode()
@@ -686,5 +688,17 @@ public class MapManager : MonoBehaviour
             }
         }
         return mapNode;
+    }
+    private void DestroyLine(GameObject line)
+    {
+        if (lines.Contains(line))
+        {
+            lines.Remove(line);
+        }
+        Destroy(line);
+    }
+    public int GetRandomInRange(int minInclusive, int maxExclusive)
+    {
+        return Random.Range(minInclusive, maxExclusive);
     }
 }

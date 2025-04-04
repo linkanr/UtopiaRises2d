@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Action LoadNextBattleScene;
     public Action LoadSpoilsSceneAction;
     public Action LoadMapSceneAction;
+    public Action LoadEventScene;
     private void Awake()
     {
 
@@ -21,15 +22,16 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         GlobalActions.BattleSceneCompleted += LoadSpoilsScene;
-        GlobalActions.SpoilScenesCompleted += LoadMapScene;
-        GlobalActions.OnNodeCleared += LoadNextLevel;
+        GlobalActions.GoBackToMap += LoadMapScene;
+        GlobalActions.OnNodeClicked += LoadNextLevel;
 
     }
     private void OnDisable()
     {
         GlobalActions.BattleSceneCompleted -= LoadSpoilsScene;
-        GlobalActions.SpoilScenesCompleted -= LoadMapScene;
-        GlobalActions.OnNodeCleared -= LoadNextLevel;
+        GlobalActions.GoBackToMap -= LoadMapScene;
+        GlobalActions.OnNodeClicked -= LoadNextLevel;
+
     }
 
     private void LoadMapScene()
@@ -44,8 +46,17 @@ public class GameManager : MonoBehaviour
 
     private void LoadNextLevel(MapNode mapNode)
     {
-        currentLevel = mapNode.levelBase;
-        LoadNextBattleScene();
+        if (mapNode.nodeTypeEnum == MapNodeTypeEnum.randomEvent)
+        {
+            LoadEventScene();
+
+        }
+        else
+        {
+            currentLevel = mapNode.battleLevelBase;
+            LoadNextBattleScene();
+        }
+
     }
 
 

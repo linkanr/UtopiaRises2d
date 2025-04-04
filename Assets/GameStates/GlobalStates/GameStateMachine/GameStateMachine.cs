@@ -10,13 +10,16 @@ public class GameStateMachine : BaseStateMachine<GameStateMachine>
         GameManager.instance.LoadNextBattleScene += LoadBattleScene;
         GameManager.instance.LoadSpoilsSceneAction += LoadSpoilsScene;
         GameManager.instance.LoadMapSceneAction += LoadMapScene;
+        GameManager.instance.LoadEventScene += LoadEventScene;
     }
+
 
     private void OnDisable()
     {
         GameManager.instance.LoadNextBattleScene -= LoadBattleScene;
         GameManager.instance.LoadSpoilsSceneAction -= LoadSpoilsScene;
         GameManager.instance.LoadMapSceneAction -= LoadMapScene;
+        GameManager.instance.LoadEventScene -= LoadEventScene;
     }
     private void LoadMapScene()
     {
@@ -31,4 +34,9 @@ public class GameStateMachine : BaseStateMachine<GameStateMachine>
     {
         SetState(typeof(SoLoadSpoilsScene));
     }
+    private void LoadEventScene()
+    {
+        SetState(typeof(SoLoadEventScene));
+    }
+
 }

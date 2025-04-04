@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab656f3d0144eda46b97a6b5946200b3, type: 3}
+  m_Name: MapSettings
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  startingNodesCount: 3
+  nodesLevelCount: 6
+  leftRightCount: 4
+  chanceOfTwoNodes: 0.4
+  chanceOfThreeNodes: 0.4
+  chanceOfFourNodes: 0.2
+  chanceOfRandomLine: 0.2
+  noiseFreq: 0.2
+  noiseAmp: 0.5
+  noiseAmpRand: 0.1
+  noiseFreq2: 0.5
+  noiseAmp2: 0.3
+  eliteMin: 4
+  eliteMax: 6
+  shopMin: 2
+  shopMax: 4
+  restMin: 2
+  restMax: 4
+  eventMin: 5
+  eventMax: 7

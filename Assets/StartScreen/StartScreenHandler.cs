@@ -18,8 +18,8 @@ public class StartScreenHandler : MonoBehaviour
     }
     private void StartGame()
     {
-        CardManager.Instance.startingCards = StartingLayouts[StartingLayoutIndex];
-        CardManager.Instance.AddStartingCardsToDeck();
+        CardManager.instance.startingCards = StartingLayouts[StartingLayoutIndex];
+        CardManager.instance.AddStartingCardsToDeck();
         GlobalActions.OnClickStartGame();
     }
 

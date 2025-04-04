@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ccc3a848c84bd4b8b756df975be010, type: 3}
+  m_Name: BloodAtonment
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: requiredFactionsInDeck
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[FactionsEnums, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[FactionsEnums, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 13
+    - Name: $v
+      Entry: 3
+      Data: 3
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  eventName: BloodAtonment
+  description: Some of your followers have found the remains of something that  they
+    belive is Josef Smiths original bilble. God has spoken to them and told them
+    to sacrife a few women and children. Do you agree
+  minDifficulty: 0
+  maxDifficulty: 2
+  Sprite: {fileID: 21300000, guid: b7f7159c181c787408fdb05fc500aa82, type: 3}
+  allowedAlignments:
+  - galTan: 0
+    leftRigt: 2
+  requiredPreviousEvent: {fileID: 0}
+  options:
+  - description: 'Sure - Get '
+    outcome:
+      resultText: You kill them
+      healthChange: -5
+      newCardReward: {fileID: 11400000, guid: 199c581c760c69f458df602ac27ecf1e, type: 2}
+      triggersBattle: 0
+      battleLevelId: 0
+      triggersAnotherEvent: 0
+      nextEvent: {fileID: 0}
+  - description: no way
+    outcome:
+      resultText: You dont accept
+      healthChange: 0
+      newCardReward: {fileID: 0}
+      triggersBattle: 0
+      battleLevelId: 0
+      triggersAnotherEvent: 0
+      nextEvent: {fileID: 0}

@@ -23,7 +23,7 @@ public class TestScenTester : MonoBehaviour
     void OnRollButtonPressed()
     {
         cardNameDisplay.text = string.Empty;
-        if (CardManager.Instance == null)
+        if (CardManager.instance == null)
         {
             Debug.LogError("CardManager instance is null!");
             return;
@@ -48,7 +48,7 @@ public class TestScenTester : MonoBehaviour
 
         foreach (CardRareEnums rarity in rarities)
         {
-            SoCardBase newCard = CardManager.Instance.GetRandomCard(rarity);
+            SoCardBase newCard = CardManager.instance.GetRandomCard(rarity);
 
             // Update GUI with the new card's name and rarity
             if (newCard != null && cardNameDisplay != null)

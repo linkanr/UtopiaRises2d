@@ -31,6 +31,7 @@ public class CameraFollowMap : MonoBehaviour
     {
         screenHeight = Screen.height;
         MapNode mapNode = MapManager.instance.GetHighestUnlockedNode();
+        maxY = MapManager.instance.mapNodes[MapManager.instance.mapNodes.Count - 1].transform.position.y;
         if (mapNode == null)
         {
             Debug.LogError("No map node found");
@@ -41,11 +42,13 @@ public class CameraFollowMap : MonoBehaviour
             Vector3 startPos = transform.position;
             startPos.y = mapNode.transform.position.y;
             transform.position = startPos;
+            canMove = true;
             return;
         }
         else // start of game
         {
             Vector3 startPos = transform.position;
+        
             startPos.y = maxY;
             transform.position = startPos;
 

@@ -4,8 +4,8 @@ using UnityEngine;
 public class CardManager : MonoBehaviour
 {
     public List<SoCardBase> ownedCards;
-
-    public static CardManager Instance;
+    public bool intialized = false;    
+    public static CardManager instance;
     private SoAllCardsGlobalDic allCards;
     public SoCardList startingCards;
 
@@ -21,10 +21,10 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
-            
+            instance = this;
+
         }
         else
         {
@@ -36,6 +36,7 @@ public class CardManager : MonoBehaviour
     public void AddStartingCardsToDeck()
     {
         GetStartingCards();
+        intialized = true;
     }
 
     public SoCardBase GetRandomCard()
@@ -58,6 +59,7 @@ public class CardManager : MonoBehaviour
 
     public void AddCard(SoCardBase cardBase)
     {
+
         SoCardBase newCard = Instantiate(cardBase);
         ownedCards.Add(newCard);
     }
@@ -66,12 +68,40 @@ public class CardManager : MonoBehaviour
     {
         foreach (SoCardBase cardBase in cardList)
         {
+            Debug.Log("Adding card to deck: " + cardBase.title);
             AddCard(cardBase);
         }
     }
 
     private void GetStartingCards()
     {
+        Debug.Log("Adding starting cards");
         AddCard(startingCards);
+    }
+    public List<FactionsEnums> GetContainingFactions(int minAmount)
+    {
+        List<FactionsEnums > result = new List<FactionsEnums>();
+        Dictionary<FactionsEnums, int> factionDic = new Dictionary<FactionsEnums, int>();
+        foreach (SoCardBase card in ownedCards)
+        {
+            FactionsEnums faction = card.faction.factionEnum;
+            if (!factionDic.ContainsKey(faction))
+            {
+                factionDic[faction] = 1;
+            }
+            else
+            {
+                factionDic[faction]++;
+            }
+
+        }
+        foreach (var faction in factionDic)
+        {
+            if (faction.Value >= minAmount)
+            {
+                result.Add(faction.Key);
+            }
+        }
+        return result;
     }
 }
