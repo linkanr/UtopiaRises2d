@@ -10,11 +10,11 @@ public class HealthManager : MonoBehaviour
 
     private void OnEnable()
     {
-        BattleSceneActions.OnBaseDamaged += TakeDamage;
+        GlobalActions.DoBaseDamage += TakeDamage;
     }
     private void OnDisable()
     {
-        BattleSceneActions.OnBaseDamaged -= TakeDamage;
+       GlobalActions.DoBaseDamage -= TakeDamage;
     }
 
 

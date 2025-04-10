@@ -31,7 +31,7 @@ public class DefensiveStructure : SceneObjectBuilding
     {
 
         TimeActions.OnQuaterTick -= OnGlobalTimeChanged;
-        Destroy(gameObject);
+        
     }
 
     protected override void AddStatsForClick(Stats _stats)

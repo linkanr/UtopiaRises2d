@@ -13,6 +13,8 @@ public class SoTriggeredDamage : SoMinorObject
     {
         base.GetStatsInernal(stats);
         stats.Add(StatsInfoTypeEnum.FireEffect, visualEffect);
+        DamagerBaseClass damagerInstance = damage.Clone();
+        damage = damagerInstance;
         stats.Add(StatsInfoTypeEnum.damager, damage);
         
         return stats;

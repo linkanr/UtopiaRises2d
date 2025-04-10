@@ -29,6 +29,10 @@ public class TimeTickerForIHasLifeSpan : MonoBehaviour
     }
     private void TimeTick()
     {
+        if (timeHealthHandler.sceneobjectIsDead)
+        {
+            return;
+        }
         timeHealthHandler.TakeDamage(1,null);
 
 

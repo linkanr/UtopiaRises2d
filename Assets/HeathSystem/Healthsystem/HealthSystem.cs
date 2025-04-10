@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector.Editor.Drawers;
+using System;
 using UnityEngine;
 
 public abstract class HealthSystem:MonoBehaviour
@@ -16,8 +17,10 @@ public abstract class HealthSystem:MonoBehaviour
     {
         return (float)health / (float)maxHealth;
     }
+    public bool sceneobjectIsDead =>sceneObject.isDead;
     public virtual void Die(SceneObject attacker)
     {
+
         sceneObject.OnSceneObjectDestroyedBase();
         OnKilled?.Invoke(this, new OnSceneObjectDestroyedArgs { victim = sceneObject,killer = attacker });
         BattleSceneActions.OnSceneObjectKilled?.Invoke(new OnSceneObjectDestroyedArgs { killer=attacker,victim=sceneObject});

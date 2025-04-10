@@ -22,9 +22,8 @@ public class EnemyBase : StaticSceneObject
     {
         Onkilled();
         BattleSceneActions.OnEmemyDefeated?.Invoke();
-        Destroy(gameObject);
-    }
 
+    }
 
     protected override void AddStatsForClick(Stats stats)
     {

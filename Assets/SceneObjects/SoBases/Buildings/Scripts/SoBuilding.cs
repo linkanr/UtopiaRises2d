@@ -16,9 +16,9 @@ public abstract class SoBuilding : SoSceneObjectBase
 
     protected override Stats GetStatsInernal(Stats stats)
     {
-        Debug.Log("SoBuilding adding stats internal");
+
         stats.Add(StatsInfoTypeEnum.lifeTime, lifeTime);
-        Debug.Log("lifeTime is " +lifeTime + " stats of lifetime is " + stats.lifeTime  );
+
         stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.playerbuilding);
         stats.Add(StatsInfoTypeEnum.influenceRadius, influenceRadius);
         return stats;

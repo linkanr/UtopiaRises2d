@@ -40,7 +40,7 @@ public abstract class EnviromentObject : StaticSceneObject
         bounds = c2D.bounds;
         bounds.Expand(.1f);
         BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
-        Destroy(gameObject);
+        
     }
     public override void OnCreated()
     {
@@ -56,5 +56,6 @@ public enum ObjectTypeEnums
 {
     stone,
     forest,
+    bridge,
     none
 }

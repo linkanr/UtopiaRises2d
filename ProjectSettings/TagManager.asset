@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Terrain
   - persistant
+  - bridge
   layers:
   - Default
   - TransparentFX
@@ -13,26 +14,26 @@ TagManager:
   - 
   - Water
   - UI
-  - WalkableSurface
-  - NotWalkableSurface
-  - bush
+  - walkableSurface
+  - notWalkableSurface
+  - bridge
   - stone
-  - damage
+  - tree
   - water
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   - enemy
   - humanBuildings
+  - CellOverlay
   - SceneObjects
   - 
-  - tree
-  - 
-  - CellOverlay
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - damage
   - 
   - 
   - 

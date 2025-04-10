@@ -23,7 +23,7 @@ public class Enemy : MovingSceneObject,  IcanAttack
     protected override void OnObjectDestroyedObjectImplementation()
     {
         EnemyManager.Instance.spawnedEnemiesList.Remove(this);
-        Destroy(gameObject);
+        
     }
     protected override void AddStatsForClick(Stats stats)
     {

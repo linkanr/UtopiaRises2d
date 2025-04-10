@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: BasicAttack
   m_EditorClassIdentifier: 
   displayRangeSprite: {fileID: 21300000, guid: 9ef43416a8c0df54c9d67b6ec326083c, type: 3}
-  visualEffect: {fileID: 4678084455662318589, guid: 0ac96cbf9a516754cb78ab7ad45edcb2, type: 3}
-  prefabForAmmo: {fileID: 0}
+  shotEffectType: 0

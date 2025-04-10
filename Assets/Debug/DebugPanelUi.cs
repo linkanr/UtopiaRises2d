@@ -31,7 +31,7 @@ public class DebuggPanelUi : MonoBehaviour
 
         instanceDropbown.onValueChanged.AddListener(delegate
         {
-            DebugInstanceSceneObjects.instance.SetString(instanceDropbown.options[instanceDropbown.value].text);
+            SceneObjectInstanciator.instance.SetString(instanceDropbown.options[instanceDropbown.value].text);
         });
         cellInfoToggle.onValueChanged.AddListener(delegate
         {
@@ -113,16 +113,18 @@ public class DebuggPanelUi : MonoBehaviour
     }
     void Start()
     {
-        foreach (var sceneObject in DebugInstanceSceneObjects.instance.soSceneObjectList)
+        foreach (var sceneObject in SceneObjectInstanciator.instance.allSceneObjects)
         {
           
             instanceDropbown.options.Add(new TMP_Dropdown.OptionData(sceneObject.sceneObjectName));
             instanceDropbown.value = 0;
             instanceDropbown.RefreshShownValue();
-            DebugInstanceSceneObjects.instance.SetString(instanceDropbown.options[instanceDropbown.value].text);
+            SceneObjectInstanciator.instance.SetString(instanceDropbown.options[instanceDropbown.value].text);
         }
         DebuggerGlobal.instance.EnabblePanel += EnablePanel;
         gameObject.SetActive(false);
+        disableEdgeScrolling.isOn = true;
+        disableEdgeScrolling.isOn = false;
     }
     private void OnDestroy()
     {

@@ -16,6 +16,8 @@ public class SoDefensiveStructure : SoBuilding
 
         base.GetStatsInernal(stats);
         stats.Add(StatsInfoTypeEnum.lifeTime, lifeTime);
+        DamagerBaseClass damagerInstance = damagerBaseClass.Clone();
+        damagerBaseClass = damagerInstance;
         stats.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
         stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.defensiveStructure);
  

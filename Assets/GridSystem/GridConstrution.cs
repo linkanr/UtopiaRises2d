@@ -38,7 +38,7 @@ public class GridConstrution
                 Color pixelColor = texture.GetPixel(x, y);
                 CellReturnInfoArgs cellReturn = CellTerrainToColor.GetTerrain(pixelColor);
                 CellTerrainEnum cellTerrain = cellReturn.cellTerrainEnum;
-                CellContainsEnum cellContains = cellReturn.cEllContainsEnum;
+                string cellContains = cellReturn.cEllContainsEnum;
 
                 CellTerrain cellTerrainObject = GridCellManager.instance.GetTerrainFromEneum(cellTerrain);
                 if (cellTerrainObject == null)

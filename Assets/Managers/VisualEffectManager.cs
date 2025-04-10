@@ -61,5 +61,6 @@ public enum visualEffectsEnum
 {
     death,
     minor,
+    bridge,
     none
 }

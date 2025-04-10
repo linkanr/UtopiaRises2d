@@ -96,7 +96,7 @@ public class RandomEventOutcome
         // Apply stat or inventory changes to the player
         if (healthChange != 0)
         {
-            
+            GlobalActions.DoBaseDamage?.Invoke(healthChange);
         }
    
         if (newCardReward != null)

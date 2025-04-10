@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b359492f22761ae4881324e7d8e0158f, type: 3}
+  m_Name: LookoutOutpost
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: damagerBaseClass
+      Entry: 7
+      Data: 0|SoDamageDealGetDamage, Assembly-CSharp
+    - Name: baseDamage
+      Entry: 3
+      Data: 1
+    - Name: reloadTime
+      Entry: 4
+      Data: 1
+    - Name: attackRange
+      Entry: 4
+      Data: 10
+    - Name: sceneObjectParent
+      Entry: 6
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  sceneObjectName: Lookout Outpost
+  description: A weak scout to expand terrirory
+  sprite: {fileID: 21300000, guid: f7fa2c19896a8754187680f9a0e0c9ef, type: 3}
+  prefab: {fileID: 7633603095836897639, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
+  faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
+  sceneObjectType: 0
+  takesDamageFrom:
+    damageFromFire: 1
+    damgaeFromWater: 0
+    destroyedWhenStepedOn: 0
+  influenceRadius: 10
+  lifeTime: 70
+  soDamageEffect: {fileID: 11400000, guid: 8e15afa3cab3b134e89eb7f921e3d54e, type: 2}
+  attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
+  seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
+  possibleTargetTypes: 02000000
+  soSceneObjectAnimationData: {fileID: 0}

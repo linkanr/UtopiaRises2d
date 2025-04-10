@@ -12,7 +12,12 @@ public class SceneObjectStatsHandler
     public SceneObjectStatsHandler(SceneObject parentObject, EffectSpriteOrganizer effectSpriteOrganizer)
     {
         this.parentObject = parentObject;
-        this.effectSpriteOrganizer = effectSpriteOrganizer;
+        if (effectSpriteOrganizer != null)
+        {
+            this.effectSpriteOrganizer = effectSpriteOrganizer;
+            return;
+        }
+        
     }
 
     // Stats Management

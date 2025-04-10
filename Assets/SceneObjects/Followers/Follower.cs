@@ -56,7 +56,7 @@ public class Follower : SceneObject
 
        
 
-        Destroy(gameObject);
+        
     }
 
 

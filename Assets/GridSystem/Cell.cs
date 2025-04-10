@@ -29,7 +29,7 @@ public class Cell: IDisposable
     public float size;
     public CellTerrain cellTerrain; 
     public CellEffect cellEffect;
-    public CellContainsEnum cellStartingObject = CellContainsEnum.none;
+    public string cellStartingObject;
     public float heat;
     public float humidity;
     public List<Cell> neigbours;
@@ -154,17 +154,14 @@ public class Cell: IDisposable
         float walkPenalty = input;
         foreach (SceneObject sceneObject in containingSceneObjects)
         {
-            
 
-            if (sceneObject is not EnviromentObject)
+            float moveFactor =  sceneObject.GetStats().statsInfoDic.TryToGetValue<float>(StatsInfoTypeEnum.moveFactor);
+            if (moveFactor != 0f)
             {
-                continue;
+                walkPenalty = (float)moveFactor;
             }
-        if (sceneObject is EnviromentObject)
-            {
+        
 
-                walkPenalty = sceneObject.GetStats().moveFactor;
-            }
             if (cellEffect != null)
             {
                 walkPenalty *= cellEffect.walkPenalty;

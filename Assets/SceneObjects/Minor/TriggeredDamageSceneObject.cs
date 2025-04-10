@@ -67,7 +67,7 @@ public class TriggeredDamageSceneObject : MinorSceneObjects, IStepable
         Trigger();
         TimeActions.GlobalTimeChanged -= CheckTrigger;
         
-        Destroy(gameObject);
+        
     }
     protected override void AddStatsForClick(Stats _stats)
     {

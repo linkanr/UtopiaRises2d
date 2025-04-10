@@ -29,7 +29,7 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
     {
 
         stateMachine.SetState(typeof(SoBattleSceneStateSpawningEnemies));
-        AstarPath.active.Scan();
+        TagFromLayerZ.instance.UpdateGraphAndTags();
     }
 
     public override void OnStateExit()

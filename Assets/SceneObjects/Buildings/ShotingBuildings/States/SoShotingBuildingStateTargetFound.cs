@@ -12,7 +12,11 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
 
     public override void OnStateExit()
     {
-        
+        if (stateMachine.shootingBuilding.isDead == true)
+        {
+            return;
+        }
+        stateMachine.shootingBuilding.objectAnimator.PlayIdle();
     }
     public override void OnObjectDestroyed()
     {
@@ -20,11 +24,16 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
     }
     public override void OnStateUpdate()
     {
+        if (stateMachine.shootingBuilding.isDead == true)
+        {
+            return;
+        }
         stateMachine.shootingBuilding.targeter.attackTimer += BattleClock.Instance.deltaValue;
 
 
         if (stateMachine.shootingBuilding.targeter.target == null)
         {
+           
             stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));
             return;
 
@@ -46,6 +55,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
         else if (stateMachine.shootingBuilding.targeter.attackTimer > stateMachine.shootingBuilding.GetStats().reloadTime) // This happens when target is existing and valid
         {
 
+            stateMachine.shootingBuilding.objectAnimator.PlayAction();
             stateMachine.shootingBuilding.targeter.soAttackSystem.Attack(stateMachine.shootingBuilding);
 
             stateMachine.shootingBuilding.targeter.attackTimer = 0f;

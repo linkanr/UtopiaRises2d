@@ -24,7 +24,7 @@ public class ShotEffectObject : MonoBehaviour
 
     public void Initialize(Vector3 from, Vector3 to, float speed)
     {
-        Debug.Log("ShotEffectObject.Initialize");
+   
 
         Vector3 offset = new Vector3(0, 0, -0.2f);
         gameObject.SetActive(true);

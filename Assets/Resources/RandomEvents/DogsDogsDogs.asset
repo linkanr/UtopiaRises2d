@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ccc3a848c84bd4b8b756df975be010, type: 3}
+  m_Name: DogsDogsDogs
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: requiredFactionsInDeck
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[FactionsEnums, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[FactionsEnums, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  eventName: DOGS DOGS DOGS
+  description: 'Fuck me thats a lot of dogs
+
+'
+  minDifficulty: 0
+  maxDifficulty: 2
+  Sprite: {fileID: 21300000, guid: 702376afc2dfd8a4e80d3017ca2f7193, type: 3}
+  allowedAlignments: []
+  requiredPreviousEvent: {fileID: 0}
+  options:
+  - description: Fight them dogs
+    outcome:
+      resultText: Fight them and harvest thier smell
+      healthChange: 2
+      newCardReward: {fileID: 11400000, guid: 53fd4fd86f28ddf49a23c1fafba5cf22, type: 2}
+      triggersBattle: 1
+      battleName: event
+      triggersAnotherEvent: 0
+      nextEvent: {fileID: 0}
+  - description: Run away
+    outcome:
+      resultText: Run away
+      healthChange: -5
+      newCardReward: {fileID: 0}
+      triggersBattle: 0
+      battleName: 
+      triggersAnotherEvent: 0
+      nextEvent: {fileID: 0}

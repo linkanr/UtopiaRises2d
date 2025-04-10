@@ -18,4 +18,19 @@ public class SoDamageDealGetDamage : DamagerBaseClass
     {
         return reloadTime;
     }
+
+    public override void InitImplemantation()
+    {
+       
+    }
+    public override DamagerBaseClass Clone()
+    {
+        return new SoDamageDealGetDamage
+        {
+            baseDamage = this.baseDamage,
+            reloadTime = this.reloadTime,
+            attackRange = this.attackRange
+        };
+    }
+
 }

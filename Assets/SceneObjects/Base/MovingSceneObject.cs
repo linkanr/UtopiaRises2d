@@ -25,8 +25,13 @@ public abstract class MovingSceneObject : SceneObject
             currentCell = newCell;
         }
 
-        spriteSorter.SortSprite();
+
         sceneObjectPosition = transform.position;
+    }
+    protected override void AddSpriteSorter(SpriteRenderer spriteRenderer)
+    {
+        SpriteSorter spriteSorter = gameObject.AddComponent<SpriteSorter>();
+        spriteSorter.Init(spriteRenderer, true);
     }
 
 }

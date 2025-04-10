@@ -13,7 +13,7 @@ public class SoBattleSceneStateSceneStarting : BaseState<BattleSceneStateMachine
         }
 
         BattleSceneActions.OnInitializeScene();
-        AstarPath.active.Scan();
+        TagFromLayerZ.instance.UpdateGraphAndTags();
 
         stateMachine.SetState(typeof(SoBattleSceneStatePlayCards));
     }

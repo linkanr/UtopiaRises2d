@@ -29,7 +29,7 @@ public  class LateUpdateAstar:MonoBehaviour
 
     private IEnumerator UpdateAstarRoutine(Bounds bounds)
     {
-        AstarPath.active.UpdateGraphs(bounds);
+        TagFromLayerZ.instance.UpdateGraphAndTags(bounds);
         yield return null;
     }
 

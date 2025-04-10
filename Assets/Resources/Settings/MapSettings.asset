@@ -21,23 +21,24 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  startingNodesCount: 3
-  nodesLevelCount: 6
+  startingNodesMinCount: 2
+  startingNodesMaxCount: 5
+  nodesLevelCount: 12
   leftRightCount: 4
-  chanceOfTwoNodes: 0.4
-  chanceOfThreeNodes: 0.4
+  chanceOfTwoNodes: 0.3
+  chanceOfThreeNodes: 0.5
   chanceOfFourNodes: 0.2
-  chanceOfRandomLine: 0.2
-  noiseFreq: 0.2
+  chanceOfRandomLine: 0.1
+  noiseFreq: 0.287
   noiseAmp: 0.5
-  noiseAmpRand: 0.1
-  noiseFreq2: 0.5
-  noiseAmp2: 0.3
-  eliteMin: 4
-  eliteMax: 6
-  shopMin: 2
-  shopMax: 4
-  restMin: 2
-  restMax: 4
-  eventMin: 5
-  eventMax: 7
+  noiseAmpRand: 0.07
+  noiseFreq2: 0.75
+  noiseAmp2: 0.22
+  eliteMin: 2
+  eliteMax: 4
+  shopMin: 1
+  shopMax: 2
+  restMin: 3
+  restMax: 5
+  eventMin: 8
+  eventMax: 10

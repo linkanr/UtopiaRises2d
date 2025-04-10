@@ -68,5 +68,18 @@ public abstract class TargeterBaseClass : MonoBehaviour
         soAttackSystem.Attack(attacker);
     }
 
+    private void Update()
+    {
+        if (target != null)
+        {
+            if (target.IsValid())
+            {
+                float angle = WorldSpaceUtils.GetAngleFromVector(attacker.transform.position - target.damagable.transform.position);
+                attacker.objectAnimator.SetAngle(angle);
+            }
+        }
+
+    }
+
     public abstract void Initialize(SceneObject sceneObject, SoSeekSystemBase SeekSystem, List<SceneObjectTypeEnum> possibleTargetTypes, SoAttackSystem attackSystem, Mover mover = null);
 }

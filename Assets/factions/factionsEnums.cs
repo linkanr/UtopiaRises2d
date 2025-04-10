@@ -15,7 +15,8 @@ public enum FactionsEnums
     Monarchist,
     Mormons,
     Objectivist,
-    Scientology
+    Scientology,
+    AumShinrikyo
 
 
 }

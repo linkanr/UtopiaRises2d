@@ -12,6 +12,7 @@ public enum CardNames
     LightArtillery,
     LongTermDefence,
     LookoutOutpost,
+    MicrowaveAssasin,
     Mine,
     MineLayer,
     Negotiations,

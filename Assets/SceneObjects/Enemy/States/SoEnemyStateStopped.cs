@@ -7,11 +7,13 @@ public class SoEnemyStateStopped : BaseState<EnemyStateMachine>
     {
         Debug.Log("entered stopped state");
         stateMachine.enemy.mover.StateAllowsMovement(false);
+ 
     }
 
     public override void OnStateExit()
     {
-        
+       
+        stateMachine.enemy.mover.StateAllowsMovement(true);
     }
     public override void OnObjectDestroyed()
     {

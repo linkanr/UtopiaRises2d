@@ -33,4 +33,21 @@ public class SoDamageDealBasedOnFactionObjects : DamagerBaseClass
     {
         return reloadTime;
     }
+
+    public override void InitImplemantation()
+    {
+
+    }
+    public override DamagerBaseClass Clone()
+    {
+        return new SoDamageDealBasedOnFactionObjects
+        {
+            baseDamage = this.baseDamage,
+            reloadTime = this.reloadTime,
+            attackRange = this.attackRange,
+            additionPerObject = this.additionPerObject,
+            factionBonus = this.factionBonus
+        };
+    }
+
 }

@@ -20,5 +20,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Map.unity
     guid: b7343f94d99474c429c50afcb7604a5b
+  - enabled: 1
+    path: Assets/Scenes/RandomEvent.unity
+    guid: 63c47bca839b09b4c937da240e27a209
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 92cdb115201cae64891f401da437c3cf, type: 2}

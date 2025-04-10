@@ -20,15 +20,15 @@ public class BattleSceneBuilder : MonoBehaviour
         GridConstrution  grid =  GridCellManager.instance.gridConstrution;
         foreach (Cell cell in grid.gridArray)
         {
-            if (cell.cellStartingObject  != CellContainsEnum.none)
+
+            if (!string.IsNullOrWhiteSpace(cell.cellStartingObject))
             {
-                if (cell.cellStartingObject == CellContainsEnum.constructionCore)
-                {
-                    SceneObjectConstructionBase constructionBaseSceneObject = SceneObjectConstructionBase.Create(new Vector3(cell.x + grid.cellSize / 2, cell.z + grid.cellSize / 2, 0f));
-                    yield return null;
-                }
+             //   Debug.Log (cell.cellStartingObject + " is starting object");
+                //Debug.Log($"[BattleSceneBuilder] Building scene object: {cell.cellStartingObject} at {cell.worldPosition}");
+                SceneObject sceneObject = SceneObjectInstanciator.instance.Execute(cell.cellStartingObject, cell.worldPosition); 
             }
         }
+        
         
         yield return null;
     }

@@ -65,6 +65,7 @@ public class HealthBar : MonoBehaviour
             healthSystem = GetComponentInParent<HealthSystem>();
             baseTransform = healthSystem.gameObject.transform;
             healthSystem.OnDamaged += HealthSystem_OnDamaged;
+            healthSystem.OnKilled += DestoyHealthBar;
             if (showNumbers)
             {
                 healthText.text = healthSystem.GetHealth().ToString();
@@ -79,4 +80,8 @@ public class HealthBar : MonoBehaviour
 
     }
 
+    private void DestoyHealthBar(object sender, OnSceneObjectDestroyedArgs e)
+    {
+        Destroy(gameObject);
+    }
 }

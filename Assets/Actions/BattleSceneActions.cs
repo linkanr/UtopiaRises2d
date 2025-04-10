@@ -47,7 +47,7 @@ public static class BattleSceneActions
 
 
     public static Action<SceneObject> OnSceneObjectCreated;
-    public static Action<int> OnBaseDamaged;
+
 
     public static Action<Bounds> OnUpdateBounds;
     public static Action<int> OnFollowerCountChanged;

@@ -16,14 +16,13 @@ public class SoshotingBuilding : SoBuilding
     public SoSeekSystemForBuildings seekSystemForBuildings;
     public List<SceneObjectTypeEnum> possibleTargetTypes;
     public DamagerBaseClass damagerBaseClass;
-
+    public SoSceneObjectAnimationData soSceneObjectAnimationData;
     protected override Stats GetStatsInernal(Stats _statsInforDic)
     {
         base.GetStatsInernal(_statsInforDic);
+        DamagerBaseClass damagerInstance = damagerBaseClass.Clone();
+        damagerBaseClass = damagerInstance;
         _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
-
-
-
         _statsInforDic.Add(StatsInfoTypeEnum.onClickDisplaySprite, attackSystem.displayRangeSprite);
         _statsInforDic.Add(StatsInfoTypeEnum.canTargetThefollowingSceneObjects, possibleTargetTypes);
 
@@ -33,13 +32,17 @@ public class SoshotingBuilding : SoBuilding
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
-
+        base.ObjectInitialization(sceneObject);
+        Debug.Log("SoShotingBuildigng ObjectIntialization");
+        damagerBaseClass.Init(sceneObject);
         SceneObjectShootingBuilding shootingBuilding = (SceneObjectShootingBuilding)sceneObject;
         shootingBuilding.targeter = shootingBuilding.AddComponent<TargeterForStaticObjects>();
         
         shootingBuilding.targeter.Initialize(shootingBuilding, seekSystemForBuildings, possibleTargetTypes, attackSystem);
+        GameObject go = new GameObject("EnemyAnimator");
+        sceneObject.objectAnimator = SceneObjectAnimator.Create(sceneObject);
+        sceneObject.objectAnimator.Init(soSceneObjectAnimationData);
 
-   
 
 
     }

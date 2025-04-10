@@ -47,19 +47,20 @@ internal class CellTerrainToColor
         if (distanceC < offset)
         {
             cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.playerTerrain;
-            cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.constructionCore;
+            cellReturnInfoArgs.cEllContainsEnum = "Construction Base";
             return cellReturnInfoArgs;
         }
         if (distanceM < offset)
         {
-            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.soil;
-            cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.playerBase;
+            cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.water;
+            cellReturnInfoArgs.cEllContainsEnum = "Bridge";
+
             return cellReturnInfoArgs;
         }
         if (distaanceBlack < offset)
         {
             cellReturnInfoArgs.cellTerrainEnum = CellTerrainEnum.soil;
-            cellReturnInfoArgs.cEllContainsEnum = CellContainsEnum.enemyBase;
+        
         }
 
 
@@ -71,7 +72,7 @@ internal class CellTerrainToColor
 public class CellReturnInfoArgs
 {
     public CellTerrainEnum cellTerrainEnum;
-    public CellContainsEnum cEllContainsEnum;
+    public string cEllContainsEnum;
 }
 
 public enum CellContainsEnum

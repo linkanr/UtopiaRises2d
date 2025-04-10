@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Hut
   description: A small hut
-  cardType: 5
+  cardType: 1
   image: {fileID: 21300000, guid: e39da869fa8cc3b4cb1dbd4549daa8c9, type: 3}
   rarity: 0
   cardCanBePlayedOnEnum: 0

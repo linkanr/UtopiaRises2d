@@ -17,7 +17,7 @@ public class EnemyCreator : MonoBehaviour
 
 
         SetAiPathSeek(soEnemyInformationPackage, newEnemy);
-        SetSpriteRenders(soEnemyInformationPackage, newEnemy);
+     
        
 
         return newEnemy;
@@ -38,17 +38,7 @@ public class EnemyCreator : MonoBehaviour
 
 
     }
-    private static void SetSpriteRenders(SoEnemyObject soEnemyObj, Enemy newEnemy)
-    {
-        Transform spritePartent = newEnemy.transform.Find("EnemyMovment");
 
-
-        SpriteRenderer[] spriteRenderers = spritePartent.GetComponentsInChildren<SpriteRenderer>();
-        foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-        {
-            spriteRenderer.sprite = soEnemyObj.sprite;
-        }
-    }
 
 
 

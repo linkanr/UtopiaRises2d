@@ -12,7 +12,7 @@ public class PlayerBasePhysicalHealthSystem : PhysicalHealthSystem
     public override bool HandleDamage(float damage)
     {
         int iDamage = (int)damage;
-        BattleSceneActions.OnBaseDamaged(iDamage);
+        GlobalActions.DoBaseDamage(iDamage);
 
         if (HealthManager.Instance.health <= 0)
 

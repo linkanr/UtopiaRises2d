@@ -10,7 +10,7 @@ public class SoEnemyObject:SoSceneObjectBase
     public SoAttackSystem attackSystem;
     public SoSeekSytemForEnemies seekSystem;
     public DamagerBaseClass damagerBaseClass;
-
+    public SoSceneObjectAnimationData soSceneObjectAnimationData;
     public List<SceneObjectTypeEnum> possibleTargetTypes;
     public float speed;
     public SoDamageEffect soDamageEffect;
@@ -20,6 +20,8 @@ public class SoEnemyObject:SoSceneObjectBase
     protected override Stats GetStatsInernal(Stats _statsInforDic)
     {
         _statsInforDic.Add(StatsInfoTypeEnum.health, health);
+        DamagerBaseClass damagerInstance = damagerBaseClass.Clone();
+        damagerBaseClass = damagerInstance;
         _statsInforDic.Add(StatsInfoTypeEnum.damager, damagerBaseClass);
         _statsInforDic.Add(StatsInfoTypeEnum.speed, speed);
         _statsInforDic.Add(StatsInfoTypeEnum.Sprite, sprite);
@@ -33,10 +35,15 @@ public class SoEnemyObject:SoSceneObjectBase
 
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
+
         if (soDamageEffect != null)
         {
             DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
             damageEffectInstansiator.Init(soDamageEffect);
         }
+        damagerBaseClass.Init(sceneObject);
+        GameObject go = new GameObject("EnemyAnimator");
+        sceneObject.objectAnimator = SceneObjectAnimator.Create(sceneObject);
+        sceneObject.objectAnimator.Init(soSceneObjectAnimationData);
     }
 }

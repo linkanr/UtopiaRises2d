@@ -1,6 +1,10 @@
 ﻿using UnityEngine.EventSystems;
 using UnityEngine;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using System.Collections;
+using System;
+using Pathfinding;
+using Pathfinding.RVO;
 
 /// <summary>
 /// Represents a base class for all scene objects in the game.
@@ -36,6 +40,8 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public bool isDead = false;
 
+    public SceneObjectAnimator objectAnimator;
+
     /// <summary>
     /// The effect sprite organizer for managing sprite effects.
     /// </summary>
@@ -46,10 +52,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public SpriteRenderer spriteRenderer;
 
-    /// <summary>
-    /// The sprite sorter for sorting the sprite.
-    /// </summary>
-    protected SpriteSorter spriteSorter;
+
 
     public HealthSystem healthSystem;
 
@@ -73,8 +76,8 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </remarks>
     protected virtual void Awake()
     {
-        spriteSorter = new SpriteSorter(this.transform, spriteRenderer);
-        spriteSorter.SortSprite();
+        //spriteSorter = new SpriteSorter(this.transform, spriteRenderer);
+        //spriteSorter.SortSprite();
         MouseOverScenObject mouseOverScenObject = gameObject.AddComponent<MouseOverScenObject>();
         mouseOverScenObject.Init(spriteRenderer);
         GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
@@ -88,10 +91,12 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
 
     }
 
+
+
     /// <summary>
     /// This initializes the scene object and adds health system if needed
     /// </summary>
-    public void InitilizeFromSo()
+    public virtual void InitilizeFromSo()
     {
         sceneObjectPosition = transform.position;
         BattleSceneActions.OnSceneObjectCreated(this);
@@ -100,6 +105,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         OnCreated();
 
         spriteRenderer.sprite = GetStats().sprite;
+        AddSpriteSorter(spriteRenderer);
 
 
         if (GetStats().health > 0)
@@ -116,9 +122,6 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
             TowerTimeUiHandle towerUi = towerUiGO.GetComponent<TowerTimeUiHandle>(); // Should only be added if it has a damager
             towerUi.Init(this);
         }
-    }
-    public virtual void start()
-    {
         Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
 
         if (cell == null)
@@ -128,6 +131,14 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         }
         cell.AddSceneObjects(this);
     }
+
+    protected virtual void AddSpriteSorter(SpriteRenderer spriteRenderer)
+    {
+        SpriteSorter spriteSorter = gameObject.AddComponent<SpriteSorter>();
+        spriteSorter.Init(spriteRenderer, false);
+    }
+
+
 
 
 
@@ -185,32 +196,128 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public void OnSceneObjectDestroyedBase()
     {
-        Debug.Log("Scene object destroyed implenention");
+        if (isDead) return; // Prevent multiple calls to destruction
+        isDead = true; // Mark as dead to prevent multiple calls
+        Debug.Log("Scene object destroyed implementation");
         BattleSceneActions.OnSceneObjectDestroyed(this);
+
+        // Remove from grid
         Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
-        if (cell != null) 
+        if (cell != null && cell.containingSceneObjects.Contains(this))
         {
-            if (cell.containingSceneObjects.Contains(this))
-            {
-                cell.containingSceneObjects.Remove(this);
-            }
+            cell.containingSceneObjects.Remove(this);
         }
+
+        // Play visual effects
         VisualEffectManager.PlayVisualEffect(GetDeathEffect(), transform.position);
+
+        // Trigger any custom object cleanup
         OnObjectDestroyedObjectImplementation();
+
+        // Listen for animation complete
+        if (objectAnimator != null)
+        {
+            objectAnimator.OnDeathAnimationFinished = () =>
+            {
+                Destroy(gameObject); // Actual destruction happens here
+            };
+
+            objectAnimator.PlayDeath(); // Start death animation
+            GraphicalCleanup();
+        }
+        else
+        {
+            Destroy(gameObject); // If no animator, destroy immediately
+        }
+
     }
+
+    private void GraphicalCleanup()
+    {
+        spriteRenderer.sortingLayerName = "EnviromentObjects"; // Reset sorting layer
+        AIPath aIPath = GetComponent<AIPath>();
+        Collider2D collider2D = GetComponent<Collider2D>();
+        RVOController rVOController = GetComponent<RVOController>();
+        AIPathVisualizer aIPathVisualizer = GetComponent<AIPathVisualizer>();
+        if (aIPathVisualizer != null)
+        {
+            Destroy(aIPathVisualizer); // Destroy AI path visualizer
+        }
+        if (rB2D != null)
+        {
+            Destroy(rB2D); // Destroy Rigidbody2D
+        }
+        if (rVOController != null)
+        {
+            rVOController.enabled = false; // Disable RVO controller
+            Destroy(rVOController); // Destroy RVO controller
+        }
+
+
+        if (aIPath != null)
+        {
+            aIPath.canMove = false; // Stop movement
+            Destroy(aIPath); // Destroy AI path
+        }
+        if (collider2D != null)
+        {
+            // Destroy collider
+            bounds = collider2D.bounds;
+            bounds.Expand(.2f);
+            Destroy(collider2D);
+            StartCoroutine(DelayedTagUpdateUntilReady(bounds));
+
+        }
+    }
+    private IEnumerator DelayedTagUpdateUntilReady(Bounds bounds)
+    {
+        Vector3 testPos = bounds.center;
+        int maxTries = 10;
+        int attempts = 0;
+        bool foundValidCollider = false;
+
+        while (attempts < maxTries)
+        {
+            yield return null;
+            Physics2D.SyncTransforms();
+
+            var hits = Physics2D.OverlapBoxAll(testPos, new Vector2(0.3f, 0.3f), 0f, TagFromLayerZ.instance.layerMask);
+
+            foreach (var hit in hits)
+            {
+                string layerName = LayerMask.LayerToName(hit.gameObject.layer).ToLower();
+                if (layerName.Contains("water"))
+                {
+                    foundValidCollider = true;
+                    break;
+                }
+            }
+
+            if (foundValidCollider) break;
+            attempts++;
+        }
+
+        if (foundValidCollider)
+        {
+            TagFromLayerZ.instance.AssignTags(bounds);
+        }
+        else
+        {
+            Debug.LogWarning("⚠️ Could not detect water collider after explosion. Tags not updated.");
+        }
+    }
+
 
     /// <summary>
     /// Called when the scene object is destroyed.Only needs to implement specific logic for the scene object.The call to the list is allready done
     /// </summary>
-    protected abstract void OnObjectDestroyedObjectImplementation();
+    /// 
     protected virtual visualEffectsEnum GetDeathEffect()
     {
-        return visualEffectsEnum.death;
+        return visualEffectsEnum.minor;
     }
-    /// <summary>
-    /// Handles pointer click events on the scene object.
-    /// </summary>
-    /// <param name="eventData">The event data for the pointer click.</param>
+    protected abstract void OnObjectDestroyedObjectImplementation();
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (!MouseDisplayManager.instance.highligtSceneObjects)

@@ -69,7 +69,9 @@ public class SoBattleScenePreScene : BaseState<BattleSceneStateMachine>
         yield return BattleSceneBuilder.instance.BuildScene();
         yield return InitializeEnemyManager();
         
-        AstarPath.active.Scan();
+        
+        TagFromLayerZ.instance.Initialize();
+        TagFromLayerZ.instance.UpdateGraphAndTags();
         BattleSceneActions.setInfluence(3);
         Instantiate(Resources.Load("mouseDisplayManager") as GameObject, stateMachine.transform);
         stateMachine.StartCoroutine(MoveToNextState());

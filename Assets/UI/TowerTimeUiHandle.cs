@@ -18,6 +18,7 @@ public class TowerTimeUiHandle : MonoBehaviour
             Debug.LogError("damageAble.iDamageableComponent is NULL!");
             return;
         }
+        sceneObject.healthSystem.OnKilled += DestroyUiPanel;
         healthSystem = sceneObject.healthSystem as TimeHealthSystem;
         healthSystem.OnDamaged += OnDamaged;
         stats = sceneObject.GetStats();
@@ -31,6 +32,11 @@ public class TowerTimeUiHandle : MonoBehaviour
         BattleSceneActions.OnSceneObjectCreated += UpdateOnSceneObject;   
         BattleSceneActions.OnSceneObjectKilled += UpdateOnSceneObject;
         UpdateUI();
+    }
+
+    private void DestroyUiPanel(object sender, OnSceneObjectDestroyedArgs e)
+    {
+        Destroy(gameObject);
     }
 
     private void UpdateOnSceneObject(SceneObject sceneObject)

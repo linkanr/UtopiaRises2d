@@ -53,6 +53,11 @@ public class ShotEffectManager : MonoBehaviour
 
     public void PlayShotEffect(ShotEffectTypeEnum type, Vector3 from, Vector3 to)
     {
+        if (type == ShotEffectTypeEnum.None)
+        {
+          
+            return;
+        }
         if (!configMap.TryGetValue(type, out var config))
         {
             Debug.LogWarning($"ShotEffectType {type} not configured.");

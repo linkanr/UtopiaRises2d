@@ -16,5 +16,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e255967a9c13c864bbe5c6e3fdde1742, type: 2}
   - {fileID: 11400000, guid: f8b8a30b8991c0a45974a739f8480691, type: 2}
   levelDiffculty: 1
-  map: {fileID: 2800000, guid: 0c4bd4b5e550ad54794c8ffd84308a68, type: 3}
+  map: {fileID: 2800000, guid: 41a47c4fbf7560e4380a3e95ce95e332, type: 3}
   luck: 1
+  levelName: 

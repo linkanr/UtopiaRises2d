@@ -6,6 +6,15 @@ public abstract class DamagerBaseClass
     public int baseDamage;
     public float reloadTime;
     public float attackRange;
+    public SceneObject sceneObjectParent;
+
+    public void Init(SceneObject _sceneObject)
+    {
+        Debug.Log("DamagerBaseClass Init");
+        sceneObjectParent = _sceneObject;
+        InitImplemantation();
+    }
+    public abstract void InitImplemantation();
 
     public int CaclulateDamage()
     {
@@ -17,7 +26,7 @@ public abstract class DamagerBaseClass
     public abstract float CalculateAttackRange();
     public abstract int CalculateDamageImplementation(int _baseDamage);
 
-
+    public abstract DamagerBaseClass Clone();
 
 
 

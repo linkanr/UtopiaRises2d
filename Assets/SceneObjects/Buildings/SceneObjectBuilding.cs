@@ -19,15 +19,6 @@ public abstract class SceneObjectBuilding : StaticSceneObject
 
     }
 
-    public void OnLifeUp()
-    {
-        if (!isDead)
-        {
-            isDead = true;
-            OnSceneObjectDestroyedBase();
-        }
-
-    }
 
     protected override void OnObjectDestroyedObjectImplementation()
     {
@@ -39,7 +30,7 @@ public abstract class SceneObjectBuilding : StaticSceneObject
             cell.CheckPlayerInfluence();
         }
         CellActions.OnGenerateHeatTexture?.Invoke(GridTypeEnum.influence);
-        Destroy(gameObject);
+       
     }
 
 
