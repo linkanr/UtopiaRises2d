@@ -28,7 +28,7 @@ public abstract class HealthSystem:MonoBehaviour
 
     public virtual void Init(int _maxHealth, SceneObject _sceneObject)
     {
-        Debug.Log("HealthSystem Init");
+        //Debug.Log("HealthSystem Init");
         if (_sceneObject == null)
         {
             Debug.LogError("[HealthSystem.Init] sceneObject passed in was null!");

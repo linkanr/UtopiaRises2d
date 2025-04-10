@@ -40,7 +40,7 @@ public class SceneObjectInstanciator :SerializedMonoBehaviour
     public SceneObject Execute(string _sceneObjectName, Vector3 pos)
 
     {
-        Debug.Log("SceneObjectInstanciator Execute " + _sceneObjectName);
+       // Debug.Log("SceneObjectInstanciator Execute " + _sceneObjectName);
         SoSceneObjectBase sceneObjectToInstance = null;
         foreach (var soSceneObject in allSceneObjects)
         {

@@ -84,7 +84,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         GameObject instance = Instantiate(effectSpriteGameObject, transform);
         effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>();
         effectSpriteOrganizer.Init(this.transform);
-
+        c2D = GetComponent<Collider2D>();
         statsHandler = new SceneObjectStatsHandler(this, effectSpriteOrganizer);
 
 
@@ -98,6 +98,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     /// </summary>
     public virtual void InitilizeFromSo()
     {
+        
         sceneObjectPosition = transform.position;
         BattleSceneActions.OnSceneObjectCreated(this);
         
@@ -130,6 +131,13 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
 
         }
         cell.AddSceneObjects(this);
+        if (c2D !=null)
+        {
+            Bounds updateBounds = c2D.bounds;
+
+            TagFromLayerZ.instance.UpdateTagsWhenReady(updateBounds, transform);
+        }
+
     }
 
     protected virtual void AddSpriteSorter(SpriteRenderer spriteRenderer)
@@ -234,9 +242,11 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
 
     private void GraphicalCleanup()
     {
+
+        Bounds updateBounds = new Bounds(transform.position, Vector3.zero);
         spriteRenderer.sortingLayerName = "EnviromentObjects"; // Reset sorting layer
         AIPath aIPath = GetComponent<AIPath>();
-        Collider2D collider2D = GetComponent<Collider2D>();
+
         RVOController rVOController = GetComponent<RVOController>();
         AIPathVisualizer aIPathVisualizer = GetComponent<AIPathVisualizer>();
         if (aIPathVisualizer != null)
@@ -259,52 +269,19 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
             aIPath.canMove = false; // Stop movement
             Destroy(aIPath); // Destroy AI path
         }
-        if (collider2D != null)
+        if (c2D != null)
         {
+            updateBounds = c2D.bounds;
+
             // Destroy collider
-            bounds = collider2D.bounds;
-            bounds.Expand(.2f);
-            Destroy(collider2D);
-            StartCoroutine(DelayedTagUpdateUntilReady(bounds));
+
+            Destroy(c2D);
+
 
         }
-    }
-    private IEnumerator DelayedTagUpdateUntilReady(Bounds bounds)
-    {
-        Vector3 testPos = bounds.center;
-        int maxTries = 10;
-        int attempts = 0;
-        bool foundValidCollider = false;
 
-        while (attempts < maxTries)
-        {
-            yield return null;
-            Physics2D.SyncTransforms();
 
-            var hits = Physics2D.OverlapBoxAll(testPos, new Vector2(0.3f, 0.3f), 0f, TagFromLayerZ.instance.layerMask);
-
-            foreach (var hit in hits)
-            {
-                string layerName = LayerMask.LayerToName(hit.gameObject.layer).ToLower();
-                if (layerName.Contains("water"))
-                {
-                    foundValidCollider = true;
-                    break;
-                }
-            }
-
-            if (foundValidCollider) break;
-            attempts++;
-        }
-
-        if (foundValidCollider)
-        {
-            TagFromLayerZ.instance.AssignTags(bounds);
-        }
-        else
-        {
-            Debug.LogWarning("⚠️ Could not detect water collider after explosion. Tags not updated.");
-        }
+        TagFromLayerZ.instance.UpdateTagsWhenReady(updateBounds, transform);
     }
 
 

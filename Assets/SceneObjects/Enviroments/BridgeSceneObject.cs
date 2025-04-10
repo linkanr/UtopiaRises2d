@@ -23,10 +23,10 @@ public class BridgeSceneObject : EnviromentObject, IStepable
 
     public void CheckTrigger(BattleSceneTimeArgs args)
     {
-        Debug.Log("CheckTrigger");
+        //Debug.Log("CheckTrigger");
         if (!IsConnectedToLand() && !triggered)
         {
-            Debug.Log("Triggering because not connected to land.");
+          //  Debug.Log("Triggering because not connected to land.");
             Trigger();
         }
     }

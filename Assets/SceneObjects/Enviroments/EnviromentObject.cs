@@ -37,18 +37,13 @@ public abstract class EnviromentObject : StaticSceneObject
 
     protected override void OnObjectDestroyedObjectImplementation()
     {
-        bounds = c2D.bounds;
-        bounds.Expand(.1f);
-        BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
+
         
     }
     public override void OnCreated()
     {
   
-        c2D = GetComponent<Collider2D>();
-        bounds = c2D.bounds;
-        bounds.Expand(.1f);
-        BattleSceneActions.OnUpdateBounds?.Invoke(bounds);
+
     }
 }
 

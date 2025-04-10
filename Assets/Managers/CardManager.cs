@@ -68,14 +68,14 @@ public class CardManager : MonoBehaviour
     {
         foreach (SoCardBase cardBase in cardList)
         {
-            Debug.Log("Adding card to deck: " + cardBase.title);
+            //Debug.Log("Adding card to deck: " + cardBase.title);
             AddCard(cardBase);
         }
     }
 
     private void GetStartingCards()
     {
-        Debug.Log("Adding starting cards");
+        //Debug.Log("Adding starting cards");
         AddCard(startingCards);
     }
     public List<FactionsEnums> GetContainingFactions(int minAmount)
