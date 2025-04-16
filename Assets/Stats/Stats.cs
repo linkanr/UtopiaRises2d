@@ -124,7 +124,9 @@ public class Stats
     /// </summary>
     public SceneObjectTypeEnum sceneObjectType => statsInfoDic.GetValue<SceneObjectTypeEnum>(StatsInfoTypeEnum.sceneObjectType);
 
-
+    public visualEffectsEnum visualEffectWhenDestroyed => statsInfoDic.TryToGetValue<visualEffectsEnum>(StatsInfoTypeEnum.visualEffectWhenDestroyed);
+    public int damageWhenDestroyed => statsInfoDic.TryToGetValue<int>(StatsInfoTypeEnum.damageWhenDestroyed);
+    public float damageWhenDiedRadius => statsInfoDic.TryToGetValue<float>(StatsInfoTypeEnum.damageWhenDiedRadius);
     /// <summary>
     /// Gets the faction of the game object.
     /// </summary>
@@ -187,7 +189,7 @@ public class Stats
     /// <summary>
     /// Gets the visual effect of the game object.
     /// </summary>
-    public VisualEffect fireEffect => statsInfoDic.TryToGetValue<VisualEffect>(StatsInfoTypeEnum.FireEffect);
+
 
 
     #endregion
@@ -281,14 +283,13 @@ public enum StatsInfoTypeEnum
     Faction,
     Sprite,
     lifeTime,
-    FireEffect,
     canTargetThefollowingSceneObjects,
     health,
     sceneObjectsTransform,
     SoDamageEffect,
     sceneObjectType,
     speed,
-    onClickDisplaySprite,
+
     seekSystem,
     attackSystem,
     damager,
@@ -300,8 +301,10 @@ public enum StatsInfoTypeEnum
     addFuelToFire, ///for Env objects
     spawningData, ///for SpawningBuildings objects
     takesDamageFrom, ///base class for taking damage
-    influenceRadius,
-
+    influenceRadius, // How much player influence that is added
+    visualEffectWhenDestroyed,
+    damageWhenDestroyed,
+    damageWhenDiedRadius
 
 }
 public class StatsInfoDic : IEnumerable<KeyValuePair<StatsInfoTypeEnum, object>>

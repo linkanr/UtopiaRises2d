@@ -6,22 +6,21 @@ public class SoDamageEffect:ScriptableObject
     public DamageNumber damageNumbertTakedamage;
     public DamageNumber damagaInfo;
 
-    public void TakeDamage(object sender, OnDamageArgs onDamageArgs)
+    public void ShowNumbers(Vector3 pos, int amount, string text ="")
     {
-        if (onDamageArgs == null)
+        Debug.Log("ShowNumbers called with value: " + amount + " and text: " + text);
+        if (!string.IsNullOrEmpty(text))
         {
-            Debug.LogError("[SoDamageEffect] onDamageArgs is null");
-            return;
+            DamageNumber damageInfo = damagaInfo.Spawn(pos, text);
         }
-        if (onDamageArgs.damageAmount < 2)
+        if (amount != 0)
         {
-            return;
+            DamageNumber damageNumber = damageNumbertTakedamage.Spawn(pos, amount);
         }
-        damageNumbertTakedamage.Spawn(onDamageArgs.defender.transform.position, onDamageArgs.damageAmount, onDamageArgs.defender.transform);
+       
+
+       
     }
-    public void DamageText(string text, Transform sendingItem)
-    {
-        damagaInfo.Spawn(sendingItem.position, text, sendingItem);
-    }
+
 
 }

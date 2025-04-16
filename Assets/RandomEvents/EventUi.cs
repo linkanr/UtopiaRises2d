@@ -13,17 +13,19 @@ public class EventUi : MonoBehaviour
     {
         // Subscribe to the event when this UI is enabled
         EventActions.OnDisplayEvent += DisplayEvent;
+        EventActions.OnDisplayEventOutcome += DisplayEventOutcome;
     }
     private void OnDisable()
     {
         // Unsubscribe when this UI is disabled
         EventActions.OnDisplayEvent -= DisplayEvent;
+        EventActions.OnDisplayEventOutcome -= DisplayEventOutcome;
     }
 
     private void DisplayEvent(RandomEventBase evt)
     {
-        eventTitleText.text = evt.eventName;
-        eventDescriptionText.text = evt.description;
+        eventTitleText.text = GameStringParser.Parse(evt.eventName);
+        eventDescriptionText.text = GameStringParser.Parse( evt.description);
         if (evt.Sprite != null)
             Image.sprite = evt.Sprite;
         else
@@ -34,7 +36,19 @@ public class EventUi : MonoBehaviour
         {
             var index = i; // capture the value for this iteration
             var option = evt.options[i];
-            ButtonWithDelegate.CreateThis(() => RandomEventManager.instance.OnChoiceSelected(index), choicebuttonParent, option.description);
+            ButtonWithDelegate.CreateThis(() => RandomEventManager.instance.OnChoiceSelected(index), choicebuttonParent, option.description, false);
         }
+    }
+    private void DisplayEventOutcome(RandomEventOutcome outcome)
+    {
+        // Clear buttons
+        foreach (Transform child in choicebuttonParent)
+            Destroy(child.gameObject);
+
+        // Update description text with outcome result
+        eventDescriptionText.text = GameStringParser.Parse(outcome.resultText);
+
+        // Show continue button using ButtonWithDelegate
+        ButtonWithDelegate.CreateThis(() => RandomEventManager.instance.ApplyOutcome(outcome), choicebuttonParent, "Continue");
     }
 }

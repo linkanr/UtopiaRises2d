@@ -6,7 +6,7 @@ public class EnemyCreator : MonoBehaviour
 {
     public static Enemy CreateEnemy(SoEnemyObject soEnemyInformationPackage, Vector3 pos)
     {
-        Debug.Log("CreateEnemy" + soEnemyInformationPackage.name+ "  speed is " + soEnemyInformationPackage.speed);
+        //Debug.Log("CreateEnemy" + soEnemyInformationPackage.name+ "  speed is " + soEnemyInformationPackage.speed);
         // Initialize the enemy instance
         SceneObject newEnemyInstance = soEnemyInformationPackage.Init(pos);
         Enemy newEnemy = newEnemyInstance as Enemy;

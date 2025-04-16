@@ -52,7 +52,7 @@ public class SoSeekSytemForEnemies : SoSeekSystemBase//Goes straigt to damagable
             if (damageable.transform != null)
             {
                 positions[i] = damageable.transform.position;
-                Debug.Log("Position [" + i + "]: " + positions[i]);
+               // Debug.Log("Position [" + i + "]: " + positions[i]);
             }
             else
             {

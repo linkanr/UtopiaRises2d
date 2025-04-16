@@ -11,7 +11,7 @@ public class OnClickObject : MonoBehaviour
     public RectTransform leftPanel;
     public RectTransform rightPanel;
     public TextMeshProUGUI simpleText;
-    private Transform tracingObject;
+  
 
     public static OnClickObject Create(Stats clickInfo)
     {
@@ -22,15 +22,12 @@ public class OnClickObject : MonoBehaviour
 
     private void Init(Stats clickInfo)
     {
-        tracingObject = clickInfo.sceneObjectTransform;
+
         foreach (KeyValuePair<StatsInfoTypeEnum, object> kvp in clickInfo.statsInfoDic)
         {
             switch (kvp.Key)
             {
-                case StatsInfoTypeEnum.onClickDisplaySprite:
-                    float size = clickInfo.maxRange * 2f;
-                    CircleReach.localScale = new Vector3(size, size, size);
-                    break;
+ 
                 case StatsInfoTypeEnum.damager:
                     AddDamagerStats(clickInfo);
                     break;
@@ -105,9 +102,6 @@ public class OnClickObject : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (tracingObject != null)
-        {
-            CircleReach.transform.position = tracingObject.position;
-        }
+
     }
 }

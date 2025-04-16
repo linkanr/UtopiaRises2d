@@ -18,7 +18,7 @@ MonoBehaviour:
   damageMulti: 1
   canHaveTower: 0
   generateHeat: 0
-  generateHumidity: 0
+  generateHumidity: 1
   fuel: 0
   chanceOfCatchingFire: 0
   heatTransferAmount: 1

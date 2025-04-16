@@ -28,7 +28,6 @@ public class SoEnemyObject:SoSceneObjectBase
 
         _statsInforDic.Add(StatsInfoTypeEnum.seekSystem, seekSystem);
         _statsInforDic.Add(StatsInfoTypeEnum.attackSystem, attackSystem);
-        _statsInforDic.Add(StatsInfoTypeEnum.onClickDisplaySprite, attackSystem.displayRangeSprite);
         _statsInforDic.Add(StatsInfoTypeEnum.canTargetThefollowingSceneObjects, possibleTargetTypes);
         return _statsInforDic;
     }
@@ -36,11 +35,7 @@ public class SoEnemyObject:SoSceneObjectBase
     protected override void ObjectInitialization(SceneObject sceneObject)
     {
 
-        if (soDamageEffect != null)
-        {
-            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
-            damageEffectInstansiator.Init(soDamageEffect);
-        }
+
         damagerBaseClass.Init(sceneObject);
         GameObject go = new GameObject("EnemyAnimator");
         sceneObject.objectAnimator = SceneObjectAnimator.Create(sceneObject);

@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector.Editor.Drawers;
 using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public abstract class HealthSystem:MonoBehaviour
@@ -16,6 +17,23 @@ public abstract class HealthSystem:MonoBehaviour
     public virtual float GetHealthAmountNormalized()
     {
         return (float)health / (float)maxHealth;
+    }
+    public void Heal(int amount, bool toMaxHealthOnly = false)
+    {
+        if(toMaxHealthOnly)
+        {
+            health = Mathf.Min(maxHealth, health+amount) ;
+        }
+        else
+        {
+            health += amount;
+        }
+
+        var healArgs = new OnDamageArgs { attacker = null, defender = sceneObject, damageAmount = -amount };
+        BattleSceneActions.OnSceneObjectTakesDamage?.Invoke(new OnDamageArgs { attacker = null, defender = sceneObject, damageAmount = -amount });
+        OnDamaged?.Invoke(this, healArgs);
+
+
     }
     public bool sceneobjectIsDead =>sceneObject.isDead;
     public virtual void Die(SceneObject attacker)

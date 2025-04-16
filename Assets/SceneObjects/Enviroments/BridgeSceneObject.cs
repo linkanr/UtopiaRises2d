@@ -3,79 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class BridgeSceneObject : EnviromentObject, IStepable
+public class BridgeSceneObject : EnviromentObject
 {
-
     private bool triggered = false;
+    private bool checkedForTrigger = false;
+    private bool connectedToLand = false;
+
     public BridgeSceneObject Create(Vector3 position)
     {
-        BridgeSceneObject bridgeSceneObject = SceneObjectInstanciator.instance.Execute("bridge", position) as BridgeSceneObject;
-        return bridgeSceneObject;
-    }
-    private void OnEnable()
-    {
-        TimeActions.GlobalTimeChanged += CheckTrigger;
-    }
-    private void OnDisable()
-    {
-        TimeActions.GlobalTimeChanged -= CheckTrigger;
+        return SceneObjectInstanciator.instance.Execute("bridge", position) as BridgeSceneObject;
     }
 
-    public void CheckTrigger(BattleSceneTimeArgs args)
+    private void OnEnable()
     {
-        //Debug.Log("CheckTrigger");
-        if (!IsConnectedToLand() && !triggered)
+        TimeActions.GlobalTimeChanged += OnTimeChanged;
+    }
+
+    private void OnDisable()
+    {
+        TimeActions.GlobalTimeChanged -= OnTimeChanged;
+    }
+
+    private void OnTimeChanged(BattleSceneTimeArgs args)
+    {
+        // Reset per tick
+        checkedForTrigger = false;
+        connectedToLand = false;
+        CheckTrigger();
+    }
+
+    public void CheckTrigger()
+    {
+        if (checkedForTrigger || triggered)
+            return;
+
+        checkedForTrigger = true;
+
+        if (!IsConnectedToLand(new HashSet<BridgeSceneObject>()))
         {
-          //  Debug.Log("Triggering because not connected to land.");
             Trigger();
         }
     }
 
     private void Trigger()
     {
-        if (triggered)
-        {
-            return;
-        }
+        if (triggered) return;
+
         triggered = true;
 
-
-        var attackRange = GetStats().maxRange;
-        var baseDamage = GetStats().damageAmount;
-
-        List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: attackRange);
-        foreach (SceneObject sceneObject in sceneObjects)
-        {
-            sceneObject.GetComponent<HealthSystem>().TakeDamage(baseDamage, this);
-        }
-        GetComponent<HealthSystem>().Die(null);
+        KillSceneObject(); // This handles the destruction + visuals
     }
+
     protected override visualEffectsEnum GetDeathEffect()
     {
         return visualEffectsEnum.bridge;
     }
+
     protected override void OnObjectDestroyedObjectImplementation()
     {
         base.OnObjectDestroyedObjectImplementation();
         if (!triggered)
-        {
             Trigger();
-        }
 
-        TimeActions.GlobalTimeChanged -= CheckTrigger;
-
-        
+        TimeActions.GlobalTimeChanged -= OnTimeChanged;
     }
+
     protected override void AddStatsForClick(Stats _stats)
     {
         base.AddStatsForClick(_stats);
         _stats.Add(StatsInfoTypeEnum.health, healthSystem.GetHealth());
     }
-    private bool IsConnectedToLand(HashSet<BridgeSceneObject> visited = null)
-    {
-        if (visited == null)
-            visited = new HashSet<BridgeSceneObject>();
 
+    private bool IsConnectedToLand(HashSet<BridgeSceneObject> visited)
+    {
         if (visited.Contains(this))
             return false;
 
@@ -85,19 +85,25 @@ public class BridgeSceneObject : EnviromentObject, IStepable
         foreach (Cell neighbor in cell.neigbours)
         {
             if (neighbor.cellTerrain.cellTerrainEnum != CellTerrainEnum.water)
+            {
+                connectedToLand = true;
                 return true;
+            }
 
             foreach (SceneObject so in neighbor.containingSceneObjects)
             {
                 if (so is BridgeSceneObject bridge && bridge != this)
                 {
                     if (bridge.IsConnectedToLand(visited))
+                    {
+                        connectedToLand = true;
                         return true;
+                    }
                 }
             }
         }
 
+        connectedToLand = false;
         return false;
     }
-
 }

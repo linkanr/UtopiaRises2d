@@ -990,6 +990,8 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Standard
       m_Image: {fileID: 0}
+    - m_Text: Experiment
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1664,6 +1666,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4c8670792eae74f4fb75b09e25fe8485, type: 2}
   - {fileID: 11400000, guid: c892fa0e29c18f843a3e1026726d23b6, type: 2}
   - {fileID: 11400000, guid: f5d71e9b9dd3c0e42b7452c92b6d0ef7, type: 2}
+  - {fileID: 11400000, guid: 3af813c6913680940b34bc08db38b645, type: 2}
   StartingLayoutIndex: 0
   canvas: {fileID: 1772957405}
 --- !u!4 &2126200230

@@ -42,7 +42,7 @@ public class RandomEventBase : SerializedScriptableObject
             bool alignmentMatch = false;
             foreach (var align in allowedAlignments)
             {
-                if (align.galTan == alignment.galTan && align.leftRigt == alignment.leftRigt)
+                if (align.galTan == alignment.galTan && align.leftRight == alignment.leftRight)
                 {
                     alignmentMatch = true;
                     break;

@@ -13,6 +13,7 @@ public class TimeHealthSystem : HealthSystem
         return CheckForDeath();
     }
 
+
     private bool CheckForDeath()
     {
         if ((GetHealth() < 1))

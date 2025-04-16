@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
-public class TriggeredDamageSceneObject : MinorSceneObjects, IStepable
+public class TriggeredDamageSceneObject : MinorSceneObjects
 {
 
     private bool triggered = false;
@@ -53,21 +53,30 @@ public class TriggeredDamageSceneObject : MinorSceneObjects, IStepable
         triggered = true;
 
 
-        var attackRange = GetStats().maxRange;
-        var fireEffect = GetStats().fireEffect;
-        var baseDamage = GetStats().damageAmount;
+        KillSceneObject();
 
-        AreaDamage.Create(transform.position, attackRange, fireEffect, baseDamage, 0, burnChance: .5f);
-        
     }
     protected override void OnObjectDestroyedObjectImplementation()
     {
         base.OnObjectDestroyedObjectImplementation();
+        if (!triggered)
+        {
+            Trigger();
+        }
 
-        Trigger();
         TimeActions.GlobalTimeChanged -= CheckTrigger;
         
         
+    }
+    protected override void TriggerDeathExplosionDamage()
+    {
+
+        var attackRange = GetStats().damageWhenDiedRadius;
+        var fireEffect = GetStats().visualEffectWhenDestroyed;
+        var baseDamage = GetStats().damageWhenDestroyed;
+        Debug.Log("destroying trigger range fireeffect damage " + attackRange + " - " + fireEffect + " - " + baseDamage);
+
+        AreaDamage.Create(transform.position, attackRange, fireEffect, baseDamage, 0, burnChance: .5f);
     }
     protected override void AddStatsForClick(Stats _stats)
     {

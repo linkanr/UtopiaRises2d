@@ -23,17 +23,6 @@ public abstract class SoBuilding : SoSceneObjectBase
         stats.Add(StatsInfoTypeEnum.influenceRadius, influenceRadius);
         return stats;
     }
-    protected override void ObjectInitialization(SceneObject sceneObject)
-    {
-        if (soDamageEffect != null)
-        {
-            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
-            damageEffectInstansiator.Init(soDamageEffect);
-        }
 
-
-
-
-    }
 
 }

@@ -31,7 +31,7 @@ public class SoAttackAndDie : SoAttackSystem
             Debug.LogError("Attacker health system is null");
             return;
         }
-            attacker.healthSystem.Die(attacker);
+            attacker.KillSceneObject();
 
     }
 }

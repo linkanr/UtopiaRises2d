@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using Pathfinding;
-using System.Collections;
-using System.Collections.Generic;
 
 public class TagFromLayerZ : MonoBehaviour
 {
@@ -30,6 +29,16 @@ public class TagFromLayerZ : MonoBehaviour
             Destroy(this);
     }
 
+    private void OnEnable()
+    {
+       TimeActions.OnQuaterTick += AssignTags;
+    }
+
+    private void OnDisable()
+    {
+       TimeActions.OnQuaterTick -= AssignTags;
+    }
+
     public void Initialize()
     {
         var astarTags = AstarPath.FindTagNames();
@@ -53,27 +62,40 @@ public class TagFromLayerZ : MonoBehaviour
             }
 
             if (!found)
-                Debug.LogWarning($"⚠️ A* tag '{entry.astarTagName}' not found.");
+                Debug.LogWarning($"A* tag '{entry.astarTagName}' not found.");
         }
 
         initialized = true;
-        Debug.Log($"✅ TagFromLayerZ initialized with {layerToAstarTag.Count} tag mappings.");
     }
 
+    /// <summary>
+    /// Performs a full scan of the graph and re-assigns all node tags.
+    /// </summary>
     public void UpdateGraphAndTags()
     {
+        if (!initialized) return;
+
         AstarPath.active.Scan();
         AssignTags();
     }
 
-    public void UpdateGraphAndTags(Bounds bounds)
+    /// <summary>
+    /// Performs a local scan of the graph within the given bounds only.
+    /// </summary>
+    public void UpdateGraphLocally(Bounds bounds)
     {
+        if (!initialized) return;
+
         AstarPath.active.UpdateGraphs(bounds);
         AstarPath.active.FlushGraphUpdates();
-        AssignTags(bounds);
+       
+
     }
 
-    public void AssignTags(Bounds? bounds = null)
+    /// <summary>
+    /// Assigns tags to nodes based on layer priorities. Called every tick.
+    /// </summary>
+    public void AssignTags()
     {
         if (!initialized)
         {
@@ -82,24 +104,13 @@ public class TagFromLayerZ : MonoBehaviour
         }
 
         var graph = AstarPath.active.data.gridGraph;
-        List<Cell> cells;
-
-        if (bounds == null || bounds.Value.size == Vector3.zero)
+        if (graph == null)
         {
-            cells = GridCellManager.instance.gridConstrution.GetCellList();
-        }
-        else
-        {
-            Bounds b = bounds.Value;
-            cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(
-                b.center,
-                Mathf.CeilToInt(b.size.x),
-                Mathf.CeilToInt(b.size.y)
-            );
+            Debug.LogWarning("⚠️ No GridGraph found.");
+            return;
         }
 
-        if (cells == null) return;
-
+        var cells = GridCellManager.instance.gridConstrution.GetCellList();
         int updated = 0;
 
         foreach (var cell in cells)
@@ -109,7 +120,7 @@ public class TagFromLayerZ : MonoBehaviour
             Vector3 worldPos = GridCellManager.instance.gridConstrution.GetWorldPosition(cell.x, cell.z);
             worldPos.z = 0f;
 
-            var hits = Physics2D.OverlapBoxAll(worldPos, new Vector2(0.3f, 0.3f), 0f, layerMask);
+            var hits = Physics2D.OverlapBoxAll(worldPos, new Vector2(0.1f, 0.1f), 0f, layerMask);
 
             Collider2D best = null;
             int bestPriority = int.MinValue;
@@ -118,7 +129,7 @@ public class TagFromLayerZ : MonoBehaviour
             {
                 int layer = hit.gameObject.layer;
 
-                if (layerToAstarTag.TryGetValue(layer, out uint tag) &&
+                if (layerToAstarTag.TryGetValue(layer, out uint _) &&
                     layerToPriority.TryGetValue(layer, out int priority))
                 {
                     if (priority > bestPriority)
@@ -133,39 +144,15 @@ public class TagFromLayerZ : MonoBehaviour
 
             if (best != null && node != null)
             {
-                uint tag = layerToAstarTag[best.gameObject.layer];
-                node.Tag = tag;
+                node.Tag = layerToAstarTag[best.gameObject.layer];
                 updated++;
             }
-        }
-
-        Debug.Log($"🏁 Assigned tags to {updated} nodes {(bounds != null ? "in updated region" : "across entire graph")}.");
-    }
-
-    public void UpdateTagsWhenReady(Bounds bounds, Transform expectedObject, float checkRadius = 0.3f)
-    {
-        StartCoroutine(WaitAndTag(bounds, expectedObject, checkRadius));
-    }
-
-    private IEnumerator WaitAndTag(Bounds bounds, Transform expected, float radius)
-    {
-        Vector3 testPos = bounds.center;
-        int maxTries = 10;
-
-        for (int i = 0; i < maxTries; i++)
-        {
-            yield return null;
-            Physics2D.SyncTransforms();
-
-            var hits = Physics2D.OverlapBoxAll(testPos, new Vector2(radius, radius), 0f, layerMask);
-            if (System.Array.Exists(hits, h => h.transform == expected))
+            else if (node != null)
             {
-                Debug.Log($"✅ Collider for '{expected.name}' confirmed after {i + 1} frame(s). Assigning tags.");
-                UpdateGraphAndTags(bounds);
-                yield break;
+                node.Tag = 0;
             }
         }
 
-        Debug.LogWarning($"❗ Tag update for '{expected.name}' timed out. Collider not detected.");
+        //Debug.Log($"🏁 Assigned tags to {updated} nodes across entire graph.");
     }
 }

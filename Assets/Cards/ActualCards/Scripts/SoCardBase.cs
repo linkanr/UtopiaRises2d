@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +9,9 @@ public abstract class SoCardBase:ScriptableObject
 {
 
     public string title;
+    [MultiLineProperty(5)]
     public string description;
+
     public CardType cardType;
     public Sprite image;
     public CardRareEnums rarity;
@@ -16,6 +19,7 @@ public abstract class SoCardBase:ScriptableObject
     public CardPlayTypeEnum cardPlayTypeEnum;
 
     public int influenceCost;
+    public int healthCost = 0;
     public Faction faction;
     
 
@@ -37,6 +41,7 @@ public abstract class SoCardBase:ScriptableObject
             {
                 result = "success";
                 FisicalResources.Buy(modifiedCost);
+                HealthManager.Instance.TakeDamage(healthCost);
                 return true;
             }
             else

@@ -5,6 +5,7 @@ using System.Collections;
 using System;
 using Pathfinding;
 using Pathfinding.RVO;
+using System.Collections.Generic;
 
 /// <summary>
 /// Represents a base class for all scene objects in the game.
@@ -120,7 +121,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
             healthSystem = gameObject.AddComponent<TimeHealthSystem>();
             healthSystem.Init( GetStats().lifeTime, this);
             GameObject towerUiGO = Instantiate(Resources.Load("ui"), transform) as GameObject;
-            TowerTimeUiHandle towerUi = towerUiGO.GetComponent<TowerTimeUiHandle>(); // Should only be added if it has a damager
+            TowerUiHandler towerUi = towerUiGO.GetComponent<TowerUiHandler>(); // Should only be added if it has a damager
             towerUi.Init(this);
         }
         Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
@@ -130,13 +131,17 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
             Debug.Log("cell not found");
 
         }
+        Bounds updateBounds = new Bounds(transform.position, Vector3.one);
         cell.AddSceneObjects(this);
-        if (c2D !=null)
+        if (c2D != null)
         {
-            Bounds updateBounds = c2D.bounds;
 
-            TagFromLayerZ.instance.UpdateTagsWhenReady(updateBounds, transform);
+            updateBounds = c2D.bounds;
+
+
         }
+
+        TagFromLayerZ.instance.UpdateGraphLocally(updateBounds);
 
     }
 
@@ -184,7 +189,9 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     public abstract void OnCreated();
 
 
-
+    /// <summary>
+    /// Kills the sceneobject without an active attacker. Use this for destruction but not for active killings
+    /// </summary>
     public void KillSceneObject() 
     {
         if (healthSystem != null)
@@ -206,23 +213,38 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     {
         if (isDead) return; // Prevent multiple calls to destruction
         isDead = true; // Mark as dead to prevent multiple calls
-        Debug.Log("Scene object destroyed implementation");
+
         BattleSceneActions.OnSceneObjectDestroyed(this);
-
-        // Remove from grid
-        Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
-        if (cell != null && cell.containingSceneObjects.Contains(this))
-        {
-            cell.containingSceneObjects.Remove(this);
-        }
-
         // Play visual effects
         VisualEffectManager.PlayVisualEffect(GetDeathEffect(), transform.position);
+
+
+        // Remove from grid
+        RemoveSceneObjectFromGrid();
+
+        // Check if it is explosive 
+        TriggerDeathExplosionDamage();
+
 
         // Trigger any custom object cleanup
         OnObjectDestroyedObjectImplementation();
 
         // Listen for animation complete
+        HandleDestructionOfGameObject();
+
+    }
+
+    private void RemoveSceneObjectFromGrid()
+    {
+        Cell cell = GridCellManager.instance.gridConstrution.GetCellByWorldPosition(transform.position);
+        if (cell != null && cell.containingSceneObjects.Contains(this))
+        {
+            cell.containingSceneObjects.Remove(this);
+        }
+    }
+
+    private void HandleDestructionOfGameObject()
+    {
         if (objectAnimator != null)
         {
             objectAnimator.OnDeathAnimationFinished = () =>
@@ -237,7 +259,25 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         {
             Destroy(gameObject); // If no animator, destroy immediately
         }
+    }
 
+    /// <summary>
+    /// Triggers the death explosion damage effect without an actual area effect, this virtual method should
+    /// be overridden in the child class to instanciate an area damage with fires etc
+    /// </summary>
+    protected virtual void TriggerDeathExplosionDamage()
+    {
+
+        var attackRange = GetStats().damageWhenDiedRadius;
+        var baseDamage = GetStats().damageWhenDestroyed;
+        if (baseDamage <= 0) return; // No damage to apply
+        if (attackRange <= 0) return; // No range to apply damage
+
+        List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: attackRange);
+        foreach (SceneObject sceneObject in sceneObjects)
+        {
+            sceneObject.GetComponent<HealthSystem>().TakeDamage(baseDamage, this);
+        }
     }
 
     private void GraphicalCleanup()
@@ -272,7 +312,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         if (c2D != null)
         {
             updateBounds = c2D.bounds;
-
+            TagFromLayerZ.instance.UpdateGraphLocally(updateBounds);
             // Destroy collider
 
             Destroy(c2D);
@@ -281,7 +321,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         }
 
 
-        TagFromLayerZ.instance.UpdateTagsWhenReady(updateBounds, transform);
+     
     }
 
 

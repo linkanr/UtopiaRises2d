@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class RandomEventManager : MonoBehaviour
     private RandomEventBase currentEvent;
     public static RandomEventManager instance; // Singleton instance
     private HashSet<string> clearedEventNames = new ();
+    private bool initialized = false;   
     private void Awake()
     {
         if (instance == null)
@@ -20,6 +22,12 @@ public class RandomEventManager : MonoBehaviour
         allEvents = new List<RandomEventBase>();
         LoadAllEventsFromResources();
     }
+    private void Start()
+    {
+        
+        StartCoroutine(DebugLoadOnlyEvent()); // for debugging, remove in production
+    }
+
     private void OnEnable()
     {
         GlobalActions.OnEventSceneLoaded += Init;
@@ -30,8 +38,17 @@ public class RandomEventManager : MonoBehaviour
     }
     void Init()
     {
+        initialized = true;
         // Automatically begin an event when the scene loads
         TriggerRandomEvent();
+    }
+    private IEnumerator DebugLoadOnlyEvent()
+    {
+        yield return new WaitForSeconds(1f); // wait for scene to load
+        if (!initialized)
+        {
+            Init();
+        }
     }
     private void LoadAllEventsFromResources()
     {
@@ -51,7 +68,7 @@ public class RandomEventManager : MonoBehaviour
              diff = GameManager.instance.currentLevel.levelDiffculty; // example difficulty level
         }
 
-        PoliticalAlignment align = PlayerGlobalsManager.instance.playerGlobalVariables.politicalAlignment;
+        PoliticalAlignment align = PlayerGlobalsManager.instance.playerGlobalVariables.GetPoliticalAlignment();
         var validEvents = allEvents.FindAll(evt => evt.MatchesCriteria(diff, align));
         if (validEvents.Count == 0)
         {
@@ -68,12 +85,19 @@ public class RandomEventManager : MonoBehaviour
 
     public void OnChoiceSelected(int choiceIndex)
     {
-        // Player made a choice, resolve outcome
         RandomEventOutcome outcome = currentEvent.Resolve(choiceIndex);
-        ApplyOutcome(outcome);
+
+        if (outcome == null)
+        {
+            Debug.LogError("Outcome is null. Aborting resolution.");
+            return;
+        }
+
+        // Fire event to let EventUi handle displaying the result and continue button
+        EventActions.OnDisplayEventOutcome?.Invoke(outcome);
     }
 
-    private void ApplyOutcome(RandomEventOutcome outcome)
+    public  void ApplyOutcome(RandomEventOutcome outcome)
     {
         outcome.ApplyEffects();  // apply stat changes, rewards, etc.
         if (outcome.triggersBattle)

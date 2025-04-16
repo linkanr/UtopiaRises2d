@@ -51,16 +51,18 @@ MonoBehaviour:
   sceneObjectName: Microwave Assasin
   description: +1 damage per kill
   sprite: {fileID: 21300000, guid: 78acd2b51f9d0974f93a64f3a810bba7, type: 3}
-  prefab: {fileID: 3239594460576446794, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
+  prefab: {fileID: 7633603095836897639, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
   faction: {fileID: 11400000, guid: af2905d503feda440ba0015a362349f6, type: 2}
   sceneObjectType: 0
   takesDamageFrom:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  VisualEffectWhenDestroyed: 0
   influenceRadius: 3
   lifeTime: 80
   soDamageEffect: {fileID: 11400000, guid: 8e15afa3cab3b134e89eb7f921e3d54e, type: 2}
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
   seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
   possibleTargetTypes: 02000000
+  soSceneObjectAnimationData: {fileID: 0}

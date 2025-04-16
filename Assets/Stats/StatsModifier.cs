@@ -48,6 +48,7 @@ public class BasicStatModifier : StatsModifier
     {
         this.type = type;
         this.operation = operation;
+
     }
 
     public override void Handle(object sender, Query query)

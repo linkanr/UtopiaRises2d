@@ -3,5 +3,6 @@
     Rage,
     Weak,
     Slow,
-    Vulnerable
+    Vulnerable,
+    Imortal
 }

@@ -33,22 +33,27 @@ MonoBehaviour:
     - Name: attackRange
       Entry: 4
       Data: 5
+    - Name: sceneObjectParent
+      Entry: 6
+      Data: 
     - Name: 
       Entry: 8
       Data: 
   sceneObjectName: Hut
   description: A small Hut
   sprite: {fileID: 21300000, guid: e39da869fa8cc3b4cb1dbd4549daa8c9, type: 3}
-  prefab: {fileID: 6019945155340530211, guid: b7f30c6876152b042bfc118f58a0f4ac, type: 3}
+  prefab: {fileID: 7633603095836897639, guid: eb59a3a3727f27d4e9a638ac116ea01c, type: 3}
   faction: {fileID: 11400000, guid: def7bf5786e0a1f47b86dd94d8b60a74, type: 2}
   sceneObjectType: 0
   takesDamageFrom:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  VisualEffectWhenDestroyed: 0
   influenceRadius: 3
   lifeTime: 60
   soDamageEffect: {fileID: 11400000, guid: 8e15afa3cab3b134e89eb7f921e3d54e, type: 2}
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
   seekSystemForBuildings: {fileID: 11400000, guid: b40a81be58448c744b342e8d49b910e4, type: 2}
   possibleTargetTypes: 02000000
+  soSceneObjectAnimationData: {fileID: 0}

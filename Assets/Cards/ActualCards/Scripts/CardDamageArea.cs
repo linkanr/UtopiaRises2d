@@ -10,7 +10,7 @@ public class CardDamageArea : SoCardBase, IHasClickEffect
     public int damage;
     public float delay;
     public float diameter;
-    public VisualEffect visualEffect;
+    public visualEffectsEnum visualEffect;
     public Sprite clickSprite;
     public float burnChance;
 

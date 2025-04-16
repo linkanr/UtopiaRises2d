@@ -17,7 +17,7 @@ public class SoPlayerBaseBuilding : SoSceneObjectBase
 
 
         stats.Add(StatsInfoTypeEnum.health, health);
-        stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.playerBase);
+  
         return stats;
     }
 

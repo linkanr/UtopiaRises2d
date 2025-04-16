@@ -58,7 +58,7 @@ public class CellEffect : IDisposable
                     if (sceneObject?.transform != null)
                     {
                         sceneObject.healthSystem.TakeDamage(totalDamage, null);
-                        Debug.Log("SceneObject is not null");
+                     //   Debug.Log("SceneObject is not null");
                     }
                     
                 }
@@ -125,8 +125,7 @@ internal class CellEffectCreator
                 cellEffect.walkPenalty = .5f;
 
 
-      
-                cellEffect.damagePerSecond = 2 * PlayerGlobalsManager.instance.playerGlobalVariables.gasDamageMulti * BattleSceneManager.instance.playerGlobalVariables.gasDamageMulti;
+
                 
                 break;
             case CellEffectEnum.Fire:
@@ -134,7 +133,7 @@ internal class CellEffectCreator
                 cellEffect.walkPenalty = .5f;
   
                 
-                cellEffect.damagePerSecond = 2 * PlayerGlobalsManager.instance.playerGlobalVariables.fireDamageMulti * BattleSceneManager.instance.playerGlobalVariables.fireDamageMulti;
+
 
                 break;
         }

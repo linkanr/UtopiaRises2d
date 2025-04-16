@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e24f9442b97c3654d8920a0f99dbce33, type: 3}
+  m_Name: DeathBeforeDishonor
+  m_EditorClassIdentifier: 
+  title: Death before dishonor
+  description: +5 Damage to all @Ideology.Tan tower until end of battle
+  cardType: 0
+  image: {fileID: 21300000, guid: d0f5d7a0d57e30641b29f6506069fdb7, type: 3}
+  rarity: 1
+  cardCanBePlayedOnEnum: 0
+  cardPlayTypeEnum: 1
+  influenceCost: 3
+  faction: {fileID: 11400000, guid: 85a697d17b56d7d4d95bf32bbcb43ae8, type: 2}
+  operators: 0
+  typeOfModifier: 0
+  lifetime: 2
+  amount: 5
+  duration: 0

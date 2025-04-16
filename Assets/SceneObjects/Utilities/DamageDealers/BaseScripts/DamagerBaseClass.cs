@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
 [System.Serializable]
 public abstract class DamagerBaseClass
 {
@@ -10,20 +11,25 @@ public abstract class DamagerBaseClass
 
     public void Init(SceneObject _sceneObject)
     {
-        Debug.Log("DamagerBaseClass Init");
+       // Debug.Log("DamagerBaseClass Init");
         sceneObjectParent = _sceneObject;
         InitImplemantation();
     }
     public abstract void InitImplemantation();
 
-    public int CaclulateDamage()
+    public virtual int CaclulateDamage()
     {
+        
         return CalculateDamageImplementation( PlayerGlobalsManager.instance.playerGlobalVariables.GetDamage(baseDamage));
     }
 
     public abstract float CalculateReloadTime();
 
-    public abstract float CalculateAttackRange();
+    public virtual float CalculateAttackRange()
+    {
+        return PlayerGlobalsManager.instance.playerGlobalVariables.GetRange(attackRange);
+
+    }
     public abstract int CalculateDamageImplementation(int _baseDamage);
 
     public abstract DamagerBaseClass Clone();

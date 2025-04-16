@@ -9,11 +9,6 @@ public class SoDamageDealBasedOnFactionObjects : DamagerBaseClass
 
 
 
-    public override float CalculateAttackRange()
-    {
-        return attackRange;
-    }
-
     public override int CalculateDamageImplementation(int _baseDamage)
     {
         //Debug.Log("Calculating damage based on faction");

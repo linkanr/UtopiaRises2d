@@ -103,13 +103,13 @@ public class CellSolver : MonoBehaviour
         {
             float random = (float)randomGenerator.NextDouble(); // Thread-safe random
             float mulitplier = 0f;
-            Debug.Log(cell.heat + "is cell heat");
+            //Debug.Log(cell.heat + "is cell heat");
             if (cell.containingEnvObject != null)
             {
                 if (cell.containingEnvObject.GetStats().addFuelToFire)
                 {
-                    Debug.Log("found env object");
-                    mulitplier = 20f;
+                //    Debug.Log("found env object");
+                    mulitplier = 6f;
 
                  
                 }
@@ -118,16 +118,16 @@ public class CellSolver : MonoBehaviour
 
              else
             {
-                Debug.Log("found no env object");
+                //Debug.Log("found no env object");
                 mulitplier = cell.cellTerrain.chanceOfCatchingFire;
             }
 
-            Debug.Log($"[CellSolver] Random value: {random} for cell at ({cell.x}, {cell.z}) with heat: {cell.heat} and multiplier: {mulitplier}");
+            //Debug.Log($"[CellSolver] Random value: {random} for cell at ({cell.x}, {cell.z}) with heat: {cell.heat} and multiplier: {mulitplier}");
 
             if (random < cell.heat * mulitplier)
             {
 
-                Debug.Log($"[CellSolver] Cell at ({cell.x}, {cell.z}) caught fire with heat: {cell.heat}");
+              //  Debug.Log($"[CellSolver] Cell at ({cell.x}, {cell.z}) caught fire with heat: {cell.heat}");
                 UnityMainThreadDispatcher.Enqueue(() =>
                 {
                     cell.CreateCellEffect(CellEffectEnum.Fire); // Now runs on the main thread

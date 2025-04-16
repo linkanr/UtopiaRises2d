@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
-[CreateAssetMenu(menuName = "Cards/FacistPropaganda")]
+[CreateAssetMenu(menuName = "Cards/ScapeGoating")]
 
 public class CardScapegoating : SoCardBase, IHasClickEffect
 

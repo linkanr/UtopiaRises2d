@@ -17,6 +17,8 @@ public static class BattleSceneActions
     public static Action<SceneObject> OnSceneObjectDestroyed;// This is alawys called when a scene object is destroyed
     public static Action<OnSceneObjectDestroyedArgs> OnSceneObjectKilled; // this is called when a scene object is killed
     public static Action OnIntializationComplete;
+    public static Action<GlobalVariableModifier> OnGlobalModifierAdded;
+
 
     public static Action<Card> OnNewCardAdded;
     /// <summary>

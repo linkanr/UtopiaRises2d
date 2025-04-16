@@ -7,7 +7,7 @@ public static class GlobalActions
     public static Action<int> OnLifeChange; // This calls with the amount of life left
     public static Action<int> DoBaseDamage; // this triggers life to be lost
     public static Action<int> OnMoneyChange;
-    public static Action<ToolTipArgs> Tooltip;
+    public static Action<ToolTipArgs> ShowTooltip;
     public static Action OnClickStartGame;
     public static Action OnPostBattle;
     public static Action OnBattleSceneLoaded;

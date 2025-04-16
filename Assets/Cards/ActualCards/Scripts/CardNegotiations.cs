@@ -6,7 +6,7 @@ public class CardNegotiations : SoCardBase
     {
         failuerReason = "";
         Card newCard = CardsInPlayManager.instance.DrawCard();
-        if (newCard.cardBase.faction.politicalAlignment.ideolgicalAlignment == IdeolgicalAlignment.Centrist)
+        if (newCard.cardBase.faction.politicalAlignment.ideolgicalAlignment == IdeolgicalAlignment.MiddleCentrist)
         {
             newCard.cardCostModifier = new CardCostModifier(newCard, (originalCost) => 0, false);
         }

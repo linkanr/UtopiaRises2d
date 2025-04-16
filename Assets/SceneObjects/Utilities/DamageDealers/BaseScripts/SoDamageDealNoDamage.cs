@@ -4,10 +4,7 @@ public class SoDamageDealNoDamage : DamagerBaseClass
 {
 
 
-    public override float CalculateAttackRange()
-    {
-        return attackRange;
-    }
+
 
     public override int CalculateDamageImplementation(int _baseDamage)
     {

@@ -23,26 +23,28 @@ public class VisualEffectManager : SerializedMonoBehaviour
     public Dictionary<visualEffectsEnum, VisualEffect> visualEffects = new Dictionary<visualEffectsEnum, VisualEffect>();
 
      
-    public static void PlayVisualEffect(visualEffectsEnum visualEffectsEnum, Vector3 position)
+    public static VisualEffect PlayVisualEffect(visualEffectsEnum visualEffectsEnum, Vector3 position)
     {
-        Debug.Log("Playing VFX");
-        Instance.PlayVisualEffectInternal(visualEffectsEnum, position);
+       // Debug.Log("Playing VFX");
+        return( Instance.PlayVisualEffectInternal(visualEffectsEnum, position));
     }
-    private void PlayVisualEffectInternal(visualEffectsEnum visualEffectsEnum, Vector3 position)
+    private VisualEffect PlayVisualEffectInternal(visualEffectsEnum visualEffectsEnum, Vector3 position)
     {
-        Debug.Log("Playing VFX internal" + visualEffectsEnum);
+        //Debug.Log("Playing VFX internal" + visualEffectsEnum);
         if (visualEffects.ContainsKey(visualEffectsEnum))
         {
-            Debug.Log("VFX found");
+          //  Debug.Log("VFX found");
             VisualEffect visualEffect = Instantiate(visualEffects[visualEffectsEnum]); 
-             
+            visualEffect.transform.parent = transform;
             visualEffect.transform.position = position;
             visualEffect.Play();
             StartCoroutine(WaitForVFXToEnd(visualEffect));
+            return visualEffect;
         }
         else
         {
             Debug.Log("no VFX ");
+            return null;
         }
     }
     private IEnumerator WaitForVFXToEnd(VisualEffect vfx)
@@ -62,5 +64,8 @@ public enum visualEffectsEnum
     death,
     minor,
     bridge,
+    artillery,
+    blood,
+    explosion,
     none
 }

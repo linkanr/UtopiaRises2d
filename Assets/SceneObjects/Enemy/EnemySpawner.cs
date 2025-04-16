@@ -73,7 +73,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                enemyBase.healthSystem.Die(null);
+                enemyBase.KillSceneObject();
                 StartCoroutine(DestroySpawner());
             }
         }

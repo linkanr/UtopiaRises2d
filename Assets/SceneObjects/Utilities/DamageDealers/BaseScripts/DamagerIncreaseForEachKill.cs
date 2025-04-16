@@ -9,11 +9,7 @@ public class DamagerIncreaseForEachKill : DamagerBaseClass
     public int maxKillCount;
 
     
-    public override float CalculateAttackRange()
-    {
-  
-        return attackRange;
-    }
+
     public override int CalculateDamageImplementation(int _baseDamage)
     {
         Debug.Log("Calculating damage based on kill count" + currentKillCount ) ;

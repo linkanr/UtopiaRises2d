@@ -31,6 +31,9 @@ MonoBehaviour:
     damageFromFire: 0
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
+  VisualEffectWhenDestroyed: 6
   moveFactor: 0.5
-  AddsFuelToFire: 0
+  addFuelToFire: 0
   health: 1000
+  damageWhenDestroyed: 0
+  damageWhenDestroyedRadius: 0

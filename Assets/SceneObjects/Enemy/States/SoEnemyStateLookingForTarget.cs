@@ -29,21 +29,21 @@ public class SoEnemyStateLookingForTarget : BaseState<EnemyStateMachine>
 
     private void Seek()
     {
-        Debug.Log("Seeking");
+       // Debug.Log("Seeking");
         if (stateMachine.enemy.targeter.target == null)
         {
-            Debug.Log("No target");
+         //   Debug.Log("No target");
             stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.transform.position, stateMachine.enemy.targeter.possibleTargetTypes,stateMachine.enemy.targeter,moverComponent:stateMachine.enemy.mover);
         }
         else if (!stateMachine.enemy.targeter.target.IsValid())
         {
-            Debug.Log("No valid taget target");
+           // Debug.Log("No valid taget target");
             stateMachine.enemy.targeter.GetSeeker().Seek(stateMachine.enemy.transform.position, stateMachine.enemy.targeter.possibleTargetTypes, stateMachine.enemy.targeter);
 
         }
         else
         {
-            Debug.Log("valid taget target Movings");
+            //Debug.Log("valid taget target Movings");
             stateMachine.SetState(typeof(SoEnemeyStateMoving));
         }
     }

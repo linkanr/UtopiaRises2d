@@ -6,26 +6,7 @@ public abstract class EnviromentObject : StaticSceneObject
     
 
 
-    public static EnviromentObject Create(ObjectTypeEnums objectTypeEnums, Vector3 position)
-    {
 
-        
-
-        position.z = 0;
-        string name = objectTypeEnums.ToString();
-
-
-        string so = "so" + objectTypeEnums.ToString();
-        SoEnviromentObject soEnviromentObject = Resources.Load(so) as SoEnviromentObject;
-        EnviromentObject sceneObject =  soEnviromentObject.Init(position) as EnviromentObject;
-
-
-
-
-        sceneObject.transform.SetParent(GameObject.Find("PersistantParent").transform);
-
-        return sceneObject;
-    }
     protected override void AddStatsForClick(Stats _stats)
     {
 
@@ -47,10 +28,3 @@ public abstract class EnviromentObject : StaticSceneObject
     }
 }
 
-public enum ObjectTypeEnums
-{
-    stone,
-    forest,
-    bridge,
-    none
-}

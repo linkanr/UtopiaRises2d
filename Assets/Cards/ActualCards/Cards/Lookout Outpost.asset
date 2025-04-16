@@ -17,7 +17,7 @@ MonoBehaviour:
   cardType: 5
   image: {fileID: 21300000, guid: 3c03d4c168b61fe4cb272af7bf90e2bb, type: 3}
   rarity: 0
-  cardCanBePlayedOnEnum: 5
+  cardCanBePlayedOnEnum: 0
   cardPlayTypeEnum: 0
   influenceCost: 1
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}

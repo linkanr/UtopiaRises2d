@@ -61,8 +61,8 @@ MonoBehaviour:
       Data: 
   eventName: BloodAtonment
   description: Some of your followers have found the remains of something that  they
-    belive is Josef Smiths original bilble. God has spoken to them and told them
-    to sacrife a few women and children. Do you agree
+    belive is Josef Smiths original bilble as a @Faction.Mormon this is of course
+    something that needs investigation
   minDifficulty: 0
   maxDifficulty: 2
   Sprite: {fileID: 21300000, guid: b7f7159c181c787408fdb05fc500aa82, type: 3}
@@ -77,7 +77,7 @@ MonoBehaviour:
       healthChange: -5
       newCardReward: {fileID: 11400000, guid: 199c581c760c69f458df602ac27ecf1e, type: 2}
       triggersBattle: 0
-      battleLevelId: 0
+      battleName: 
       triggersAnotherEvent: 0
       nextEvent: {fileID: 0}
   - description: no way
@@ -86,6 +86,6 @@ MonoBehaviour:
       healthChange: 0
       newCardReward: {fileID: 0}
       triggersBattle: 0
-      battleLevelId: 0
+      battleName: 
       triggersAnotherEvent: 0
       nextEvent: {fileID: 0}

@@ -16,11 +16,7 @@ public class SoEnemyBase : SoSceneObjectBase
     {
         EnemyBase enemyBase = sceneObject as EnemyBase;
         enemyBase.permanent = permanent;
-        if (soDamageEffect != null)
-        {
-            DamageEffectInstansiator damageEffectInstansiator = sceneObject.AddComponent<DamageEffectInstansiator>();
-            damageEffectInstansiator.Init(soDamageEffect);
-        }
+
 
 
     }

@@ -10,48 +10,35 @@ public class AreaDamage : MonoBehaviour
 {
     private VisualEffect effect;
     private int damage;
-    private float delay;
     private float diameter;
     private float burnChance;
     private bool init = false;
-    public static void Create(Vector3 position, float diameter, VisualEffect visualEffect, int damage, float delay, float burnChance = 0f)
+    public static void Create(Vector3 position, float diameter, visualEffectsEnum visualEffect, int damage, float delay, float burnChance = 0f)
     {
         GameObject prefab = Resources.Load("areaDamage") as GameObject;
         position.z = -0.05f;
         AreaDamage areaDamage = Instantiate(prefab, position, Quaternion.identity).GetComponent<AreaDamage>();
         areaDamage.damage = damage;
-        areaDamage.delay = delay;
-        areaDamage.effect = Instantiate(visualEffect, areaDamage.transform);
+        areaDamage.effect = VisualEffectManager.PlayVisualEffect(visualEffect,position);
         areaDamage.effect.SetFloat("size", diameter);
         areaDamage.diameter = diameter;
         areaDamage.burnChance = burnChance;
-        if (areaDamage.delay > 0.01)
-        {
-            areaDamage.effect.Stop();
-            TimeActions.GlobalTimeChanged += areaDamage.UpdateDelay;
-        }
-        else
-        {
-
-            areaDamage.UpdateDelay(new BattleSceneTimeArgs { deltaTime = 1f });
-        }
+        Debug.Log("Created area damage" + areaDamage);
+        
+        areaDamage.Init();
 
 
     }
 
-    private void UpdateDelay(BattleSceneTimeArgs args)
+
+
+    public void Init()
     {
-        delay -= args.deltaTime;
-        if (delay <= 0 && init == false)
-        {
-            init = true;
-            StartCoroutine(StartAreaDamage());
-        }
+        StartCoroutine(StartAreaDamage());
     }
-
-
     IEnumerator StartAreaDamage()
     {
+        Debug.Log("starting area damage");
         yield return PlayEffect();
 
        
@@ -80,7 +67,7 @@ public class AreaDamage : MonoBehaviour
 
     private void DealDamage(int damage)
     {
-        //  Debug.Log("dealing damage");
+        Debug.Log("dealing damage");
         List<SceneObject> list = new List<SceneObject>();
         Debug.Log("dealing damage" + transform.position);
         list = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, maxDistance: diameter / 2, onlyDamageables: true);//Get IDamages uses radius
@@ -96,15 +83,13 @@ public class AreaDamage : MonoBehaviour
     IEnumerator PlayEffect()
     {
 
-        effect.Play();
 
-        yield return new WaitForSeconds(1f);
+
+
         AddFire();
         DealDamage(damage);
-        while (effect.aliveParticleCount > 0)
-        {
-            yield return new WaitForSeconds(.1f);
-        }
+
+        yield return null;
 
 
     }

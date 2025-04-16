@@ -12,6 +12,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
     public Faction faction;
     public SceneObjectTypeEnum sceneObjectType;
     public TakesDamageFrom takesDamageFrom;
+    public visualEffectsEnum VisualEffectWhenDestroyed;
 
     public Stats GetStats() // this sets the base
     {
@@ -23,6 +24,7 @@ public abstract class SoSceneObjectBase: SerializedScriptableObject
         stats.Add(StatsInfoTypeEnum.Faction, faction);
         stats.Add(StatsInfoTypeEnum.takesDamageMultiplier, 1f);
         stats.Add(StatsInfoTypeEnum.takesDamageFrom, takesDamageFrom);
+        stats.Add(StatsInfoTypeEnum.visualEffectWhenDestroyed, VisualEffectWhenDestroyed);
         return GetStatsInernal(stats);
 
     }

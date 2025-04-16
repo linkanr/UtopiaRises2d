@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1073741824
   smoothType: 1
-  subdivisions: 1
+  subdivisions: 2
   iterations: 2
   strength: 0.5
   uniformLength: 1
@@ -153,12 +153,12 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  endReachedDistance: 0.2
-  whenCloseToDestination: 0
+  endReachedDistance: 0
+  whenCloseToDestination: 1
   rvoDensityBehavior:
     enabled: 1
     densityThreshold: 0.5
-    returnAfterBeingPushedAway: 0
+    returnAfterBeingPushedAway: 1
     progressAverage: 0
     lastJobDensityResult: 0
   repathRateCompatibility: NaN
@@ -173,7 +173,7 @@ MonoBehaviour:
     visualizeSensitivity: 0
   maxAcceleration: -2.5
   rotationSpeed: 360
-  slowdownDistance: 0.6
+  slowdownDistance: 0
   pickNextWaypointDist: 2
   alwaysDrawGizmos: 0
   slowWhenNotFacingTarget: 1
@@ -221,7 +221,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240124075793635192}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 560112f876f5746c780eca0d404e7139, type: 3}
   m_Name: 
@@ -392,7 +392,7 @@ Transform:
   m_GameObject: {fileID: 7321259616530487619}
   serializedVersion: 2
   m_LocalRotation: {x: -0.13052624, y: 0, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []

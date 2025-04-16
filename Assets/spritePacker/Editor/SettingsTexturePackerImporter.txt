@@ -1,0 +1,17 @@
+version: 2
+tpsheetFileNames:
+- Assets/IconSprites/Factions/FactionSheet.tpsheet
+- Assets/IconSprites/Factions/factionSheet.tpsheet
+- Assets/IconSprites/Spirituality/sprituality_Sheet.tpsheet
+- Assets/spritePacker/Example/SpriteSheet/sprites.tpsheet
+textureFileNames:
+- Assets/IconSprites/Factions/FactionSheet.png
+- Assets/IconSprites/Factions/FactionSheet.png
+- Assets/IconSprites/Spirituality/Spirtiuality_Sheet.png
+- Assets/spritePacker/Example/SpriteSheet/sprites.png
+normalmapFileNames:
+- 
+- 
+- 
+- Assets/spritePacker/Example/SpriteSheet/sprites_n.png
+enableDebugOutput: 0

@@ -21,14 +21,14 @@ public class ToolTipUi : MonoBehaviour
     }
     private void OnEnable()
     {
-        GlobalActions.Tooltip += ShowToolTip;
+        GlobalActions.ShowTooltip += ShowToolTip;
     }
 
 
 
     private void OnDisable()
     {
-        GlobalActions.Tooltip -= ShowToolTip;
+        GlobalActions.ShowTooltip -= ShowToolTip;
     }
     private void Update()
     {
@@ -69,7 +69,7 @@ public class ToolTipUi : MonoBehaviour
     }
     private void SetText(string toolTipText)
     {
-        textmeshPro.SetText(toolTipText);
+        textmeshPro.SetText(GameStringParser.Parse( toolTipText));
         textmeshPro.ForceMeshUpdate();
         Vector2 textSize = textmeshPro.GetRenderedValues(true);
         Vector2 padding = new Vector2(10, 10);

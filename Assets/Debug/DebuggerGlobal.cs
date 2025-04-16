@@ -6,7 +6,7 @@ using UnityEngine;
 public class DebuggerGlobal : MonoBehaviour
 {
     [HideInInspector]
-    public bool disableEdgeScrolling = false;
+    public bool disableEdgeScrolling = true;
     [HideInInspector]
     public bool drawTargetLines = false;
     [HideInInspector]
@@ -74,6 +74,7 @@ public class DebuggerGlobal : MonoBehaviour
     {
 
         SecondUpdate();
+        disableEdgeScrolling = true;
     }
 
     private void Update()

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CollectiveDefence
   m_EditorClassIdentifier: 
   title: Collective Defence
-  description: Does 1 damage for each active Collective defence.Can be played everywhere
+  description: 'Deals 1 damage for each  @Faction.Amish  tower in play. '
   cardType: 1
   image: {fileID: 21300000, guid: 9dceef12e4c58ad409024eee9cc225c5, type: 3}
   rarity: 0

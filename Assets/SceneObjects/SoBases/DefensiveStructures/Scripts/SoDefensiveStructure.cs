@@ -24,7 +24,9 @@ public class SoDefensiveStructure : SoBuilding
         return stats;
     }
 
-    
+    protected override void ObjectInitialization(SceneObject sceneObject)
+    {
+    }
 }
 
 

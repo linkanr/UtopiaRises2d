@@ -75,8 +75,12 @@ public abstract class TargeterBaseClass : MonoBehaviour
             if (target.IsValid())
             {
                 float angle = WorldSpaceUtils.GetAngleFromVector(attacker.transform.position - target.damagable.transform.position);
-                attacker.objectAnimator.SetAngle(angle);
-            }
+                if (attacker.objectAnimator != null)
+                {
+                    attacker.objectAnimator.SetAngle(angle);
+                }
+
+            }      
         }
 
     }

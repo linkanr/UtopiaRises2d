@@ -60,7 +60,7 @@ public class RandomEventCreator : EditorWindow
 
             var align = allowedAlignments[i];
             align.galTan = (galTan)EditorGUILayout.EnumPopup("GalTan", align.galTan);
-            align.leftRigt = (leftRigt)EditorGUILayout.EnumPopup("LeftRight", align.leftRigt);
+            align.leftRight = (leftRigt)EditorGUILayout.EnumPopup("LeftRight", align.leftRight);
             allowedAlignments[i] = align;
 
             EditorGUILayout.Space();

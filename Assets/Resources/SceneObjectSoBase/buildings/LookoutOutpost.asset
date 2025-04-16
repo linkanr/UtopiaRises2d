@@ -49,7 +49,8 @@ MonoBehaviour:
     damageFromFire: 1
     damgaeFromWater: 0
     destroyedWhenStepedOn: 0
-  influenceRadius: 10
+  VisualEffectWhenDestroyed: 0
+  influenceRadius: 3
   lifeTime: 70
   soDamageEffect: {fileID: 11400000, guid: 8e15afa3cab3b134e89eb7f921e3d54e, type: 2}
   attackSystem: {fileID: 11400000, guid: 7c9104e9da113ef44bf2a9feb65a6136, type: 2}
