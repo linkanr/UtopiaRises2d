@@ -34,8 +34,7 @@ public class SoBattleSceneStatePlayCards : BaseState<BattleSceneStateMachine>
 
     public override void OnStateExit()
     {
-        if (GameSceneRef.instance.inHandPile != null)
-            GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
+
     }
 
     public override void OnStateUpdate()

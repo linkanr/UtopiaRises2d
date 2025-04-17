@@ -11,8 +11,10 @@ public class TowerUiHandler : MonoBehaviour
 
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI damageText;
+    public int init = 0;
     public void Init(SceneObject sceneObject)
     {
+
         if (sceneObject.healthSystem == null)
         {
             Debug.LogError("damageAble.iDamageableComponent is NULL!");
@@ -31,7 +33,7 @@ public class TowerUiHandler : MonoBehaviour
         stats.OnStatsChanged += UpdateUI;
         BattleSceneActions.OnSceneObjectCreated += UpdateOnSceneObject;   
         BattleSceneActions.OnSceneObjectKilled += UpdateOnSceneObject;
-        BattleSceneActions.OnGlobalModifierAdded += OnModifierAdded;
+        BattleSceneActions.OnGlobalModifersChanged += OnModifierAdded;
         UpdateUI();
     }
 
@@ -41,51 +43,16 @@ public class TowerUiHandler : MonoBehaviour
     {
         BattleSceneActions.OnSceneObjectCreated -= UpdateOnSceneObject;
         BattleSceneActions.OnSceneObjectKilled -= UpdateOnSceneObject;
-        BattleSceneActions.OnGlobalModifierAdded -= OnModifierAdded;
+        BattleSceneActions.OnGlobalModifersChanged -= OnModifierAdded;
     }
     private void OnModifierAdded(GlobalVariableModifier modifier)
     {
-        BasicGlobalVariableModifier basicModifier = modifier as BasicGlobalVariableModifier;
-        if (basicModifier == null)
-        {
-            Debug.LogError("modifier is not a BasicGlobalVariableModifier");
-            return;
-        }
 
-        string label = GetGlobalModifierDescription(basicModifier);
-        DamageNumbersManager.instance?.ShowNumber(transform.position, 0, MapEffectType(basicModifier.varType), label);
+
         UpdateUI();
     }
-    private string GetGlobalModifierDescription(BasicGlobalVariableModifier mod)
-    {
-        string symbol = mod.modType == GlobalModificationType.Multiply ? "x" : "+";
-        string value = mod.amount.ToString("0.##");
 
-        switch (mod.varType)
-        {
-            case PlayerGlobalVarTypeEnum.DamageModifier:
-                return $"{symbol}{value} damage";
-            case PlayerGlobalVarTypeEnum.RangeModifier:
-                return $"{symbol}{value} range";
-            case PlayerGlobalVarTypeEnum.ExtraHeal:
-                return $"{symbol}{value} heal";
-            case PlayerGlobalVarTypeEnum.ExtraLifetime:
-                return $"{symbol}{value} time";
-            default:
-                return $"{symbol}{value}";
-        }
-    }
-    private damageEffectEnum MapEffectType(PlayerGlobalVarTypeEnum type)
-    {
-        return type switch
-        {
-            PlayerGlobalVarTypeEnum.DamageModifier => damageEffectEnum.damageBoost,
-            PlayerGlobalVarTypeEnum.RangeModifier => damageEffectEnum.maxRange,
-            PlayerGlobalVarTypeEnum.ExtraHeal => damageEffectEnum.heal,
-            PlayerGlobalVarTypeEnum.ExtraLifetime => damageEffectEnum.maxRange,
-            _ => damageEffectEnum.damageBoost
-        };
-    }
+
     private void DestroyUiPanel(object sender, OnSceneObjectDestroyedArgs e)
     {
         Destroy(gameObject);
@@ -109,7 +76,7 @@ public class TowerUiHandler : MonoBehaviour
         Debug.Log("UpdateUI");
         int time = healthSystem.GetHealth();    
         timeText.text = time.ToString();
-        damageText.text =  stats.damageAmount.ToString();
+        damageText.text =  stats.damageAmount().ToString();
     }
 }
 

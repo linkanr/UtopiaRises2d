@@ -44,7 +44,7 @@ public class SoShotingBuildingStateTargetFound : BaseState<ShotingBuildingStateM
 
         }
         float targetDistance = Vector3.Distance(stateMachine.shootingBuilding.transform.position, stateMachine.shootingBuilding.targeter.target.targetTransform.position);
-        if (targetDistance > stateMachine.shootingBuilding.GetStats().maxRange)
+        if (targetDistance > stateMachine.shootingBuilding.GetStats().maxRange())
         {
             stateMachine.shootingBuilding.targeter.RemoveTarget();
             stateMachine.SetState(typeof(SoShotingBuildingStateLookingForTarget));

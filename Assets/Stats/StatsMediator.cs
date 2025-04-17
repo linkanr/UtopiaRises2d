@@ -39,6 +39,7 @@ public class StatsMediator
         {
             modifiers.Remove(modifier);
             queries -= modifier.Handle;
+            onModifierAdded?.Invoke(); // to remove the sprites
         };
     }
 

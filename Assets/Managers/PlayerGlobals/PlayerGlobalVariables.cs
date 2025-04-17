@@ -1,20 +1,21 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+[Serializable]
 public class PlayerGlobalVariables
 {
-    private readonly PlayerGlobalsMediator mediator = new();
-    private readonly PoliticalSystem politicalSystem = new();
-    public void AddModifier(GlobalVariableModifier modifier)
+    public readonly PlayerGlobalsMediator mediator = new();
+    public readonly PoliticalSystem politicalSystem = new();
+    public void AddModifier(BasicGlobalVariableModifier modifier)
     {
         mediator.AddModifier(modifier, this);
         Debug.Log("modifier added");
-        BattleSceneActions.OnGlobalModifierAdded(modifier);
+        BattleSceneActions.OnGlobalModifersChanged?.Invoke(modifier);
     }
 
     public void UpdateModifiers()
     {
         mediator.Update();
-        BattleSceneActions.OnGlobalModifierAdded(null);
+        BattleSceneActions.OnGlobalModifersChanged?.Invoke(null);
     }
     public void ClearBattleModifiers()
     {
@@ -26,36 +27,33 @@ public class PlayerGlobalVariables
     public PolicalCompassOrientation GetCompassOrientation() => politicalSystem.GetCompass();
 
 
-
-    public int GetExtraLifetime()
+    public int GetExtraLifetime(Faction faction )
     {
-        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.ExtraLifetime, 0);
+        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.ExtraLifetime, 0,  faction);
         mediator.PerformQuery(query);
         return Mathf.RoundToInt(query.FinalValue);
     }
 
-    public int GetExtraHeal()
+    public int GetExtraHeal(Faction faction)
     {
-        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.ExtraHeal, 0);
+        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.ExtraHeal, 0,  faction);
         mediator.PerformQuery(query);
         return Mathf.RoundToInt(query.FinalValue);
     }
 
-    /// <summary>
-    /// Applies global modifiers (additive then multiplicative) to a base damage value.
-    /// </summary>
-    /// <param name="baseDamage">The base damage before modifiers.</param>
-    /// <returns>The final modified damage.</returns>
-    public int GetDamage(int baseDamage)
+    public int GetDamage(int baseDamage, Faction faction )
     {
-        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.DamageModifier, baseDamage);
+        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.DamageModifier, baseDamage,  faction);
         mediator.PerformQuery(query);
         return Mathf.RoundToInt(query.FinalValue);
     }
-    public float GetRange(float baseRange)
+
+    public float GetRange(float baseRange, Faction faction)
     {
-        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.RangeModifier, baseRange);
+        var query = new PlayerGlobalQuery(PlayerGlobalVarTypeEnum.RangeModifier, baseRange, faction);
         mediator.PerformQuery(query);
-        return Mathf.RoundToInt(query.FinalValue);
+        return query.FinalValue;
     }
+
+
 }

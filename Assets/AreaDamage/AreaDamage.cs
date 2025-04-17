@@ -12,7 +12,7 @@ public class AreaDamage : MonoBehaviour
     private int damage;
     private float diameter;
     private float burnChance;
-    private bool init = false;
+
     public static void Create(Vector3 position, float diameter, visualEffectsEnum visualEffect, int damage, float delay, float burnChance = 0f)
     {
         GameObject prefab = Resources.Load("areaDamage") as GameObject;

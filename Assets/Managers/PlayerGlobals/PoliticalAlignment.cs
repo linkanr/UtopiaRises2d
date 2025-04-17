@@ -1,6 +1,6 @@
 ﻿
 [System.Serializable]
-public struct PoliticalAlignment
+public class PoliticalAlignment
 {
     public PoliticalAlignment(galTan _galTan, leftRigt _leftRigt, sprituality _sprituality)
     {
@@ -8,7 +8,7 @@ public struct PoliticalAlignment
         leftRight = _leftRigt;
         sprituality = _sprituality;
     }
-
+    
     public galTan galTan;
     public leftRigt leftRight;
     public sprituality sprituality;

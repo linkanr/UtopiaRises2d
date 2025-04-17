@@ -9,15 +9,9 @@ public class SceneObjectStatsHandler
     private Stats stats;
     private EffectSpriteOrganizer effectSpriteOrganizer;
 
-    public SceneObjectStatsHandler(SceneObject parentObject, EffectSpriteOrganizer effectSpriteOrganizer)
+    public SceneObjectStatsHandler(SceneObject parentObject)
     {
         this.parentObject = parentObject;
-        if (effectSpriteOrganizer != null)
-        {
-            this.effectSpriteOrganizer = effectSpriteOrganizer;
-            return;
-        }
-        
     }
 
     // Stats Management
@@ -26,7 +20,11 @@ public class SceneObjectStatsHandler
         stats = newStats;
         stats.Add(StatsInfoTypeEnum.sceneObjectsTransform, parentObject.transform);
     }
-
+    public void SetEffectSpriteOrganizer(EffectSpriteOrganizer organizer)
+    {
+        effectSpriteOrganizer = organizer;
+        effectSpriteOrganizer.Init(parentObject.transform, stats.statsMediator);
+    }
     public Stats GetStats()
     {
         return stats;
@@ -41,12 +39,12 @@ public class SceneObjectStatsHandler
     public void AddPickup(PickupTypes pickupType, StatsModifier modifier)
     {
         activeModifiers[pickupType] = modifier;
-        effectSpriteOrganizer.AddSpriteEffect(pickupType);
+
     }
 
     public void RemovePickup(PickupTypes pickupType)
     {
-        effectSpriteOrganizer.RemoveSpriteEffect(pickupType);
+
         activeModifiers.Remove(pickupType);
     }
 

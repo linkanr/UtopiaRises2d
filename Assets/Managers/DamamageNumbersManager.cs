@@ -13,16 +13,16 @@ public class DamageNumbersManager : SerializedMonoBehaviour
 
     private void OnEnable()
     {
-
         BattleSceneActions.OnSceneObjectTakesDamage += HandleDamgageDelt;
+        BattleSceneActions.OnGlobalModifersChanged += HandleGlobalModifier;
     }
-
 
 
     private void OnDisable()
     {
 
         BattleSceneActions.OnSceneObjectTakesDamage -= HandleDamgageDelt;
+        BattleSceneActions.OnGlobalModifersChanged -= HandleGlobalModifier;
     }
     private void Awake()
     {
@@ -34,6 +34,48 @@ public class DamageNumbersManager : SerializedMonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    private void HandleGlobalModifier(GlobalVariableModifier mod)
+    {
+        if (mod is not BasicGlobalVariableModifier basic) return;
+
+        string label = GetGlobalModifierDescription(basic);
+        var effect = MapEffectType(basic.varType);
+        var targets = SceneObjectUtils.GetObjectsAffectedByGlobalModifier(basic);
+
+        foreach (var obj in targets)
+        {
+            var stats = obj.GetStats();
+            if (stats == null) continue;
+
+            ShowNumber(stats.sceneObjectTransform.position, 0, effect, label);
+        }
+    }
+    private string GetGlobalModifierDescription(BasicGlobalVariableModifier mod)
+    {
+        string symbol = mod.modType == GlobalModificationType.Multiply ? "x" : "+";
+        string value = mod.amount.ToString("0.##");
+
+        return mod.varType switch
+        {
+            PlayerGlobalVarTypeEnum.DamageModifier => $"{symbol}{value} damage",
+            PlayerGlobalVarTypeEnum.RangeModifier => $"{symbol}{value} range",
+            PlayerGlobalVarTypeEnum.ExtraHeal => $"{symbol}{value} heal",
+            PlayerGlobalVarTypeEnum.ExtraLifetime => $"{symbol}{value} time",
+            _ => $"{symbol}{value}"
+        };
+    }
+
+    private damageEffectEnum MapEffectType(PlayerGlobalVarTypeEnum type)
+    {
+        return type switch
+        {
+            PlayerGlobalVarTypeEnum.DamageModifier => damageEffectEnum.damageBoost,
+            PlayerGlobalVarTypeEnum.RangeModifier => damageEffectEnum.maxRange,
+            PlayerGlobalVarTypeEnum.ExtraHeal => damageEffectEnum.heal,
+            PlayerGlobalVarTypeEnum.ExtraLifetime => damageEffectEnum.maxRange,
+            _ => damageEffectEnum.damageBoost
+        };
     }
 
     public void ShowNumber(Vector3 pos, int value, damageEffectEnum effectType, string label = "")

@@ -32,7 +32,7 @@ public class CameraHandleNew : MonoBehaviour
     [SerializeField] CanvasGroup edgeGlowBottom;
     [SerializeField] CanvasGroup edgeGlowLeft;
     [SerializeField] CanvasGroup edgeGlowRight;
-    [SerializeField] float glowFadeDuration = 0.2f;
+
 
     private void OnEnable()
     {

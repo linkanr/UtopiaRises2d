@@ -45,16 +45,34 @@ public class CardsInPlayManager : MonoBehaviour
 
     private void DiscardAllCards()
     {
-        List<Card> tempList = new List<Card>();
-        foreach (Card card in InHandList)
-        {
-            tempList.Add(card);
-        }
-        foreach (Card card in tempList)
-        {
-            DiscardCardInHand(card);
-        }   
+        StartCoroutine(DiscardCardsOneByOne());
     }
+
+    private IEnumerator DiscardCardsOneByOne()
+    {
+        List<Card> cardsToDiscard = new List<Card>(InHandList);
+        cardsToDiscard.Reverse(); // Reverse the list to discard from the last card to the first
+        foreach (Card card in cardsToDiscard)
+        {
+            // Lock state so player can’t click it
+            card.cardState = CardStateEnum.lockedForAnimation;
+
+            // Delay all discard logic until animation finishes
+            card.cardAnimations.DiscardAnimation(() =>
+            {
+                InHandList.Remove(card);
+                InDiscardPileList.Add(card);
+                card.cardState = CardStateEnum.inDiscardPile;
+
+                // Only reparent *after* animation completes
+                card.transform.SetParent(GameSceneRef.instance.discardPile);
+                card.transform.localRotation = Quaternion.identity;
+            });
+
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
     public bool CheckForLockedCard()
     {
         foreach (Card card in InHandList)
@@ -81,27 +99,28 @@ public class CardsInPlayManager : MonoBehaviour
         ShuffleDrawPile();
     }
 
-    public void DrawCards(int amount)
+public void DrawCards(int amount)
+{
+    StartCoroutine(DrawCardsRoutine(amount));
+}
+
+private IEnumerator DrawCardsRoutine(int amount)
+{
+    for (int i = 0; i < amount; i++)
     {
-        //Debug.Log("drawing " + amount + " cards");
-        for (int i = 0; i < amount; i++)
+        if (InDrawPileList.Count == 0)
         {
-            if (InDrawPileList.Count == 0)
-            {
-               // Debug.Log("reshuffle");
-                AddDiscardToDrawPile();
-                ShuffleDrawPile();
-          
-
-
-            }
-
-            Card currentCard = InDrawPileList[0];
-
-            AddToHandFromDraw(currentCard);
-
+            AddDiscardToDrawPile();
+            ShuffleDrawPile();
         }
+
+        Card currentCard = InDrawPileList[0];
+        AddToHandFromDraw(currentCard);
+
+        yield return new WaitForSeconds(0.15f); // tweak delay to taste
     }
+}
+
 
     public Card DrawCard()
     {
@@ -122,31 +141,28 @@ public class CardsInPlayManager : MonoBehaviour
     }
     private void AddToHandFromDraw(Card currentCard)
     {
-        //Debug.Log($"Adding card to hand: {currentCard.cardBase.title}");
-
-        // Remove from draw pile and add to hand
         InDrawPileList.Remove(currentCard);
         InHandList.Add(currentCard);
 
-        // Ensure cardAnimations is initialized
         if (currentCard.cardAnimations == null)
         {
             Debug.LogError($"CardAnimations is null for card: {currentCard.cardBase.title}");
             currentCard.Initialize(currentCard.cardBase, Card.CardMode.playable);
         }
 
-        // Set initial scale to 0 and parent the card
-       
         currentCard.transform.SetParent(GameSceneRef.instance.inHandPile, worldPositionStays: false);
         currentCard.cardAnimations.SetScale(0f);
-        // Immediately update layout after re-parenting
+
+        CanvasGroup cg = currentCard.GetComponent<CanvasGroup>();
+        if (cg != null) cg.alpha = 1f;
+
         LayoutRebuilder.ForceRebuildLayoutImmediate(GameSceneRef.instance.inHandPile);
         Canvas.ForceUpdateCanvases();
 
-        // Animate the card into view and set it to playable
-        currentCard.cardState = CardStateEnum.availible; // Set to a clickable state
-        currentCard.cardAnimations.AnimateScale(1f, currentCard,.3f);
+        currentCard.cardState = CardStateEnum.availible;
+        currentCard.cardAnimations.AnimateScale(1f, currentCard, 0.3f);
     }
+
 
 
 

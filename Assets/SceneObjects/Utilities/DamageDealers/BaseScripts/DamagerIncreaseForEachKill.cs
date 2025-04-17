@@ -20,7 +20,7 @@ public class DamagerIncreaseForEachKill : DamagerBaseClass
         return reloadTime;
     }
 
-    public override void InitImplemantation()
+    public override void InitImplemantation(SceneObject sceneObject)
     {
         Debug.Log("Initimplimentation Damager increase per kill called");
         BattleSceneActions.OnSceneObjectKilled += OnEnemyDefeated;
@@ -51,4 +51,6 @@ public class DamagerIncreaseForEachKill : DamagerBaseClass
             maxKillCount = this.maxKillCount
         };
     }
+
+
 }

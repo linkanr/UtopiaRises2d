@@ -3,9 +3,12 @@ public enum CardNames
 {
     Angry,
     CollectiveDefence,
+    DeathBeforeDishonor,
     DefensiveOutpost,
     DivineRevitalization,
     ExtraRange,
+    ForTheGreaterGood,
+    Freeze,
     GetFollowers,
     GrowForest,
     HeavyArtillery,

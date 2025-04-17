@@ -106,8 +106,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 49
-      y: 60
+      x: 61
+      y: 52
       width: 37
       height: 35
     spriteID: f70b657de0e110a469ff7475fe3a2625
@@ -118,7 +118,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 49, y: 60}
+    uvTransform: {x: 61, y: 52}
     spritePosition: {x: 7, y: 8}
   - name: Slow
     originalName: 
@@ -127,8 +127,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 60
+      x: 61
+      y: 4
       width: 37
       height: 40
     spriteID: 3cb37130a195f294a8135576738f3da1
@@ -139,8 +139,50 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 60}
+    uvTransform: {x: 61, y: 4}
     spritePosition: {x: 5, y: 4}
+  - name: Immortal
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 49
+      height: 47
+    spriteID: 92c8bd6f5c483104bb7f0aaa62e0e690
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 1, y: 0}
+  - name: Freeze
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 59
+      width: 47
+      height: 48
+    spriteID: 13dc69110a7250e47bd54fbc805ac4aa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 2, y: 59}
+    spritePosition: {x: 2, y: 0}
   - name: Weak
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -148,8 +190,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 56
-      y: 4
+      x: 4
+      y: 171
       width: 39
       height: 41
     spriteID: 332233e30eb359049b7d8c9e5286b5b9
@@ -160,7 +202,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 56, y: 4}
+    uvTransform: {x: 4, y: 171}
     spritePosition: {x: 5, y: 5}
   - name: Rage
     originalName: 
@@ -170,7 +212,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 4
+      y: 115
       width: 44
       height: 48
     spriteID: f9c2e5d647cea4a4fbc2da383372fb39
@@ -181,7 +223,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 4}
+    uvTransform: {x: 4, y: 115}
     spritePosition: {x: 2, y: 1}
   characterData:
     bones: []
@@ -228,7 +270,7 @@ ScriptedImporter:
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  layerMappingOption: 2
+  layerMappingOption: 0
   generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 1
@@ -249,7 +291,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: f70b657de0e110a469ff7475fe3a2625
     layerID: 6
-    mosaicPosition: {x: 49, y: 60}
+    mosaicPosition: {x: 61, y: 52}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -259,7 +301,27 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 3cb37130a195f294a8135576738f3da1
     layerID: 5
-    mosaicPosition: {x: 4, y: 60}
+    mosaicPosition: {x: 61, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Immortal
+    spriteName: Immortal
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 92c8bd6f5c483104bb7f0aaa62e0e690
+    layerID: 10
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Freeze
+    spriteName: Freeze
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 13dc69110a7250e47bd54fbc805ac4aa
+    layerID: 9
+    mosaicPosition: {x: 4, y: 59}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -269,7 +331,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 332233e30eb359049b7d8c9e5286b5b9
     layerID: 4
-    mosaicPosition: {x: 56, y: 4}
+    mosaicPosition: {x: 4, y: 171}
     flatten: 0
     isImported: 1
     isVisible: 1
@@ -279,7 +341,7 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: f9c2e5d647cea4a4fbc2da383372fb39
     layerID: 2
-    mosaicPosition: {x: 4, y: 4}
+    mosaicPosition: {x: 4, y: 115}
     flatten: 0
     isImported: 1
     isVisible: 1

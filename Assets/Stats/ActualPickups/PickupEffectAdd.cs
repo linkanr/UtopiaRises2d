@@ -30,13 +30,25 @@ public class PickupEffectAdd
             ),
             PickupTypes.Rage => new StatPickupAddMulti(
                 StatsInfoTypeEnum.damageAmount,
-                2.0f,
+                1.5f,
                 duration,
                 StatPickupAddMulti.OperatorType.Multiply,pickupType
             ),
             PickupTypes.Weak => new StatPickupAddMulti(
                 StatsInfoTypeEnum.takesDamageMultiplier,
-                2f,
+                1.5f,
+                duration,
+                StatPickupAddMulti.OperatorType.Multiply, pickupType
+            ),
+            PickupTypes.Freeze => new StatPickupAddMulti(
+                StatsInfoTypeEnum.speed,
+                0f,
+                duration,
+                StatPickupAddMulti.OperatorType.Multiply, pickupType
+            ),
+            PickupTypes.Immortal => new StatPickupAddMulti(
+                StatsInfoTypeEnum.takesDamageMultiplier,
+                0f,
                 duration,
                 StatPickupAddMulti.OperatorType.Multiply, pickupType
             ),

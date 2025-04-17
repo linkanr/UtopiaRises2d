@@ -2,21 +2,24 @@ using UnityEngine;
 
 public class Dogma : MonoBehaviour
 {
-    private GlobalVariableModifier appliedModifier;
+    private BasicGlobalVariableModifier appliedModifier;
     private SoDogmaBase dogmaBase;
     public string displayName { get { return dogmaBase.displayName; } }
     public Sprite sprite{ get {return dogmaBase.sprite; } } 
     public void Init(SoDogmaBase soArtifactBase)
     {
         appliedModifier = soArtifactBase.modifierData.Clone();
-        PlayerGlobalsManager.instance.playerGlobalVariables.AddModifier(appliedModifier);
-        dogmaBase = Instantiate(soArtifactBase,transform);
+       PlayerGlobalsManager.instance.playerGlobalVariables.AddModifier(appliedModifier);
+
+        dogmaBase = Instantiate(soArtifactBase);
+
+
     }
 
 
     private void OnDestroy()
     {
-        if (appliedModifier?.Lifetime == ModifierLifetime.Permanent)
+        if (appliedModifier?.lifetime == ModifierLifetime.Permanent)
         {
             appliedModifier.Dispose();
         }

@@ -27,7 +27,7 @@ public abstract class SpawningBuilding : SceneObjectBuilding, IcanSpawn
 
     protected List<Cell> GetCells()
     {
-        List<Cell> cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)GetStats().maxRange, (int)GetStats().maxRange);
+        List<Cell> cells = GridCellManager.instance.gridConstrution.GetCellListByWorldPosition(transform.position, (int)GetStats().maxRange(), (int)GetStats().maxRange());
         GeneralUtils.ShuffleList(cells);
         return cells;
     }

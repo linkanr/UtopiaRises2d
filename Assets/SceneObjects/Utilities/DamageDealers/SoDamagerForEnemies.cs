@@ -4,11 +4,11 @@ public class SoDamagerForEnemies : DamagerBaseClass
 {
 
 
-    public override float CalculateAttackRange()
+    public override float CalculateAttackRange(Stats statsOveride= null)
     {
         return attackRange;
     }
-    public override int CaclulateDamage()
+    public override int CaclulateDamage(Stats statsOveride = null)
     {
 
         return CalculateDamageImplementation(baseDamage);
@@ -24,7 +24,7 @@ public class SoDamagerForEnemies : DamagerBaseClass
         return reloadTime;
     }
 
-    public override void InitImplemantation()
+    public override void InitImplemantation(SceneObject _sceneObject)
     {
 
     }

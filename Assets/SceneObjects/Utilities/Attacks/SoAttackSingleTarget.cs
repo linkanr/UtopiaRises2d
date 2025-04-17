@@ -35,7 +35,7 @@ public class SoAttackSingleTarget : SoAttackSystem
                 return;
             }
 
-            healthSystem.TakeDamage(attacker.GetStats().damageAmount, attacker);
+            healthSystem.TakeDamage(attacker.GetStats().damageAmount(), attacker);
 
          //   Debug.Log(shotEffectType.ToString());
            // Debug.Log(attacker.transform.position);

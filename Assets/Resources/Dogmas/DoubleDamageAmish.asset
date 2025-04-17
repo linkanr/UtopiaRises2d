@@ -10,13 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ff143a2b9daa54c9618aee0c5851d5, type: 3}
-  m_Name: swordsToPlowshares
+  m_Name: DoubleDamageAmish
   m_EditorClassIdentifier: 
   modifierData:
-    varType: 1
-    modType: 0
-    amount: 5
-    duration: 0
+    varType: 0
+    modType: 1
+    amount: 2
     lifetime: 0
+    duration: 0
+    requirement:
+      requirementType: 0
+      faction: {fileID: 0}
+      requiresGalTan: 0
+      galTan: 0
+      requiresLeftRight: 0
+      leftRight: 0
+      requiresSprituality: 0
+      sprituality: 1
+    isDogma: 1
   sprite: {fileID: 21300000, guid: 814f230820456ce4a96a1d493e32411c, type: 3}
-  displayName: Sword To Plowshares
+  displayName: TestDamage

@@ -16,6 +16,7 @@ public class GameSceneRef : MonoBehaviour
     public RectTransform exhusedPile;
     public Transform enemyParent;
     public List<Transform> extraEndPoints;
+    public RectTransform stagingArea;
     private void Awake()
     {
         if (instance == null)

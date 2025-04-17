@@ -48,7 +48,7 @@ public class OnClickObject : MonoBehaviour
         TextMeshProUGUI rightText = Instantiate(simpleText, rightPanel);
 
         leftText.text = "Damage";
-        rightText.text = clickInfo.damageAmount.ToString();
+        rightText.text = clickInfo.damageAmount().ToString();
 
         leftText = Instantiate(simpleText, leftPanel);
         rightText = Instantiate(simpleText, rightPanel);
@@ -60,7 +60,7 @@ public class OnClickObject : MonoBehaviour
         rightText = Instantiate(simpleText, rightPanel);
 
         leftText.text = "Attack Range";
-        rightText.text = clickInfo.maxRange.ToString();
+        rightText.text = clickInfo.maxRange().ToString();
     }
 
     private void GenerateStrings(KeyValuePair<StatsInfoTypeEnum, object> kvp)

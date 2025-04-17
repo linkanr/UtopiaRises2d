@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 /// <summary>
@@ -55,6 +56,7 @@ public static class GameStringParser
     private static readonly Regex tokenRegex = new(@"@(?<type>Faction|Dogma|Rarity|Ideology|Sprituality)\.(?<id>[a-zA-Z0-9_]+)", RegexOptions.Compiled);
 
 
+
     public static string Parse(string input)
     {
         return tokenRegex.Replace(input, match =>
@@ -74,6 +76,40 @@ public static class GameStringParser
 
         });
     }
+    public static string Parse(GlobalVariableModifier modifier)
+    {
+        if (modifier is not BasicGlobalVariableModifier basic)
+            return "(Invalid Modifier)";
+
+        var req = basic.requirement;
+        if (req == null || req.requirementType == GlobalModifierRequirement.RequirementType.None)
+            return "(Global)";
+
+        List<string> parts = new();
+
+        switch (req.requirementType)
+        {
+            case GlobalModifierRequirement.RequirementType.Faction:
+                if (req.faction != null)
+                    parts.Add($"@Faction.{req.faction.factionEnum}");
+                break;
+
+            case GlobalModifierRequirement.RequirementType.PoliticalAlignment:
+                if (req.requiresGalTan)
+                    parts.Add($"@Ideology.{req.galTan}");
+                if (req.requiresLeftRight)
+                    parts.Add($"@Ideology.{req.leftRight}");
+                if (req.requiresSprituality)
+                    parts.Add($"@Sprituality.{req.sprituality}");
+                break;
+        }
+
+        if (parts.Count == 0)
+            return "(Invalid Requirement)";
+
+        return Parse(string.Join(" ", parts));
+    }
+
 
     private static string TryFormatFaction(string id)
     {

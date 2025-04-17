@@ -15,6 +15,6 @@ public class CardShotingBuilding : SoCardInstanciate, IHasClickEffect
     public float GetSpriteSize()
     {
         SoshotingBuilding soshotingBuilding = prefab as SoshotingBuilding;
-        return soshotingBuilding.damagerBaseClass.CalculateAttackRange() *2f;
+        return soshotingBuilding.damagerBaseClass.CalculateAttackRange(soshotingBuilding.GetStats()) *2f;
     }
 }

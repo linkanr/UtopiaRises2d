@@ -81,31 +81,25 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         //spriteSorter.SortSprite();
         MouseOverScenObject mouseOverScenObject = gameObject.AddComponent<MouseOverScenObject>();
         mouseOverScenObject.Init(spriteRenderer);
-        GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
-        GameObject instance = Instantiate(effectSpriteGameObject, transform);
-        effectSpriteOrganizer = instance.GetComponent<EffectSpriteOrganizer>();
-        effectSpriteOrganizer.Init(this.transform);
+
         c2D = GetComponent<Collider2D>();
-        statsHandler = new SceneObjectStatsHandler(this, effectSpriteOrganizer);
-
-
-
+        statsHandler = new SceneObjectStatsHandler(this);
     }
-
-
-
     /// <summary>
     /// This initializes the scene object and adds health system if needed
     /// </summary>
     public virtual void InitilizeFromSo()
     {
-        
+     ///Set Transform   
         sceneObjectPosition = transform.position;
+        /// Initialize effect sprite game object
+        GameObject effectSpriteGameObject = Resources.Load("EffectSpriteOrganizer") as GameObject;
+        GameObject instance = Instantiate(effectSpriteGameObject, transform);
+        EffectSpriteOrganizer organizer = instance.GetComponent<EffectSpriteOrganizer>();
+        statsHandler.SetEffectSpriteOrganizer(organizer);
         BattleSceneActions.OnSceneObjectCreated(this);
-        
-        
+        /// Children local initialization
         OnCreated();
-
         spriteRenderer.sprite = GetStats().sprite;
         AddSpriteSorter(spriteRenderer);
 
@@ -151,11 +145,6 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
         spriteSorter.Init(spriteRenderer, false);
     }
 
-
-
-
-
-
     /// <summary>
     /// Sets the stats for the scene object.
     /// </summary>
@@ -163,6 +152,7 @@ public abstract class SceneObject : MonoBehaviour, IPointerClickHandler, IClicka
     public void SetStats(Stats newStats)
     {
         statsHandler.SetStats(newStats);
+
     }
 
     /// <summary>

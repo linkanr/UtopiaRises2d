@@ -9,7 +9,7 @@ public class SoBattleSceneStateSpawningEnemies : BaseState<BattleSceneStateMachi
 
         TimeActions.OnPause(false);
         BattleSceneActions.OnSpawningStarting?.Invoke();
-        GameSceneRef.instance.inHandPile.gameObject.SetActive(false);
+   
 
 
 

@@ -50,7 +50,7 @@ public class RandomEventCreator : EditorWindow
 
         int alignmentCount = Mathf.Max(0, EditorGUILayout.IntField("Count", allowedAlignments.Count));
         while (allowedAlignments.Count < alignmentCount)
-            allowedAlignments.Add(new PoliticalAlignment());
+            allowedAlignments.Add(new PoliticalAlignment(galTan.Neutral,leftRigt.Centrist,sprituality.Agnostic));
         while (allowedAlignments.Count > alignmentCount)
             allowedAlignments.RemoveAt(allowedAlignments.Count - 1);
 

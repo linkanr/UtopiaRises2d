@@ -16,7 +16,7 @@ public class SoDamageDealNoDamage : DamagerBaseClass
         return reloadTime;
     }
 
-    public override void InitImplemantation()
+    public override void InitImplemantation(SceneObject _sceneObject)
     {
     }
     public override DamagerBaseClass Clone()

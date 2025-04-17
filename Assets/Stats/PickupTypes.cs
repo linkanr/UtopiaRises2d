@@ -4,5 +4,6 @@
     Weak,
     Slow,
     Vulnerable,
-    Imortal
+    Immortal,
+    Freeze
 }

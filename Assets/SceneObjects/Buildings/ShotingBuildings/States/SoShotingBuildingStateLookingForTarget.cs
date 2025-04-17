@@ -17,7 +17,11 @@ public class SoShotingBuildingStateLookingForTarget : BaseState<ShotingBuildingS
 
     public override void OnStateUpdate()
     {
-        
+        Debug.Log("looking for target");
+        Debug.Log(stateMachine);
+        Debug.Log(stateMachine.shootingBuilding);
+        Debug.Log(stateMachine.shootingBuilding.targeter);
+        Debug.Log(stateMachine.shootingBuilding.targeter.target);
         if (stateMachine.shootingBuilding.targeter.target == null) 
         {
             //Debug.Log("looking for target");

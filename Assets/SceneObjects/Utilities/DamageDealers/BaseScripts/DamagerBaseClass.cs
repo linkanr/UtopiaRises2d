@@ -11,23 +11,23 @@ public abstract class DamagerBaseClass
 
     public void Init(SceneObject _sceneObject)
     {
-       // Debug.Log("DamagerBaseClass Init");
         sceneObjectParent = _sceneObject;
-        InitImplemantation();
+        InitImplemantation(_sceneObject);
     }
-    public abstract void InitImplemantation();
+    public abstract void InitImplemantation(SceneObject _sceneObject);
 
-    public virtual int CaclulateDamage()
+    public virtual int CaclulateDamage(Stats stats)
     {
-        
-        return CalculateDamageImplementation( PlayerGlobalsManager.instance.playerGlobalVariables.GetDamage(baseDamage));
+        return CalculateDamageImplementation(
+            PlayerGlobalsManager.instance.playerGlobalVariables.GetDamage(baseDamage, stats.faction)
+        );
     }
-
     public abstract float CalculateReloadTime();
 
-    public virtual float CalculateAttackRange()
+    public virtual float CalculateAttackRange(Stats stats)
     {
-        return PlayerGlobalsManager.instance.playerGlobalVariables.GetRange(attackRange);
+
+        return PlayerGlobalsManager.instance.playerGlobalVariables.GetRange(attackRange, stats.faction);
 
     }
     public abstract int CalculateDamageImplementation(int _baseDamage);

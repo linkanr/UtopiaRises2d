@@ -30,7 +30,9 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     public bool isSelected;
     public CardMode mode;
 
-    public static Card currentlySelectedCard; // Track the currently selected card
+    public static Card currentlySelectedCard;
+    [SerializeField] private CardVisualLayers visualLayers;
+
 
     public void Initialize(SoCardBase cardBase, CardMode mode)
     {
@@ -45,9 +47,12 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
             GetComponent<LayoutElement>(),
             GetComponent<RectTransform>(),
             Ease.InOutSine,
-            GameSceneRef.instance.inHandPile
-        );
+            GameSceneRef.instance.inHandPile,
+            visualLayers
+        )
+        {
 
+        };
         isSelected = false;
         cardState = mode == CardMode.selectable ? CardStateEnum.inDisplayMenu : CardStateEnum.availible;
 
@@ -56,16 +61,14 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
             case CardType.summonTower:
                 SoCardInstanciate soCardInstanciate = (SoCardInstanciate)cardBase;
                 Stats stats = soCardInstanciate.prefab.GetStats();
-                damageText.text =  stats.damageAmount.ToString();
-                reachText.text = stats.maxRange.ToString();
+                damageText.text = stats.damageAmount().ToString();
+                reachText.text = stats.maxRange().ToString();
                 lifeText.text = stats.lifeTime.ToString();
                 break;
             case CardType.areaDamage:
-                
                 CardDamageArea damageArea = (CardDamageArea)cardBase;
                 damageText.text = damageArea.damage.ToString();
                 reachText.text = damageArea.diameter.ToString();
-
                 break;
             default:
                 damageText.gameObject.SetActive(false);
@@ -73,8 +76,6 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
                 lifeText.gameObject.SetActive(false);
                 break;
         }
-
-
 
         GetComponentInChildren<CardSetBg>().Init(cardBase.cardType);
         titleText.text = GameStringParser.Parse(cardBase.title);
@@ -96,31 +97,25 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
                 selectionHandler.ResetCardSelection();
             }
         }
-
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        // Handle playable cards
         if (mode == CardMode.playable && selectionHandler.IsCardClickable())
         {
-            // Deselect the currently selected card (if any)
             if (currentlySelectedCard != null && currentlySelectedCard != this)
             {
                 currentlySelectedCard.Deselect();
             }
 
-            // Lock this card for selection
             selectionHandler.LockCardForSelection();
-            currentlySelectedCard = this; // Update the global reference
+            currentlySelectedCard = this;
         }
-        // Handle selectable cards
         else if (mode == CardMode.selectable)
         {
             Select();
         }
     }
-
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -135,36 +130,28 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
     public void OnPointerExit(PointerEventData eventData)
     {
         DisplayActions.OnMouseNotOverCard();
-        // Prevent resetting state if the card is selected or locked for animation
         if (cardState == CardStateEnum.lockedForSelection || cardState == CardStateEnum.lockedForAnimation)
         {
             return;
         }
-        // Reset state and scale only if the card is not selected
         cardState = CardStateEnum.availible;
-        cardAnimations.SimpleAnimation(1f); // Reset scale to default
+        cardAnimations.SimpleAnimation(1f);
     }
 
     public void Select()
     {
-        // Deselect the previously selected card if it's not this one
         if (currentlySelectedCard != null && currentlySelectedCard != this)
         {
             currentlySelectedCard.Deselect();
         }
 
-        // Set this card as the currently selected card
         currentlySelectedCard = this;
         isSelected = true;
         outline.SetActive(true);
 
-        // Lock the card for selection
         cardState = CardStateEnum.lockedForSelection;
-
-        // Immediately override any ongoing animations
         cardAnimations.AnimateScale(cardAnimations.clickScale, this);
 
-        // Notify listeners
         SelectCardsActions.InvokeCardSelected(selectionBase);
     }
 
@@ -173,11 +160,8 @@ public class Card : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, I
         isSelected = false;
         outline.SetActive(false);
         cardState = CardStateEnum.availible;
-
-        // Immediately reset scale
         cardAnimations.ScaleResetAndRelease(this);
 
-        // Clear the global reference to the currently selected card
         if (currentlySelectedCard == this)
         {
             currentlySelectedCard = null;

@@ -157,14 +157,13 @@ public class Stats
     private DamagerBaseClass _damagerBaseClass => statsInfoDic.GetValue<DamagerBaseClass>(StatsInfoTypeEnum.damager);
 
 
-    public int damageAmount
+    public int damageAmount()
     {
-        get
-        {
-            float basestat = _damagerBaseClass.CaclulateDamage();
-            return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.damageAmount);
-        }
-        set {; }
+
+            float basestat = _damagerBaseClass.CaclulateDamage(this);
+            return Mathf.RoundToInt(ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.damageAmount));
+
+
     }
     public float reloadTime
     {
@@ -175,14 +174,14 @@ public class Stats
         }
         set {; }
     }
-    public float maxRange
+    public float maxRange()
     {
-        get
-        {
-            float basestat = _damagerBaseClass.CalculateAttackRange();
+        
+        
+            float basestat = _damagerBaseClass.CalculateAttackRange(this);
             return (int)ApplyEffectToBasestat(basestat, StatsInfoTypeEnum.maxRangeForShotingSpawning);
-        }
-        set {; }
+        
+        
     }
 
 

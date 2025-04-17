@@ -25,7 +25,7 @@ public class SoAttackAndDie : SoAttackSystem
             return;
         }
 
-        icanAttack.targeter.target.damagable.healthSystem.TakeDamage(attacker.GetStats().damageAmount, attacker);
+        icanAttack.targeter.target.damagable.healthSystem.TakeDamage(attacker.GetStats().damageAmount(), attacker);
         if (attacker.healthSystem == null)
         {
             Debug.LogError("Attacker health system is null");

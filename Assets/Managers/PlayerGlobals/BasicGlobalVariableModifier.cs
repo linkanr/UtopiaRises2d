@@ -1,16 +1,19 @@
+using Sirenix.OdinInspector;
 using System;
-using UnityEngine;
 
 [Serializable]
 public class BasicGlobalVariableModifier : GlobalVariableModifier
 {
     public PlayerGlobalVarTypeEnum varType;
-    public GlobalModificationType modType;
+    public GlobalModificationType modType; // Add or Multiply
     public float amount;
-    public float duration; // Store this for cloning
     public ModifierLifetime lifetime;
+    [EnableIf("@this.lifetime == ModifierLifetime.Timed")]
+    public float duration;
 
-    // Empty constructor for serialization (e.g., inside ScriptableObjects)
+    public GlobalModifierRequirement requirement;
+    public bool isDogma;
+
     public BasicGlobalVariableModifier() : base(ModifierLifetime.Permanent) { }
 
     public BasicGlobalVariableModifier(
@@ -18,7 +21,9 @@ public class BasicGlobalVariableModifier : GlobalVariableModifier
         GlobalModificationType modType,
         float amount,
         ModifierLifetime lifetime = ModifierLifetime.Permanent,
-        float duration = 0f)
+        float duration = 0f,
+        GlobalModifierRequirement requirement = null,
+        bool isDogma = false)
         : base(lifetime, duration)
     {
         this.varType = varType;
@@ -26,27 +31,27 @@ public class BasicGlobalVariableModifier : GlobalVariableModifier
         this.amount = amount;
         this.lifetime = lifetime;
         this.duration = duration;
-   
+        this.requirement = requirement;
+        this.isDogma = isDogma;
     }
 
     public override void Handle(object sender, PlayerGlobalQuery query)
     {
         if (query.type != varType) return;
+        if (requirement != null && !requirement.MatchesQuery(query)) return;
 
         switch (modType)
         {
             case GlobalModificationType.Add:
                 query.addBuffer += amount;
                 break;
+
             case GlobalModificationType.Multiply:
                 query.multiplyBuffer *= amount;
                 break;
         }
     }
 
-    /// <summary>
-    /// Creates a copy of this modifier to be safely used at runtime.
-    /// </summary>
     public BasicGlobalVariableModifier Clone()
     {
         return new BasicGlobalVariableModifier(
@@ -54,7 +59,9 @@ public class BasicGlobalVariableModifier : GlobalVariableModifier
             modType,
             amount,
             lifetime,
-            duration
+            duration,
+            requirement,
+            isDogma
         );
     }
 }

@@ -2,19 +2,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-public class DogmaManager : MonoBehaviour
+public class DogmaManager : SerializedMonoBehaviour
 {
     public static DogmaManager instance;
 
-    [BoxGroup("Artifact Prefab")]
+    [BoxGroup("Dogma Prefab")]
     [Required]
     public GameObject dogmaPrefab;
 
-    [BoxGroup("Loaded Artifacts (auto)")]
+    [BoxGroup("Loaded Dogmas (auto)")]
     [ReadOnly, ShowInInspector]
     public Dictionary<string, SoDogmaBase> dogmaLookup = new();
     private SoDogmaBase[] loadedDogmas;
-    private Dictionary<string, Dogma> activeDogmas = new();
+    public Dictionary<string, Dogma> activeDogmas = new();
 
 
     
@@ -33,7 +33,7 @@ public class DogmaManager : MonoBehaviour
     {
         if (dogmaLookup.TryGetValue(dogmaName, out var artifact))
             return artifact;
-        Debug.LogWarning($"Artifact '{dogmaName}' not found in active artifacts.");
+        Debug.LogWarning($"Dogma '{dogmaName}' not found in active artifacts.");
         return null;
     }
     public List<SoDogmaBase> GetAllDogmas()
@@ -47,7 +47,7 @@ public class DogmaManager : MonoBehaviour
     private void LoadAllDogmasFromResources()
     {
         dogmaLookup.Clear();
-        loadedDogmas = Resources.LoadAll<SoDogmaBase>("Artifacts");
+        loadedDogmas = Resources.LoadAll<SoDogmaBase>("Dogmas");
 
         foreach (var artifact in loadedDogmas)
         {
@@ -55,33 +55,33 @@ public class DogmaManager : MonoBehaviour
             if (!dogmaLookup.ContainsKey(key))
                 dogmaLookup.Add(key, artifact);
             else
-                Debug.LogWarning($"Duplicate artifact key found: {key}");
+                Debug.LogWarning($"Duplicate dogma key found: {key}");
         }
 
-        Debug.Log($"[ArtifactManager] Loaded {dogmaLookup.Count} artifacts from Resources/Artifacts.");
+        Debug.Log($"[ArtifactManager] Loaded {dogmaLookup.Count} dogmas from Resources/Artifacts.");
     }
 
     /// <summary>
-    /// Create an artifact by name.
+    /// Create an dogma by name.
     /// </summary>
-    public static void Create(string artifactName)
+    public static void Create(string dogmaName)
     {
         if (instance == null)
         {
-            Debug.LogError("ArtifactManager is not initialized.");
+            Debug.LogError("DogmaManager is not initialized.");
             return;
         }
 
-        if (!instance.dogmaLookup.TryGetValue(artifactName, out var artifactSO))
+        if (!instance.dogmaLookup.TryGetValue(dogmaName, out var artifactSO))
         {
-            Debug.LogError($"Artifact '{artifactName}' not found.");
+            Debug.LogError($"Dogma '{dogmaName}' not found.");
             return;
         }
 
-        instance.CreateArtifact(artifactName, artifactSO);
+        instance.CreateArtifact(dogmaName, artifactSO);
     }
 
-    private void CreateArtifact(string name, SoDogmaBase soArtifactBase)
+    private void CreateArtifact(string name, SoDogmaBase soDogmaName)
     {
         if (dogmaPrefab == null)
         {
@@ -95,31 +95,31 @@ public class DogmaManager : MonoBehaviour
             return;
         }
 
-        GameObject artifactGO = Instantiate(dogmaPrefab);
-        Dogma artifact = artifactGO.GetComponent<Dogma>();
+        GameObject DogmaGo = Instantiate(dogmaPrefab, transform);
+        Dogma artifact = DogmaGo.GetComponent<Dogma>();
 
         if (artifact == null)
         {
-            Debug.LogError("Artifact prefab missing Artifact script.");
-            Destroy(artifactGO);
+            Debug.LogError("Dogma prefab missing Artifact script.");
+            Destroy(DogmaGo);
             return;
         }
 
-        artifact.Init(soArtifactBase);
+        artifact.Init(soDogmaName);
         activeDogmas.Add(name, artifact);
     }
 
-    public static void Destroy(string artifactName)
+    public static void Destroy(string dogmaName)
     {
-        if (instance == null || !instance.activeDogmas.TryGetValue(artifactName, out var artifact))
+        if (instance == null || !instance.activeDogmas.TryGetValue(dogmaName, out var artifact))
             return;
 
         Destroy(artifact.gameObject);
-        instance.activeDogmas.Remove(artifactName);
+        instance.activeDogmas.Remove(dogmaName);
     }
 
-    [Button("Destroy All Artifacts")]
-    public void DestroyAllArtifacts()
+    [Button("Destroy All Dogmas")]
+    public void DestroyAllDogmas()
     {
         foreach (var artifact in activeDogmas.Values)
         {

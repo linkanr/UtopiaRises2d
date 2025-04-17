@@ -7,7 +7,7 @@ public class BridgeSceneObject : EnviromentObject
 {
     private bool triggered = false;
     private bool checkedForTrigger = false;
-    private bool connectedToLand = false;
+    public bool connectedToLand = false;
 
     public BridgeSceneObject Create(Vector3 position)
     {

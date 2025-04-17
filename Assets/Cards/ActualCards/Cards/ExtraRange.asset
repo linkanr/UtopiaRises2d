@@ -13,16 +13,28 @@ MonoBehaviour:
   m_Name: ExtraRange
   m_EditorClassIdentifier: 
   title: Extra Range
-  description: +5 range until end of battle
+  description: '+5 range until end of battle for @Ideology.Left
+
+'
   cardType: 0
   image: {fileID: 21300000, guid: 7d923c597c0e3c148a85d9c818ee357d, type: 3}
-  rarity: 0
+  rarity: 1
   cardCanBePlayedOnEnum: 3
-  cardPlayTypeEnum: 0
+  cardPlayTypeEnum: 1
   influenceCost: 1
+  healthCost: 0
   faction: {fileID: 11400000, guid: 4dae940fd3bbb3d4397912eeb258eea1, type: 2}
-  operators: 1
+  operators: 0
   typeOfModifier: 3
   lifetime: 2
-  amount: 2
-  duration: 10
+  amount: 5
+  duration: 0
+  requirement:
+    requirementType: 2
+    faction: {fileID: 0}
+    requiresGalTan: 0
+    galTan: 0
+    requiresLeftRight: 1
+    leftRight: 1
+    requiresSprituality: 0
+    sprituality: 0

@@ -16,13 +16,19 @@ public abstract class SoBuilding : SoSceneObjectBase
 
     protected override Stats GetStatsInernal(Stats stats)
     {
+        int finalLifeTime = lifeTime;
 
-        stats.Add(StatsInfoTypeEnum.lifeTime, lifeTime);
+        if (faction != null && PlayerGlobalsManager.instance != null)
+        {
+            finalLifeTime += PlayerGlobalsManager.instance.playerGlobalVariables.GetExtraLifetime(faction);
+        }
 
+        stats.Add(StatsInfoTypeEnum.lifeTime, finalLifeTime);
         stats.Add(StatsInfoTypeEnum.sceneObjectType, SceneObjectTypeEnum.playerbuilding);
         stats.Add(StatsInfoTypeEnum.influenceRadius, influenceRadius);
         return stats;
     }
+
 
 
 }

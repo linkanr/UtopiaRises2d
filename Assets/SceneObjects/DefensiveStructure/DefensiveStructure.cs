@@ -15,8 +15,8 @@ public class DefensiveStructure : SceneObjectBuilding
     private void OnGlobalTimeChanged()
     {
         Debug.Log("OnGlobalTimeChanged");
-        Debug.Log("reach " + GetStats().maxRange);
-        List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: GetStats().maxRange);
+        Debug.Log("reach " + GetStats().maxRange());
+        List<SceneObject> sceneObjects = SceneObjectManager.Instance.sceneObjectGetter.GetSceneObjects(transform.position, objectTypeEnum: SceneObjectTypeEnum.enemy, maxDistance: GetStats().maxRange());
         foreach (Enemy enemy in sceneObjects)
         {
             Debug.Log("enemy " + enemy.GetStats().name);
